@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using OrthoCity.Entities;
 
 namespace OrthoCity
 {
@@ -9,12 +10,21 @@ namespace OrthoCity
     /// </summary>
     public class OrthoCity : Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        GraphicsDeviceManager _graphics;
+        SpriteBatch _spriteBatch;
+        readonly IEntity[] _entities;
 
         public OrthoCity()
         {
-            graphics = new GraphicsDeviceManager(this);
+            _graphics = new GraphicsDeviceManager(this);
+            int iEntity = 0;
+#if DEBUG
+            _entities = new IEntity[2];
+            _entities[iEntity++] = new DebugLayer();
+#else
+            _entities = new IEntity[1];
+#endif
+            _entities[iEntity++] = new Map();
             Content.RootDirectory = "Content";
         }
 
@@ -38,9 +48,12 @@ namespace OrthoCity
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+            foreach(IEntity entity in _entities)
+            {
+                entity.LoadContent(this.Content);
+            }
         }
 
         /// <summary>
@@ -49,7 +62,10 @@ namespace OrthoCity
         /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
+            foreach (IEntity entity in _entities)
+            {
+                entity.UnloadContent();
+            }
         }
 
         /// <summary>
@@ -59,10 +75,12 @@ namespace OrthoCity
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape)) Exit();
 
-            // TODO: Add your update logic here
+            foreach (IEntity entity in _entities)
+            {
+                entity.Update(gameTime);
+            }
 
             base.Update(gameTime);
         }
@@ -75,7 +93,12 @@ namespace OrthoCity
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            _spriteBatch.Begin();
+            foreach (IEntity entity in _entities)
+            {
+                entity.Draw(_spriteBatch);
+            }
+            _spriteBatch.End();
 
             base.Draw(gameTime);
         }

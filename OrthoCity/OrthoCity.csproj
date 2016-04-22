@@ -38,6 +38,9 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Entities\DebugLayer.cs" />
+    <Compile Include="Entities\Map.cs" />
+    <Compile Include="IEntity.cs" />
     <Compile Include="OrthoCity.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
