@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 
 namespace OrthoCity.Entities
@@ -9,6 +10,7 @@ namespace OrthoCity.Entities
     {
         SpriteFont _font;
         double _refreshRate;
+        KeyboardState _keyboardState;
 
         void IEntity.LoadContent(ContentManager content)
         {
@@ -19,7 +21,7 @@ namespace OrthoCity.Entities
         {
         }
 
-        void IEntity.Update(GameTime gameTime)
+        void IEntity.Update(GameTime gameTime, KeyboardState keyboardState)
         {
             _refreshRate = gameTime.ElapsedGameTime.TotalMilliseconds;
         }

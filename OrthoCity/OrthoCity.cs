@@ -107,7 +107,7 @@ namespace OrthoCity
 
             foreach (IEntity entity in _entities)
             {
-                entity.Update(gameTime);
+                entity.Update(gameTime, Keyboard.GetState());
             }
 
             base.Update(gameTime);
