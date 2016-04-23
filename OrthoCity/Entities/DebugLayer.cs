@@ -10,7 +10,6 @@ namespace OrthoCity.Entities
     {
         SpriteFont _font;
         double _refreshRate;
-        KeyboardState _keyboardState;
 
         void IEntity.LoadContent(ContentManager content)
         {
