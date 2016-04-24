@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using OrthoCity.Entities;
-using OrthoCityConsole;
+using MonoGameConsole;
 
 namespace OrthoCity
 {
@@ -15,23 +15,25 @@ namespace OrthoCity
         SpriteBatch _spriteBatch;
         readonly IEntity[] _entities;
 
-        public const int WINDOWS_WIDTH = 1920;
-        public const int WINDOWS_HEIGHT = 1080;
+        public const int WINDOW_WIDTH = 1920;
+        public const int WINDOW_HEIGHT = 1080;
 
         public OrthoCity()
         {
             _graphics = new GraphicsDeviceManager(this);
-            int iEntity = 0;
+            _graphics.PreferredBackBufferWidth = WINDOW_WIDTH;
+            _graphics.PreferredBackBufferHeight = WINDOW_HEIGHT;
 
-            _graphics.PreferredBackBufferWidth = WINDOWS_WIDTH;
-            _graphics.PreferredBackBufferHeight = WINDOWS_HEIGHT;
+            int iEntity = 0;
 #if DEBUG
+            _graphics.IsFullScreen = false;
+
             _entities = new IEntity[2];
             _entities[iEntity++] = new DebugLayer();
-            _graphics.IsFullScreen = false;
 #else
-            _entities = new IEntity[1];
             _graphics.IsFullScreen = true;
+
+            _entities = new IEntity[1];
 #endif
             _entities[iEntity++] = new Map();
             Content.RootDirectory = "Content";
@@ -64,14 +66,15 @@ namespace OrthoCity
             GameConsole console = new GameConsole(this, _spriteBatch, new GameConsoleOptions
             {
                 ToggleKey = (int)Keys.F10,
-                Font = Content.Load<SpriteFont>("Font"),
-                FontColor = Color.Green,
-                Prompt = "Admin => ",
+                Font = Content.Load<SpriteFont>("console"),
+                FontColor = Color.White,
+                Prompt = "console $",
                 PromptColor = Color.LightGreen,
                 CursorColor = Color.Green,
                 BackgroundColor = new Color(Color.Black, 150),
                 PastCommandOutputColor = Color.Aqua,
-                BufferColor = Color.LightGreen
+                BufferColor = Color.White,
+                Margin = 600
             });
             /// Ex to add command : console.AddCommand("positionWorld", a => { var X = int.Parse(a[0]); var Y = int.Parse(a[1]); world.Position.X = X; world.Position.Y = Y; return String.Format("Teleporte the player to X :  {0} - Y : {1}", X, Y); }, "Change X et Yposition");
             /// positionWorld = name of command
