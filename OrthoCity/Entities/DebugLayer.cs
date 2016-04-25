@@ -11,21 +11,21 @@ namespace OrthoCity.Entities
         SpriteFont _font;
         double _refreshRate;
 
-        void IEntity.LoadContent(ContentManager content)
+        public void LoadContent(ContentManager content)
         {
             _font = content.Load<SpriteFont>("debug");
         }
 
-        void IEntity.UnloadContent()
+        public void UnloadContent()
         {
         }
 
-        void IEntity.Update(GameTime gameTime, KeyboardState keyboardState)
+        public void Update(GameTime gameTime, KeyboardState keyboardState)
         {
             _refreshRate = gameTime.ElapsedGameTime.TotalMilliseconds;
         }
 
-        void IEntity.Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.DrawString(_font, _refreshRate.ToString() + "ms", new Vector2(10, 10), Color.Black);
         }
