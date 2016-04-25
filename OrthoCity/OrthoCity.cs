@@ -73,7 +73,7 @@ namespace OrthoCity
                 CursorColor = Color.Green,
                 BackgroundColor = new Color(Color.Black, 150),
                 PastCommandOutputColor = Color.Aqua,
-                BufferColor = Color.White,
+                BufferColor = Color.Orange,
                 Margin = 600
             });
             /// Ex to add command : console.AddCommand("positionWorld", a => { var X = int.Parse(a[0]); var Y = int.Parse(a[1]); world.Position.X = X; world.Position.Y = Y; return String.Format("Teleporte the player to X :  {0} - Y : {1}", X, Y); }, "Change X et Yposition");
