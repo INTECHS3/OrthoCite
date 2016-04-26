@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace OrthoCity.Entities.MiniGames
+namespace OrthoCite.Entities.MiniGames
 {
     abstract class MiniGame : IEntity
     {

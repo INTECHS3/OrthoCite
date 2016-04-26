@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="Entities\DebugLayer.cs" />
     <Compile Include="Entities\Map.cs" />
+    <Compile Include="Entities\MiniGames\MiniGame.cs" />
     <Compile Include="IEntity.cs" />
     <Compile Include="OrthoCite.cs" />
     <Compile Include="Program.cs" />
