@@ -8,8 +8,14 @@ namespace OrthoCite.Entities
 {
     class DebugLayer : IEntity
     {
+        RuntimeData _runtimeData;
         SpriteFont _font;
         double _refreshRate;
+
+        public DebugLayer(RuntimeData runtimeData)
+        {
+            _runtimeData = runtimeData;
+        }
 
         public void LoadContent(ContentManager content)
         {

@@ -12,6 +12,13 @@ namespace OrthoCite.Entities
 {
     class Map : IEntity
     {
+        RuntimeData _runtimeData;
+
+        public Map(RuntimeData runtimeData)
+        {
+            _runtimeData = runtimeData;
+        }
+
         void IEntity.LoadContent(ContentManager content)
         {
         }
