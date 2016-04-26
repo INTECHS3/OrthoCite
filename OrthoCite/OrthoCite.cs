@@ -11,7 +11,8 @@ namespace OrthoCite
     /// </summary>
     public class OrthoCite : Game
     {
-        GraphicsDeviceManager _graphics;
+        readonly RuntimeData _runtimeData;
+        readonly GraphicsDeviceManager _graphics;
         SpriteBatch _spriteBatch;
         readonly IEntity[] _entities;
 
@@ -20,6 +21,7 @@ namespace OrthoCite
 
         public OrthoCite()
         {
+            _runtimeData = new RuntimeData();
             _graphics = new GraphicsDeviceManager(this);
             _graphics.PreferredBackBufferWidth = WINDOW_WIDTH;
             _graphics.PreferredBackBufferHeight = WINDOW_HEIGHT;
@@ -29,13 +31,13 @@ namespace OrthoCite
             _graphics.IsFullScreen = false;
 
             _entities = new IEntity[2];
-            _entities[iEntity++] = new DebugLayer();
+            _entities[iEntity++] = new DebugLayer(_runtimeData);
 #else
             _graphics.IsFullScreen = true;
 
             _entities = new IEntity[1];
 #endif
-            _entities[iEntity++] = new Map();
+            _entities[iEntity++] = new Map(_runtimeData);
             Content.RootDirectory = "Content";
         }
 
