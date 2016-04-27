@@ -24,6 +24,6 @@ Pour jouer au jeu, vous avez juste besoin de :
 
 ### Autre
 
- Vous pouvez également consulter nos documents avants projets (avec le scénario1) : [OrthoCite-Doc-Avant-Projet]
+ Vous pouvez également consulter nos documents avants projets (avec le scénario) : [OrthoCite-Doc-Avant-Projet]
 
  [OrthoCite-Doc-Avant-Projet]: <https://github.com/INTECHS3/OrthoCite-Doc-Avant-Projet>
