@@ -52,13 +52,15 @@ namespace OrthoCite.Entities
 
         void IEntity.Draw(SpriteBatch spriteBatch)
         {
+           
             for (var i = 0; i < _map.Layers[0].Tiles.Count; i++)
             {
                 int gid = _map.Layers[0].Tiles[i].Gid;
+                _runtimeData._console.WriteLine((_map.Layers[0].Tiles[i].Gid).ToString());
 
-                
                 if (gid != 0)
                 {
+                   
                     int tileFrame = gid - 1;
                     int column = tileFrame % tilesetTilesWide;
                     int row = (tileFrame + 1 > tilesetTilesWide) ? tileFrame - column * tilesetTilesWide : 0;

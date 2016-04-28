@@ -11,24 +11,26 @@ namespace OrthoCite
     /// </summary>
     public class OrthoCite : Game
     {
-        readonly RuntimeData _runtimeData;
+        RuntimeData _runtimeData;
         readonly GraphicsDeviceManager _graphics;
         SpriteBatch _spriteBatch;
         readonly IEntity[] _entities;
 
         public const int WINDOW_WIDTH = 1920;
         public const int WINDOW_HEIGHT = 1080;
+        int iEntity;
+        
 
         
         
         public OrthoCite()
         {
-            _runtimeData = new RuntimeData();
+            
             _graphics = new GraphicsDeviceManager(this);
             _graphics.PreferredBackBufferWidth = WINDOW_WIDTH;
             _graphics.PreferredBackBufferHeight = WINDOW_HEIGHT;
 
-            int iEntity = 0;
+            iEntity = 0;
 #if DEBUG
             _graphics.IsFullScreen = false;
 
@@ -39,7 +41,10 @@ namespace OrthoCite
 
             _entities = new IEntity[1];
 #endif
-            _entities[iEntity++] = new Map(_runtimeData);
+
+           
+
+            
             Content.RootDirectory = "Content";
         }
 
@@ -67,7 +72,7 @@ namespace OrthoCite
 
             Services.AddService(typeof(SpriteBatch), _spriteBatch);
 
-            GameConsole console = new GameConsole(this, _spriteBatch, new GameConsoleOptions
+            GameConsole _console = new GameConsole(this, _spriteBatch, new GameConsoleOptions
             {
                 ToggleKey = (int)Keys.F10,
                 Font = Content.Load<SpriteFont>("console"),
@@ -80,12 +85,16 @@ namespace OrthoCite
                 BufferColor = Color.Orange,
                 Margin = 600
             });
-            
+
+            _runtimeData = new RuntimeData(_console);
+
+            _entities[iEntity++] = new Map(_runtimeData);
+
             /// Ex to add command : console.AddCommand("positionWorld", a => { var X = int.Parse(a[0]); var Y = int.Parse(a[1]); world.Position.X = X; world.Position.Y = Y; return String.Format("Teleporte the player to X :  {0} - Y : {1}", X, Y); }, "Change X et Yposition");
             /// positionWorld = name of command
             /// a = array of argument command
             /// return string  = Text return when command was execute
-            
+
             foreach (IEntity entity in _entities)
             {
                 entity.LoadContent(this.Content);
