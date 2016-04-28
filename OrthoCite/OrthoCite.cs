@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using OrthoCite.Entities;
@@ -14,7 +15,7 @@ namespace OrthoCite
         readonly RuntimeData _runtimeData;
         readonly GraphicsDeviceManager _graphics;
         SpriteBatch _spriteBatch;
-        readonly IEntity[] _entities;
+        readonly ArrayList _entities;
 
         public const int WINDOW_WIDTH = 1920;
         public const int WINDOW_HEIGHT = 1080;
@@ -24,22 +25,19 @@ namespace OrthoCite
         public OrthoCite()
         {
             _runtimeData = new RuntimeData();
+            _entities = new ArrayList();
             _graphics = new GraphicsDeviceManager(this);
             _graphics.PreferredBackBufferWidth = WINDOW_WIDTH;
             _graphics.PreferredBackBufferHeight = WINDOW_HEIGHT;
 
-            int iEntity = 0;
 #if DEBUG
             _graphics.IsFullScreen = false;
 
-            _entities = new IEntity[2];
-            _entities[iEntity++] = new DebugLayer(_runtimeData);
+            _entities.Add(new DebugLayer(_runtimeData));
 #else
             _graphics.IsFullScreen = true;
-
-            _entities = new IEntity[1];
 #endif
-            _entities[iEntity++] = new Map(_runtimeData);
+            _entities.Add(new Map(_runtimeData));
             Content.RootDirectory = "Content";
         }
 
