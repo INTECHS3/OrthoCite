@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using OrthoCite.Entities;
@@ -14,37 +15,31 @@ namespace OrthoCite
         RuntimeData _runtimeData;
         readonly GraphicsDeviceManager _graphics;
         SpriteBatch _spriteBatch;
-        readonly IEntity[] _entities;
+        readonly ArrayList _entities;
 
         public const int WINDOW_WIDTH = 1920;
         public const int WINDOW_HEIGHT = 1080;
-        int iEntity;
         
 
         
         
         public OrthoCite()
-        {
-            
+        { 
+            _entities = new ArrayList();
+
             _graphics = new GraphicsDeviceManager(this);
             _graphics.PreferredBackBufferWidth = WINDOW_WIDTH;
             _graphics.PreferredBackBufferHeight = WINDOW_HEIGHT;
 
-            iEntity = 0;
+
 #if DEBUG
             _graphics.IsFullScreen = false;
 
-            _entities = new IEntity[2];
-            _entities[iEntity++] = new DebugLayer(_runtimeData);
+            _entities.Add(new DebugLayer(_runtimeData));
 #else
             _graphics.IsFullScreen = true;
-
-            _entities = new IEntity[1];
 #endif
 
-           
-
-            
             Content.RootDirectory = "Content";
         }
 
@@ -88,7 +83,7 @@ namespace OrthoCite
 
             _runtimeData = new RuntimeData(_console);
 
-            _entities[iEntity++] = new Map(_runtimeData);
+            _entities.Add(new Map(_runtimeData));
 
             /// Ex to add command : console.AddCommand("positionWorld", a => { var X = int.Parse(a[0]); var Y = int.Parse(a[1]); world.Position.X = X; world.Position.Y = Y; return String.Format("Teleporte the player to X :  {0} - Y : {1}", X, Y); }, "Change X et Yposition");
             /// positionWorld = name of command
