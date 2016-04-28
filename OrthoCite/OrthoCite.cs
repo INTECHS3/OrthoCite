@@ -19,6 +19,8 @@ namespace OrthoCite
         public const int WINDOW_WIDTH = 1920;
         public const int WINDOW_HEIGHT = 1080;
 
+        
+        
         public OrthoCite()
         {
             _runtimeData = new RuntimeData();
@@ -50,7 +52,7 @@ namespace OrthoCite
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+           
             base.Initialize();
         }
 
@@ -78,6 +80,7 @@ namespace OrthoCite
                 BufferColor = Color.Orange,
                 Margin = 600
             });
+            
             /// Ex to add command : console.AddCommand("positionWorld", a => { var X = int.Parse(a[0]); var Y = int.Parse(a[1]); world.Position.X = X; world.Position.Y = Y; return String.Format("Teleporte the player to X :  {0} - Y : {1}", X, Y); }, "Change X et Yposition");
             /// positionWorld = name of command
             /// a = array of argument command
@@ -87,7 +90,9 @@ namespace OrthoCite
             {
                 entity.LoadContent(this.Content);
             }
+           
         }
+    
 
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
@@ -131,8 +136,9 @@ namespace OrthoCite
             {
                 entity.Draw(_spriteBatch);
             }
+            
             _spriteBatch.End();
-
+            
             base.Draw(gameTime);
         }
     }

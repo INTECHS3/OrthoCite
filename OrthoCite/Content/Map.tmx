@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="4" height="4" tilewidth="32" tileheight="32" nextobjectid="1">
+ <tileset firstgid="1" name="tileSet" tilewidth="32" tileheight="32" tilecount="900" columns="30">
+  <image source="tileSet.png" width="960" height="960"/>
+ </tileset>
+ <layer name="Calque de Tile 1" width="4" height="4">
+  <data encoding="csv">
+1,1,1,93,
+1,1,1,1,
+1,1,1,1,
+1,1,1,1
+</data>
+ </layer>
+</map>
