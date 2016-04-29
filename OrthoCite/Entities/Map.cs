@@ -56,7 +56,7 @@ namespace OrthoCite.Entities
             for (var i = 0; i < _map.Layers[0].Tiles.Count; i++)
             {
                 int gid = _map.Layers[0].Tiles[i].Gid;
-                _runtimeData._console.WriteLine((_map.Layers[0].Tiles[i].Gid).ToString());
+                //_runtimeData._console.WriteLine((_map.Layers[0].Tiles[i].Gid).ToString());
 
                 if (gid != 0)
                 {
