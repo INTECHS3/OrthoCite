@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using OrthoCite.Entities;
+using OrthoCite.Entities.MiniGames;
 using MonoGame.Extended;
 using MonoGame.Extended.ViewportAdapters;
 using System.Runtime.InteropServices;
@@ -46,7 +47,7 @@ namespace OrthoCite
             _graphics.PreferredBackBufferHeight = SCENE_HEIGHT;
             _graphics.IsFullScreen = true;
 #endif
-            _entities.Add(new DebugLayer(_runtimeData));
+            _entities.Add(new Platformer());
 
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
