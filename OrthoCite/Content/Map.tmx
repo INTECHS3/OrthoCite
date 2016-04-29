@@ -5,10 +5,10 @@
  </tileset>
  <layer name="Calque de Tile 1" width="4" height="4">
   <data encoding="csv">
-1,1,1,93,
-1,1,1,1,
-1,1,1,1,
-1,1,1,1
+1,2,33,33,
+31,32,33,33,
+33,33,33,33,
+33,33,33,33
 </data>
  </layer>
 </map>

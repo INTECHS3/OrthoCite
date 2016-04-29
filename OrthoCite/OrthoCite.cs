@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using OrthoCite.Entities;
 using MonoGameConsole;
+using MonoGame.Extended;
+using MonoGame.Extended.ViewportAdapters;
 
 namespace OrthoCite
 {
@@ -12,6 +14,7 @@ namespace OrthoCite
     /// </summary>
     public class OrthoCite : Game
     {
+        Camera2D _camera;
         RuntimeData _runtimeData;
         readonly GraphicsDeviceManager _graphics;
         SpriteBatch _spriteBatch;
@@ -65,6 +68,9 @@ namespace OrthoCite
             // Create a new SpriteBatch, which can be used to draw textures.
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            var viewportAdapter = new BoxingViewportAdapter(Window ,_graphics.GraphicsDevice, WINDOW_WIDTH, WINDOW_HEIGHT);
+            _camera = new Camera2D(viewportAdapter);
+
             Services.AddService(typeof(SpriteBatch), _spriteBatch);
 
             GameConsole _console = new GameConsole(this, _spriteBatch, new GameConsoleOptions
@@ -81,7 +87,7 @@ namespace OrthoCite
                 Margin = 600
             });
 
-            _runtimeData = new RuntimeData(_console);
+            _runtimeData = new RuntimeData(_console, _camera);
 
             _entities.Add(new Map(_runtimeData));
 
@@ -135,7 +141,10 @@ namespace OrthoCite
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            _spriteBatch.Begin();
+            var transformMatrix = _camera.GetViewMatrix();
+
+            _spriteBatch.Begin(transformMatrix : transformMatrix);
+
             foreach (IEntity entity in _entities)
             {
                 entity.Draw(_spriteBatch);

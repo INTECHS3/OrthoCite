@@ -49,6 +49,10 @@
     <Compile Include="RuntimeData.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="MonoGame.Extended, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MonoGame.Extended.0.5.149\lib\MonoGame.Extended.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MonoGame.Framework, Version=3.5.1.1679, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MonoGame.Framework.WindowsDX.3.5.1.1679\lib\net40\MonoGame.Framework.dll</HintPath>
       <Private>True</Private>
@@ -59,10 +63,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
-    <Reference Include="TiledSharp, Version=0.15.5889.20321, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\TiledSharp.0.15\lib\TiledSharp.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="zlib.net, Version=1.0.3.0, Culture=neutral, PublicKeyToken=47d7877cb3620160">
       <HintPath>..\packages\zlib.net.1.0.4.0\lib\zlib.net.dll</HintPath>
       <Private>True</Private>
@@ -73,9 +73,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Content\Map.tmx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

@@ -10,6 +10,7 @@
 
 #-------------------------------- References --------------------------------#
 
+/reference:..\..\packages\MonoGame.Extended.0.5.149\lib\MonoGame.Extended.Content.Pipeline.dll
 
 #---------------------------------- Content ---------------------------------#
 
@@ -36,4 +37,9 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:tileSet.png
+
+#begin Map.tmx
+/importer:
+/processor:
+/build:Map.tmx
 

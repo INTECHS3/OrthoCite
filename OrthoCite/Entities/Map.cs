@@ -7,39 +7,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TiledSharp;
+using System.Runtime.InteropServices;
+using MonoGame.Extended.Maps.Tiled;
 
 namespace OrthoCite.Entities
 {
     class Map : IEntity
     {
         RuntimeData _runtimeData;
-        TmxMap _map;
-
-        Texture2D tileset;
-
-        int tileWidth;
-        int tileHeight;
-        int tilesetTilesWide;
-        int tilesetTilesHigh;
+        TiledMap textMap;
+        
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool AllocConsole();
 
         public Map(RuntimeData runtimeData)
         {
             _runtimeData = runtimeData;
+           // AllocConsole();
             
         }
 
         void IEntity.LoadContent(ContentManager content)
         {
-            _map = new TmxMap("Content/Map.tmx");
-           
-            tileset = content.Load<Texture2D>(_map.Tilesets[0].Name.ToString());
-
-            tileWidth = _map.Tilesets[0].TileWidth;
-            tileHeight = _map.Tilesets[0].TileHeight;
-
-            tilesetTilesWide = tileset.Width / tileWidth;
-            tilesetTilesHigh = tileset.Height / tileHeight;
+            textMap = content.Load<TiledMap>("Map");
         }
 
         void IEntity.UnloadContent()
@@ -48,31 +39,17 @@ namespace OrthoCite.Entities
 
         void IEntity.Update(GameTime gameTime, KeyboardState keyboardState)
         {
+
+            if (keyboardState.IsKeyDown(Keys.Up)) _runtimeData.Camera.Move(new Vector2(0, +5));
+            if (keyboardState.IsKeyDown(Keys.Down)) _runtimeData.Camera.Move(new Vector2(0, -5));
+            if (keyboardState.IsKeyDown(Keys.Right)) _runtimeData.Camera.Move(new Vector2(+5, 0));
+            if (keyboardState.IsKeyDown(Keys.Left)) _runtimeData.Camera.Move(new Vector2(-5, 0));
         }
 
         void IEntity.Draw(SpriteBatch spriteBatch)
         {
-           
-            for (var i = 0; i < _map.Layers[0].Tiles.Count; i++)
-            {
-                int gid = _map.Layers[0].Tiles[i].Gid;
-                _runtimeData._console.WriteLine((_map.Layers[0].Tiles[i].Gid).ToString());
 
-                if (gid != 0)
-                {
-                   
-                    int tileFrame = gid - 1;
-                    int column = tileFrame % tilesetTilesWide;
-                    int row = (tileFrame + 1 > tilesetTilesWide) ? tileFrame - column * tilesetTilesWide : 0;
-
-                    float x = (i % _map.Width) * _map.TileWidth;
-                    float y = (float)Math.Floor(i / (double)_map.Width) * _map.TileHeight;
-
-                    Rectangle tilesetRec = new Rectangle(tileWidth * column, tileHeight * row, tileWidth, tileHeight);
-
-                    spriteBatch.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
-                }
-            }
+            spriteBatch.Draw(textMap, _runtimeData.Camera); 
 
 
         }
