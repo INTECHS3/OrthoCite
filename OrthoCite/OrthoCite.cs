@@ -3,8 +3,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using OrthoCite.Entities;
-using MonoGameConsole;
-using IndependentResolutionRendering;
+using MonoGame.Extended;
+using MonoGame.Extended.ViewportAdapters;
 
 namespace OrthoCite
 {
@@ -14,19 +14,37 @@ namespace OrthoCite
     public class OrthoCite : Game
     {
         RuntimeData _runtimeData;
-        GraphicsDeviceManager _graphics;
+        readonly GraphicsDeviceManager _graphics;
         SpriteBatch _spriteBatch;
         readonly ArrayList _entities;
+        Camera2D _camera;
 
         public const int SCENE_WIDTH = 1366;
         public const int SCENE_HEIGHT = 768;
 
         public OrthoCite()
         {
-            _entities = new ArrayList();
+            _runtimeData = new RuntimeData();
             _graphics = new GraphicsDeviceManager(this);
 
+            _entities = new ArrayList();
+
+#if DEBUG
+            _graphics.PreferredBackBufferWidth = 911;
+            _graphics.PreferredBackBufferHeight = 512;
+            _entities.Add(new DebugLayer(_runtimeData));
+#else
+            _graphics.PreferredBackBufferWidth = SCENE_WIDTH;
+            _graphics.PreferredBackBufferHeight = SCENE_HEIGHT;
+            _graphics.IsFullScreen = true;
+#endif
+            _entities.Add(new DebugLayer(_runtimeData));
+
             Content.RootDirectory = "Content";
+            IsMouseVisible = true;
+
+            Window.AllowUserResizing = true;
+            Window.Position = Point.Zero;
         }
 
         /// <summary>
@@ -37,18 +55,8 @@ namespace OrthoCite
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-            Resolution.Init(ref _graphics);
-            Resolution.SetVirtualResolution(SCENE_WIDTH, SCENE_HEIGHT);
-
-#if DEBUG
-            Resolution.SetResolution(911, 512, false);
-
-            _entities.Add(new DebugLayer(_runtimeData));
-#else
-            Resolution.SetResolution(_graphics.GraphicsDevice.DisplayMode.Width, _graphics.GraphicsDevice.DisplayMode.Height, true);
-#endif
-            _entities.Add(new DebugLayer(_runtimeData));
+            BoxingViewportAdapter viewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, SCENE_WIDTH, SCENE_HEIGHT);
+            _camera = new Camera2D(viewportAdapter);
 
             base.Initialize();
         }
@@ -59,31 +67,7 @@ namespace OrthoCite
         /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            _spriteBatch = new SpriteBatch(_graphics.GraphicsDevice);
-
-            Services.AddService(typeof(SpriteBatch), _spriteBatch);
-
-            GameConsole console = new GameConsole(this, _spriteBatch, new GameConsoleOptions
-            {
-                ToggleKey = (int)Keys.F10,
-                Font = Content.Load<SpriteFont>("console"),
-                FontColor = Color.White,
-                Prompt = "console $",
-                PromptColor = Color.LightGreen,
-                CursorColor = Color.Green,
-                BackgroundColor = new Color(Color.Black, 150),
-                PastCommandOutputColor = Color.Aqua,
-                BufferColor = Color.Orange,
-                Margin = 100
-            });
-
-            _runtimeData = new RuntimeData(console);
-
-            /// Ex to add command : console.AddCommand("positionWorld", a => { var X = int.Parse(a[0]); var Y = int.Parse(a[1]); world.Position.X = X; world.Position.Y = Y; return String.Format("Teleporte the player to X :  {0} - Y : {1}", X, Y); }, "Change X et Yposition");
-            /// positionWorld = name of command
-            /// a = array of argument command
-            /// return string  = Text return when command was execute
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             foreach (IEntity entity in _entities)
             {
@@ -129,8 +113,9 @@ namespace OrthoCite
         protected override void Draw(GameTime gameTime)
         {
             //Draw your stuff
-            Resolution.BeginDraw();
-            _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, null, null, Resolution.getTransformationMatrix());
+            GraphicsDevice.Clear(Color.Black);
+
+            _spriteBatch.Begin(blendState: BlendState.AlphaBlend, transformMatrix: _camera.GetViewMatrix());
             foreach (IEntity entity in _entities)
             {
                 entity.Draw(_spriteBatch);
