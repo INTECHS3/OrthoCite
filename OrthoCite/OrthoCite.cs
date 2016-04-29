@@ -17,7 +17,7 @@ namespace OrthoCite
     {
         Camera2D _camera;
         RuntimeData _runtimeData;
-        GraphicsDeviceManager _graphics;
+        readonly GraphicsDeviceManager _graphics;
         SpriteBatch _spriteBatch;
         readonly ArrayList _entities;
 
@@ -30,19 +30,28 @@ namespace OrthoCite
 
         public OrthoCite()
         {
-            _entities = new ArrayList();
+            _runtimeData = new RuntimeData(_camera);
             _graphics = new GraphicsDeviceManager(this);
 
+
+            _entities = new ArrayList();
+
 #if DEBUG
+            _graphics.PreferredBackBufferWidth = 911;
+            _graphics.PreferredBackBufferHeight = 512;
+            _entities.Add(new DebugLayer(_runtimeData));
+            AllocConsole();
+#else
             _graphics.PreferredBackBufferWidth = SCENE_WIDTH;
             _graphics.PreferredBackBufferHeight = SCENE_HEIGHT;
-#else
-         _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-         _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
-          _graphics.IsFullScreen = true;
+            _graphics.IsFullScreen = true;
 #endif
+            _entities.Add(new DebugLayer(_runtimeData));
 
             Content.RootDirectory = "Content";
+            IsMouseVisible = true;
+
+            Window.AllowUserResizing = true;
         }
 
         /// <summary>
@@ -53,14 +62,11 @@ namespace OrthoCite
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
 
-#if DEBUG
-            _entities.Add(new DebugLayer(_runtimeData));
-            AllocConsole();
-#else
-         
-#endif
+            BoxingViewportAdapter viewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, SCENE_WIDTH, SCENE_HEIGHT);
+            _camera = new Camera2D(viewportAdapter);
+
+
             base.Initialize();
         }
 
@@ -70,6 +76,7 @@ namespace OrthoCite
         /// </summary>
         protected override void LoadContent()
         {
+
             // Create a new SpriteBatch, which can be used to draw textures.
             _spriteBatch = new SpriteBatch(_graphics.GraphicsDevice);
 
@@ -79,6 +86,7 @@ namespace OrthoCite
             _runtimeData = new RuntimeData(_camera);
 
             _entities.Add(new Map(_runtimeData));
+
 
             foreach (IEntity entity in _entities)
             {
@@ -107,7 +115,7 @@ namespace OrthoCite
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape)) Exit();
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape)) Dispose();
             
             foreach (IEntity entity in _entities)
             {
@@ -131,6 +139,7 @@ namespace OrthoCite
             var transformMatrix = _camera.GetViewMatrix();
             _spriteBatch.Begin(transformMatrix: transformMatrix);
            
+
             foreach (IEntity entity in _entities)
             {
                 entity.Draw(_spriteBatch);

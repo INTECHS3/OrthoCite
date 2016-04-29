@@ -20,6 +20,7 @@ namespace OrthoCite
         public Camera2D Camera
         {
             get { return _camera; }
+
         }
     }
 }
