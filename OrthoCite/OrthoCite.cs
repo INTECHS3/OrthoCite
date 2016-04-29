@@ -3,9 +3,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using OrthoCite.Entities;
-using MonoGameConsole;
 using MonoGame.Extended;
 using MonoGame.Extended.ViewportAdapters;
+using System.Runtime.InteropServices;
+
 
 namespace OrthoCite
 {
@@ -16,31 +17,29 @@ namespace OrthoCite
     {
         Camera2D _camera;
         RuntimeData _runtimeData;
-        readonly GraphicsDeviceManager _graphics;
+        GraphicsDeviceManager _graphics;
         SpriteBatch _spriteBatch;
         readonly ArrayList _entities;
 
-        public const int WINDOW_WIDTH = 1920;
-        public const int WINDOW_HEIGHT = 1080;
-        
+        public const int SCENE_WIDTH = 1366;
+        public const int SCENE_HEIGHT = 768;
 
-        
-        
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool AllocConsole();
+
         public OrthoCite()
-        { 
+        {
             _entities = new ArrayList();
-
             _graphics = new GraphicsDeviceManager(this);
-            _graphics.PreferredBackBufferWidth = WINDOW_WIDTH;
-            _graphics.PreferredBackBufferHeight = WINDOW_HEIGHT;
-
 
 #if DEBUG
-            _graphics.IsFullScreen = false;
-
-            _entities.Add(new DebugLayer(_runtimeData));
+            _graphics.PreferredBackBufferWidth = SCENE_WIDTH;
+            _graphics.PreferredBackBufferHeight = SCENE_HEIGHT;
 #else
-            _graphics.IsFullScreen = true;
+         _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+         _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+          _graphics.IsFullScreen = true;
 #endif
 
             Content.RootDirectory = "Content";
@@ -55,7 +54,13 @@ namespace OrthoCite
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-           
+
+#if DEBUG
+            _entities.Add(new DebugLayer(_runtimeData));
+            AllocConsole();
+#else
+         
+#endif
             base.Initialize();
         }
 
@@ -66,43 +71,22 @@ namespace OrthoCite
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            _spriteBatch = new SpriteBatch(_graphics.GraphicsDevice);
 
-            var viewportAdapter = new BoxingViewportAdapter(Window ,_graphics.GraphicsDevice, WINDOW_WIDTH, WINDOW_HEIGHT);
+            var viewportAdapter = new BoxingViewportAdapter(Window ,_graphics.GraphicsDevice, SCENE_WIDTH, SCENE_HEIGHT);
             _camera = new Camera2D(viewportAdapter);
 
-            Services.AddService(typeof(SpriteBatch), _spriteBatch);
-
-            GameConsole _console = new GameConsole(this, _spriteBatch, new GameConsoleOptions
-            {
-                ToggleKey = (int)Keys.F10,
-                Font = Content.Load<SpriteFont>("console"),
-                FontColor = Color.White,
-                Prompt = "console $",
-                PromptColor = Color.LightGreen,
-                CursorColor = Color.Green,
-                BackgroundColor = new Color(Color.Black, 150),
-                PastCommandOutputColor = Color.Aqua,
-                BufferColor = Color.Orange,
-                Margin = 600
-            });
-
-            _runtimeData = new RuntimeData(_console, _camera);
+            _runtimeData = new RuntimeData(_camera);
 
             _entities.Add(new Map(_runtimeData));
-
-            /// Ex to add command : console.AddCommand("positionWorld", a => { var X = int.Parse(a[0]); var Y = int.Parse(a[1]); world.Position.X = X; world.Position.Y = Y; return String.Format("Teleporte the player to X :  {0} - Y : {1}", X, Y); }, "Change X et Yposition");
-            /// positionWorld = name of command
-            /// a = array of argument command
-            /// return string  = Text return when command was execute
 
             foreach (IEntity entity in _entities)
             {
                 entity.LoadContent(this.Content);
             }
-           
+
         }
-    
+
 
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
@@ -124,7 +108,7 @@ namespace OrthoCite
         protected override void Update(GameTime gameTime)
         {
             if (Keyboard.GetState().IsKeyDown(Keys.Escape)) Exit();
-
+            
             foreach (IEntity entity in _entities)
             {
                 entity.Update(gameTime, Keyboard.GetState());
@@ -139,19 +123,23 @@ namespace OrthoCite
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            //Draw your stuff
+
+            _graphics.GraphicsDevice.Clear(Color.Black);
 
             var transformMatrix = _camera.GetViewMatrix();
-
-            _spriteBatch.Begin(transformMatrix : transformMatrix);
-
+            _spriteBatch.Begin(transformMatrix: transformMatrix);
+           
             foreach (IEntity entity in _entities)
             {
                 entity.Draw(_spriteBatch);
             }
-            
+
             _spriteBatch.End();
-            
+
+            // Draw render target
+
             base.Draw(gameTime);
         }
     }

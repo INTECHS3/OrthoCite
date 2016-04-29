@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Runtime.InteropServices;
 using MonoGame.Extended.Maps.Tiled;
 
 namespace OrthoCite.Entities
@@ -17,14 +16,10 @@ namespace OrthoCite.Entities
         RuntimeData _runtimeData;
         TiledMap textMap;
         
-        [DllImport("kernel32.dll", SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool AllocConsole();
-
+        
         public Map(RuntimeData runtimeData)
         {
             _runtimeData = runtimeData;
-           // AllocConsole();
             
         }
 

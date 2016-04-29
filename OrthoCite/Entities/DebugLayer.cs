@@ -33,7 +33,7 @@ namespace OrthoCite.Entities
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawString(_font, _refreshRate.ToString() + "ms", new Vector2(10, 10), Color.Black);
+            spriteBatch.DrawString(_font, _refreshRate.ToString() + "ms", new Vector2(10, 10), Color.White);
         }
     }
 }
