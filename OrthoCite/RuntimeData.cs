@@ -5,22 +5,29 @@ using System.Text;
 using System.Threading.Tasks;
 using MonoGame.Extended;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework;
 
 namespace OrthoCite
 {
     public class RuntimeData
     {
         Camera2D _camera;
+        Rectangle _window;
 
-        public RuntimeData(Camera2D camera)
+        public RuntimeData()
         {
-            _camera = camera;
+        }
+
+        public Rectangle Window
+        {
+            get { return _window; }
+            set { _window = value; }
         }
 
         public Camera2D Camera
         {
             get { return _camera; }
-
+            set { _camera = value; }
         }
     }
 }

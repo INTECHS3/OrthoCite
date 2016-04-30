@@ -31,9 +31,8 @@ namespace OrthoCite
 
         public OrthoCite()
         {
-            _runtimeData = new RuntimeData(_camera);
+            _runtimeData = new RuntimeData();
             _graphics = new GraphicsDeviceManager(this);
-
 
             _entities = new ArrayList();
 
@@ -42,12 +41,12 @@ namespace OrthoCite
             _graphics.PreferredBackBufferHeight = 512;
             _entities.Add(new DebugLayer(_runtimeData));
             AllocConsole();
+            System.Console.WriteLine("=== OrthoCite debug console ===");
 #else
             _graphics.PreferredBackBufferWidth = SCENE_WIDTH;
             _graphics.PreferredBackBufferHeight = SCENE_HEIGHT;
             _graphics.IsFullScreen = true;
 #endif
-            _entities.Add(new Platformer());
 
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -84,10 +83,12 @@ namespace OrthoCite
             var viewportAdapter = new BoxingViewportAdapter(Window ,_graphics.GraphicsDevice, SCENE_WIDTH, SCENE_HEIGHT);
             _camera = new Camera2D(viewportAdapter);
 
-            _runtimeData = new RuntimeData(_camera);
+            _runtimeData = new RuntimeData();
+            _runtimeData.Camera = _camera;
+            _runtimeData.Window = new Rectangle(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
 
-            _entities.Add(new Map(_runtimeData));
-
+            //_entities.Add(new Map(_runtimeData));
+            _entities.Add(new Platformer(_runtimeData));
 
             foreach (IEntity entity in _entities)
             {
@@ -116,7 +117,7 @@ namespace OrthoCite
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape)) Dispose();
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape)) Exit();
             
             foreach (IEntity entity in _entities)
             {
