@@ -27,7 +27,16 @@ namespace OrthoCite.Entities.MiniGames
         /* Game state */
         Vector2 _playerPosition;
         int _currentSpeed = 0;
-        int _framesSincePreviousSpeed = 0;
+        int _framesSincePreviousSpeed = FRAMES_TO_NEXT_SPEED - 1;
+        bool _isLanded = true;
+
+        enum Direction
+        {
+            UP = -1,
+            BOTTOM = 1
+        }
+
+        Direction _direction = Direction.UP;
 
         public Platformer(RuntimeData runtimeData)
         {
@@ -50,7 +59,20 @@ namespace OrthoCite.Entities.MiniGames
 
         public override void Update(GameTime gameTime, KeyboardState keyboardState)
         {
+            /* Handle move */
             if (keyboardState.IsKeyDown(Keys.Space))
+            {
+                _isLanded = false;
+                if (-_currentSpeed < MAX_SPEED)
+                {
+                    if (++_framesSincePreviousSpeed == FRAMES_TO_NEXT_SPEED)
+                    {
+                        _framesSincePreviousSpeed = 0;
+                        _currentSpeed--;
+                    }
+                }
+            }
+            else if (!_isLanded)
             {
                 if (_currentSpeed < MAX_SPEED)
                 {
@@ -62,20 +84,21 @@ namespace OrthoCite.Entities.MiniGames
                 }
             }
 
-            _playerPosition.Y -= _currentSpeed;
+            _playerPosition.Y += _currentSpeed;
 
             if (keyboardState.IsKeyDown(Keys.Left))
             {
-                _playerPosition.X -= _currentSpeed;
+                _playerPosition.X -= 5;
                 _faceRight = false;
             }
             else if (keyboardState.IsKeyDown(Keys.Right))
             {
-                _playerPosition.X += _currentSpeed;
+                _playerPosition.X += 5;
                 _faceRight = true;
             }
 
-            
+            /* Handle collisions */
+
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -83,7 +106,7 @@ namespace OrthoCite.Entities.MiniGames
             spriteBatch.Draw(_background, new Vector2(0, 0));
             spriteBatch.Draw(_platform, new Vector2(20, 20));
 
-            spriteBatch.Draw(_playerStraight, _playerPosition, null, null, null, 0, null, null, _faceRight ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
+            spriteBatch.Draw(_isLanded ? _playerStraight : _playerJump, _playerPosition, null, null, null, 0, null, null, _faceRight ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
             
         }
 
