@@ -62,7 +62,6 @@ namespace OrthoCite
         /// </summary>
         protected override void Initialize()
         {
-
             BoxingViewportAdapter viewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, SCENE_WIDTH, SCENE_HEIGHT);
             _camera = new Camera2D(viewportAdapter);
 
@@ -78,9 +77,6 @@ namespace OrthoCite
 
             // Create a new SpriteBatch, which can be used to draw textures.
             _spriteBatch = new SpriteBatch(_graphics.GraphicsDevice);
-
-            var viewportAdapter = new BoxingViewportAdapter(Window ,_graphics.GraphicsDevice, SCENE_WIDTH, SCENE_HEIGHT);
-            _camera = new Camera2D(viewportAdapter);
 
             _runtimeData.Camera = _camera;
             _runtimeData.Window = new Rectangle(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
