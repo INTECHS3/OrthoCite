@@ -22,21 +22,24 @@ namespace OrthoCite.Entities.MiniGames
         Texture2D _platform;
         Texture2D _playerJump;
         Texture2D _playerStraight;
-        bool _faceRight;
+
+        SpriteFont _font;
 
         /* Game state */
         Vector2 _playerPosition;
         int _currentSpeed = 0;
         int _framesSincePreviousSpeed = FRAMES_TO_NEXT_SPEED - 1;
         bool _isLanded = true;
+        bool _faceRight;
 
         enum Direction
         {
+            NONE = 0,
             UP = -1,
-            BOTTOM = 1
+            DOWN = 1
         }
 
-        Direction _direction = Direction.UP;
+        Direction _direction = Direction.NONE;
 
         public Platformer(RuntimeData runtimeData)
         {
@@ -49,6 +52,8 @@ namespace OrthoCite.Entities.MiniGames
             _platform = content.Load<Texture2D>("minigames/platformer/platform");
             _playerJump = content.Load<Texture2D>("minigames/platformer/player-jump");
             _playerStraight = content.Load<Texture2D>("minigames/platformer/player-straight");
+
+            _font = content.Load<SpriteFont>("debug");
 
             _playerPosition = new Vector2((_runtimeData.Window.Width / 2) - (_playerStraight.Width / 2), _runtimeData.Window.Height - _playerStraight.Height);
         }
@@ -86,6 +91,8 @@ namespace OrthoCite.Entities.MiniGames
 
             _playerPosition.Y += _currentSpeed;
 
+            _direction = _currentSpeed > 0 ? Direction.DOWN : Direction.UP;
+
             if (keyboardState.IsKeyDown(Keys.Left))
             {
                 _playerPosition.X -= 5;
@@ -99,6 +106,13 @@ namespace OrthoCite.Entities.MiniGames
 
             /* Handle collisions */
 
+            // Avoid borders
+            if (_playerPosition.X + _playerStraight.Width > _runtimeData.Window.Width) _playerPosition.X = _runtimeData.Window.Width - _playerStraight.Width; // Right
+            if (_playerPosition.X < 0) _playerPosition.X = 0; // Left
+            if (_playerPosition.Y + _playerStraight.Height > _runtimeData.Window.Height) _playerPosition.Y = _runtimeData.Window.Height - _playerStraight.Height; // Bottom
+            if (_playerPosition.Y < 0) _playerPosition.Y = 0; // Top
+
+            //    _runtimeData.Window.Width / 2) -(_playerStraight.Width / 2), _runtimeData.Window.Height - _playerStraight.Height);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -107,7 +121,9 @@ namespace OrthoCite.Entities.MiniGames
             spriteBatch.Draw(_platform, new Vector2(20, 20));
 
             spriteBatch.Draw(_isLanded ? _playerStraight : _playerJump, _playerPosition, null, null, null, 0, null, null, _faceRight ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
-            
+
+            spriteBatch.DrawString(_font, $"Direction {(_direction == Direction.DOWN ? "Down" : _direction == Direction.UP ? "Up" : "None")}", new Vector2(10, 300), Color.White);
+
         }
 
         internal override void Start()
