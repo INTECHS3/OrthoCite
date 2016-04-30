@@ -43,7 +43,7 @@ namespace OrthoCite.Entities
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(_bgRectangle, _rectangleBg, Color.White);
-            spriteBatch.DrawString(_font, $"Debug mode - FPS: {_fpsCounter.AverageFramesPerSecond:0}", new Vector2(10, 10), Color.White);
+            spriteBatch.DrawString(_font, $"Debug mode - FPS: {_fpsCounter.CurrentFramesPerSecond:0}", new Vector2(10, 10), Color.White);
         }
     }
 }
