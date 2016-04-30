@@ -7,7 +7,7 @@ namespace OrthoCite
 {
     interface IEntity
     {
-        void LoadContent(ContentManager content);
+        void LoadContent(ContentManager content, GraphicsDevice graphicsDevice);
         void UnloadContent();
 
         void Update(GameTime gameTime, KeyboardState keyboardState);

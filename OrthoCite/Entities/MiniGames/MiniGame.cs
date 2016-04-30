@@ -8,7 +8,7 @@ namespace OrthoCite.Entities.MiniGames
 {
     abstract class MiniGame : IEntity
     {
-        abstract public void LoadContent(ContentManager content);
+        abstract public void LoadContent(ContentManager content, GraphicsDevice graphicsDevice);
         abstract public void UnloadContent();
 
         abstract public void Update(GameTime gameTime, KeyboardState keyboardState);

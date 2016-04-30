@@ -39,7 +39,7 @@ namespace OrthoCite
 #if DEBUG
             _graphics.PreferredBackBufferWidth = 911;
             _graphics.PreferredBackBufferHeight = 512;
-            _entities.Add(new DebugLayer(_runtimeData));
+
             AllocConsole();
             System.Console.WriteLine("=== OrthoCite debug console ===");
 #else
@@ -66,7 +66,6 @@ namespace OrthoCite
             BoxingViewportAdapter viewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, SCENE_WIDTH, SCENE_HEIGHT);
             _camera = new Camera2D(viewportAdapter);
 
-
             base.Initialize();
         }
 
@@ -83,16 +82,20 @@ namespace OrthoCite
             var viewportAdapter = new BoxingViewportAdapter(Window ,_graphics.GraphicsDevice, SCENE_WIDTH, SCENE_HEIGHT);
             _camera = new Camera2D(viewportAdapter);
 
-            _runtimeData = new RuntimeData();
             _runtimeData.Camera = _camera;
             _runtimeData.Window = new Rectangle(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
 
             //_entities.Add(new Map(_runtimeData));
             _entities.Add(new Platformer(_runtimeData));
 
+#if DEBUG
+            _entities.Add(new DebugLayer(_runtimeData));
+#endif
+
+
             foreach (IEntity entity in _entities)
             {
-                entity.LoadContent(this.Content);
+                entity.LoadContent(this.Content, this.GraphicsDevice);
             }
 
         }

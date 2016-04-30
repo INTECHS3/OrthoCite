@@ -34,7 +34,7 @@ namespace OrthoCite.Entities.MiniGames
             _runtimeData = runtimeData;
         }
 
-        public override void LoadContent(ContentManager content)
+        public override void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
         {
             _background = content.Load<Texture2D>("minigames/platformer/background");
             _platform = content.Load<Texture2D>("minigames/platformer/platform");
