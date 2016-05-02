@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MonoGame.Extended.Maps.Tiled;
+using MonoGame.Extended.Collisions;
 
 namespace OrthoCite.Entities
 {
@@ -16,7 +17,7 @@ namespace OrthoCite.Entities
         RuntimeData _runtimeData;
         TiledMap textMap;
         
-        
+
         public Map(RuntimeData runtimeData)
         {
             _runtimeData = runtimeData;
@@ -45,6 +46,7 @@ namespace OrthoCite.Entities
         {
 
             spriteBatch.Draw(textMap, _runtimeData.Camera); 
+            
 
 
         }

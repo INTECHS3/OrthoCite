@@ -26,23 +26,6 @@
 /processorParam:TextureFormat=Compressed
 /build:console.spritefont
 
-#begin tileSet.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:tileSet.png
-
-#begin Map.tmx
-/importer:TiledMapImporter
-/processor:TiledMapProcessor
-/build:Map.tmx
-
 #begin minigames/platformer/background.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -90,4 +73,45 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:minigames/platformer/player-straight.png
+
+#begin zelda.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:zelda.png
+
+#begin castle.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:castle.png
+
+#begin stone-bridge.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:stone-bridge.png
+
+#begin Map.tmx
+/importer:TiledMapImporter
+/processor:TiledMapProcessor
+/build:Map.tmx
 

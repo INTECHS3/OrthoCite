@@ -21,6 +21,7 @@ namespace OrthoCite
         readonly GraphicsDeviceManager _graphics;
         SpriteBatch _spriteBatch;
         readonly ArrayList _entities;
+        readonly ArrayList _entitiesWithOutCamera;
 
         public const int SCENE_WIDTH = 1366;
         public const int SCENE_HEIGHT = 768;
@@ -31,11 +32,13 @@ namespace OrthoCite
 
         public OrthoCite()
         {
+            
+            
             _runtimeData = new RuntimeData();
             _graphics = new GraphicsDeviceManager(this);
 
             _entities = new ArrayList();
-
+            _entitiesWithOutCamera = new ArrayList();
 #if DEBUG
             _graphics.PreferredBackBufferWidth = 911;
             _graphics.PreferredBackBufferHeight = 512;
@@ -81,15 +84,20 @@ namespace OrthoCite
             _runtimeData.Camera = _camera;
             _runtimeData.Window = new Rectangle(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
 
-            //_entities.Add(new Map(_runtimeData));
-            _entities.Add(new Platformer(_runtimeData));
+            _entities.Add(new Map(_runtimeData));
+           // _entities.Add(new Platformer(_runtimeData));
 
 #if DEBUG
-            _entities.Add(new DebugLayer(_runtimeData));
+            _entitiesWithOutCamera.Add(new DebugLayer(_runtimeData));
 #endif
 
 
             foreach (IEntity entity in _entities)
+            {
+                entity.LoadContent(this.Content, this.GraphicsDevice);
+            }
+
+            foreach (IEntity entity in _entitiesWithOutCamera)
             {
                 entity.LoadContent(this.Content, this.GraphicsDevice);
             }
@@ -107,6 +115,10 @@ namespace OrthoCite
             {
                 entity.UnloadContent();
             }
+            foreach (IEntity entity in _entitiesWithOutCamera)
+            {
+                entity.UnloadContent();
+            }
         }
 
         /// <summary>
@@ -119,6 +131,10 @@ namespace OrthoCite
             if (Keyboard.GetState().IsKeyDown(Keys.Escape)) Exit();
             
             foreach (IEntity entity in _entities)
+            {
+                entity.Update(gameTime, Keyboard.GetState());
+            }
+            foreach (IEntity entity in _entitiesWithOutCamera)
             {
                 entity.Update(gameTime, Keyboard.GetState());
             }
@@ -139,15 +155,20 @@ namespace OrthoCite
 
             var transformMatrix = _camera.GetViewMatrix();
             _spriteBatch.Begin(transformMatrix: transformMatrix);
-           
 
+            
             foreach (IEntity entity in _entities)
             {
                 entity.Draw(_spriteBatch);
             }
 
             _spriteBatch.End();
-
+            _spriteBatch.Begin();
+            foreach (IEntity entity in _entitiesWithOutCamera)
+            {
+                entity.Draw(_spriteBatch);
+            }
+            _spriteBatch.End();
             // Draw render target
 
             base.Draw(gameTime);
