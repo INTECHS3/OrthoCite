@@ -23,7 +23,7 @@ namespace OrthoCite.Entities
             
         }
 
-        void IEntity.LoadContent(ContentManager content)
+        void IEntity.LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
         {
             textMap = content.Load<TiledMap>("Map");
         }

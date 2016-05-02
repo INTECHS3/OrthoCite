@@ -1,29 +1,24 @@
 OrthoCité
 =========
 
-[![Build status](https://ci.appveyor.com/api/projects/status/8tsgnxtysmuvkib6?svg=true)](https://ci.appveyor.com/project/marvinroger/orthocity)
+[![Build status](https://ci.appveyor.com/api/projects/status/8tsgnxtysmuvkib6/branch/master?svg=true)](https://ci.appveyor.com/project/marvinroger/orthocity/branch/master)
 
 ### Résumé
 
-Orthocite est un jeu contenant plusieurs mini-jeux qui a pour but d’améliorer l’orthographe des enfants de façon ludique.
+OrthoCité est un jeu français ayant pour objectif de faire travailler l'orthographe aux enfants de façon ludique, à l'aide de plusieurs mini-jeux.
 
-### Ressources
+### Stack
 
-Nous utilisons : 
- - .Net
- - Framework MonoGame
+- Microsoft .Net
+- Framework [MonoGame](http://www.monogame.net/)
 
-### Installer
+### Installation 
 
-Pour jouer au jeu, vous avez juste besoin de : 
+- Téléchargez la solution et lancez-la avec Visual Studio
+- Restaurez les packages NuGet
+- Regénérez la solution
+- Démarrez
 
- - Télécharger le projet et lancer le avec Visual Studio
- - Restaurer les packages Nugets
- - Regénérer le projet
- - Démarer
+### Avant-projet
 
-### Autre
-
- Vous pouvez également consulter nos documents avants projets (avec le scénario) : [OrthoCite-Doc-Avant-Projet]
-
- [OrthoCite-Doc-Avant-Projet]: <https://github.com/INTECHS3/OrthoCite-Doc-Avant-Projet>
+Vous pouvez [consulter nos documents d'avant-projet (contenant le scénario du jeu)](https://github.com/INTECHS3/OrthoCite-Doc-Avant-Projet).
