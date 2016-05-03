@@ -26,6 +26,12 @@ namespace OrthoCite.Entities.MiniGames
 
         SpriteFont _font;
 
+        struct Word
+        {
+            public Rectangle coords;
+            public string word;
+        }
+
         /* Game state */
         List<Vector2> _grid;
         Vector2 _playerPosition;
@@ -35,6 +41,7 @@ namespace OrthoCite.Entities.MiniGames
         bool _onPlatform = false;
         bool _faceRight;
         List<Rectangle> _platforms;
+        List<Word> _words;
 
         enum Direction
         {
@@ -51,6 +58,7 @@ namespace OrthoCite.Entities.MiniGames
             _platforms = new List<Rectangle>();
             _random = new Random();
             _grid = new List<Vector2>();
+            _words = new List<Word>();
         }
 
         public override void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
@@ -74,7 +82,7 @@ namespace OrthoCite.Entities.MiniGames
         public override void Update(GameTime gameTime, KeyboardState keyboardState)
         {
             /* Handle move */
-            if (keyboardState.IsKeyDown(Keys.Space))
+            if (keyboardState.IsKeyDown(Keys.Up))
             {
                 _isLanded = false;
                 if (-_currentSpeed < MAX_SPEED)
@@ -118,17 +126,19 @@ namespace OrthoCite.Entities.MiniGames
             /* Handle collisions */
 
             // Borders
-            if (_playerPosition.X + _playerStraight.Width > _runtimeData.Window.Width) _playerPosition.X = _runtimeData.Window.Width - _playerStraight.Width; // Right
+            if (_playerPosition.X + _playerStraight.Width >= _runtimeData.Window.Width) _playerPosition.X = _runtimeData.Window.Width - _playerStraight.Width; // Right
             if (_playerPosition.X < 0) _playerPosition.X = 0; // Left
-            if (_playerPosition.Y + _playerStraight.Height > _runtimeData.Window.Height) // Bottom
+            if (_playerPosition.Y + _playerStraight.Height >= _runtimeData.Window.Height) // Bottom
             {
                 _playerPosition.Y = _runtimeData.Window.Height - _playerStraight.Height;
                 _currentSpeed = 0;
+                _direction = Direction.NONE;
                 _isLanded = true;
             }
-            if (_playerPosition.Y < 0) // Top
+            if (_playerPosition.Y <= 0) // Top
             {
                 _playerPosition.Y = 0;
+                _direction = Direction.NONE;
                 _currentSpeed = 0;
             }
 
@@ -139,7 +149,7 @@ namespace OrthoCite.Entities.MiniGames
                 bool stillOnPlatform = false;
                 foreach (var platform in _platforms)
                 {
-                    if ((_playerPosition.X + _playerStraight.Width > platform.X && _playerPosition.X <= platform.X + _platform.Width) && (platform.Y >= _playerPosition.Y + _playerStraight.Height - MAX_SPEED && platform.Y <= _playerPosition.Y + _playerStraight.Height))
+                    if ((_playerPosition.X + _playerStraight.Width > platform.X && _playerPosition.X <= platform.X + _platform.Width) && (platform.Y >= _playerPosition.Y + _playerStraight.Height - _currentSpeed && platform.Y <= _playerPosition.Y + _playerStraight.Height))
                     {
                         _playerPosition.Y = platform.Y - _playerStraight.Height;
                         _currentSpeed = 0;
@@ -155,6 +165,8 @@ namespace OrthoCite.Entities.MiniGames
                     _isLanded = false;
                 }
             }
+
+            // Letters
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -163,6 +175,11 @@ namespace OrthoCite.Entities.MiniGames
             foreach (var platform in _platforms)
             {
                 spriteBatch.Draw(_platform, new Vector2(platform.X, platform.Y), _direction == Direction.UP ? Color.White * 0.7f : Color.White);
+            }
+
+            foreach (var word in _words)
+            {
+                spriteBatch.DrawString(_font, word.word, new Vector2(word.coords.X, word.coords.Y), Color.White);
             }
 
             spriteBatch.Draw(_isLanded ? _playerStraight : _playerJump, _playerPosition, null, null, null, 0, null, null, _faceRight ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
@@ -191,13 +208,25 @@ namespace OrthoCite.Entities.MiniGames
 
             /* Generate platforms */
 
-            int count = 10;
+            int count = 5;
             for (int i = 0; i < count; i++)
             {
                 int randomGridIndex = _random.Next(0, _grid.Count);
                 Vector2 position = _grid[randomGridIndex];
                 _grid.RemoveAt(randomGridIndex);
                 _platforms.Add(new Rectangle((int)position.X, (int)position.Y, _platform.Width, _platform.Height));
+            }
+
+            List<string> rawWords = new List<string>(new string[] { "ortographe", "ortograf", "aurtographe", "orthographe", "orthaugraphe" });
+            foreach (var platform in _platforms)
+            {
+                int randomIndex = _random.Next(0, rawWords.Count);
+                string rawWord = rawWords[randomIndex];
+                rawWords.RemoveAt(randomIndex);
+                Word word;
+                word.word = rawWord;
+                word.coords = new Rectangle(platform.X + 20, platform.Y + 20, platform.Width, 20);
+                _words.Add(word);
             }
         }
     }
