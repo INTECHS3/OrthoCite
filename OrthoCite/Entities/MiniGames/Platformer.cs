@@ -151,6 +151,7 @@ namespace OrthoCite.Entities.MiniGames
 
                 if (wasOnPlatform && !stillOnPlatform)
                 {
+                    _onPlatform = false;
                     _isLanded = false;
                 }
             }
