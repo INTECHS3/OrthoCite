@@ -16,12 +16,12 @@ namespace OrthoCite
     /// </summary>
     public class OrthoCite : Game
     {
+        BoxingViewportAdapter _viewportAdapter;
         Camera2D _camera;
         RuntimeData _runtimeData;
         readonly GraphicsDeviceManager _graphics;
         SpriteBatch _spriteBatch;
         readonly ArrayList _entities;
-        readonly ArrayList _entitiesWithOutCamera;
 
         public const int SCENE_WIDTH = 1366;
         public const int SCENE_HEIGHT = 768;
@@ -38,7 +38,6 @@ namespace OrthoCite
             _graphics = new GraphicsDeviceManager(this);
 
             _entities = new ArrayList();
-            _entitiesWithOutCamera = new ArrayList();
 #if DEBUG
             _graphics.PreferredBackBufferWidth = 911;
             _graphics.PreferredBackBufferHeight = 512;
@@ -65,8 +64,8 @@ namespace OrthoCite
         /// </summary>
         protected override void Initialize()
         {
-            BoxingViewportAdapter viewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, SCENE_WIDTH, SCENE_HEIGHT);
-            _camera = new Camera2D(viewportAdapter);
+            _viewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, SCENE_WIDTH, SCENE_HEIGHT);
+            _camera = new Camera2D(_viewportAdapter);
 
             base.Initialize();
         }
@@ -81,14 +80,13 @@ namespace OrthoCite
             // Create a new SpriteBatch, which can be used to draw textures.
             _spriteBatch = new SpriteBatch(_graphics.GraphicsDevice);
 
-            _runtimeData.Camera = _camera;
             _runtimeData.Window = new Rectangle(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
 
-           // _entities.Add(new Map(_runtimeData));
-            _entities.Add(new Platformer(_runtimeData));
+           //_entities.Add(new Map(_runtimeData));
+           _entities.Add(new Platformer(_runtimeData));
 
 #if DEBUG
-            _entitiesWithOutCamera.Add(new DebugLayer(_runtimeData));
+            _entities.Add(new DebugLayer(_runtimeData));
 #endif
 
 
@@ -96,12 +94,6 @@ namespace OrthoCite
             {
                 entity.LoadContent(this.Content, this.GraphicsDevice);
             }
-
-            foreach (IEntity entity in _entitiesWithOutCamera)
-            {
-                entity.LoadContent(this.Content, this.GraphicsDevice);
-            }
-
         }
 
 
@@ -112,10 +104,6 @@ namespace OrthoCite
         protected override void UnloadContent()
         {
             foreach (IEntity entity in _entities)
-            {
-                entity.UnloadContent();
-            }
-            foreach (IEntity entity in _entitiesWithOutCamera)
             {
                 entity.UnloadContent();
             }
@@ -132,11 +120,7 @@ namespace OrthoCite
             
             foreach (IEntity entity in _entities)
             {
-                entity.Update(gameTime, Keyboard.GetState());
-            }
-            foreach (IEntity entity in _entitiesWithOutCamera)
-            {
-                entity.Update(gameTime, Keyboard.GetState());
+                entity.Update(gameTime, Keyboard.GetState(), _camera);
             }
 
             base.Update(gameTime);
@@ -148,28 +132,12 @@ namespace OrthoCite
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-
-            //Draw your stuff
-
             _graphics.GraphicsDevice.Clear(Color.Black);
-
-            var transformMatrix = _camera.GetViewMatrix();
-            _spriteBatch.Begin(transformMatrix: transformMatrix);
-
             
             foreach (IEntity entity in _entities)
             {
-                entity.Draw(_spriteBatch);
+                entity.Draw(_spriteBatch, _viewportAdapter.GetScaleMatrix(), _camera.GetViewMatrix());
             }
-
-            _spriteBatch.End();
-            _spriteBatch.Begin();
-            foreach (IEntity entity in _entitiesWithOutCamera)
-            {
-                entity.Draw(_spriteBatch);
-            }
-            _spriteBatch.End();
-            // Draw render target
 
             base.Draw(gameTime);
         }

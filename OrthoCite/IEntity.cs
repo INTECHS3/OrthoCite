@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended;
 
 namespace OrthoCite
 {
@@ -10,7 +11,7 @@ namespace OrthoCite
         void LoadContent(ContentManager content, GraphicsDevice graphicsDevice);
         void UnloadContent();
 
-        void Update(GameTime gameTime, KeyboardState keyboardState);
-        void Draw(SpriteBatch spriteBatch);
+        void Update(GameTime gameTime, KeyboardState keyboardState, Camera2D camera);
+        void Draw(SpriteBatch spriteBatch, Matrix frozenMatrix, Matrix cameraMatrix);
     }
 }

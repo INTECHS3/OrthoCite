@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended;
 using System;
 using System.Collections.Generic;
 
@@ -101,7 +102,7 @@ namespace OrthoCite.Entities.MiniGames
         {
         }
 
-        public override void Update(GameTime gameTime, KeyboardState keyboardState)
+        public override void Update(GameTime gameTime, KeyboardState keyboardState, Camera2D camera)
         {
             if (_lost) return;
 
@@ -204,12 +205,11 @@ namespace OrthoCite.Entities.MiniGames
                     _isLanded = false;
                 }
             }
-
-            // Letters
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch, Matrix frozenMatrix, Matrix cameraMatrix)
         {
+            spriteBatch.Begin(transformMatrix: cameraMatrix);
             spriteBatch.Draw(_background, new Vector2(0, 0));
             foreach (var platform in _platforms)
             {
@@ -220,6 +220,7 @@ namespace OrthoCite.Entities.MiniGames
             spriteBatch.Draw(_isLanded ? _playerStraight : _playerJump, _playerPosition, null, null, null, 0, null, null, _faceRight ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
 
             if (_lost) spriteBatch.DrawString(_font, "Perdu", _playerPosition, Color.Red);
+            spriteBatch.End();
         }
 
         internal override void Start()
