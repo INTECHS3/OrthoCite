@@ -1,5 +1,5 @@
-OrthoCité
-=========
+![Logo OrthoCité](OrthoCite/Icon.ico) OrthoCité
+===============================================
 
 [![Build status](https://ci.appveyor.com/api/projects/status/8tsgnxtysmuvkib6/branch/master?svg=true)](https://ci.appveyor.com/project/marvinroger/orthocity/branch/master)
 
@@ -12,7 +12,7 @@ OrthoCité est un jeu français ayant pour objectif de faire travailler l'orthog
 - Microsoft .Net
 - Framework [MonoGame](http://www.monogame.net/)
 
-### Installation 
+### Installation
 
 - Téléchargez la solution et lancez-la avec Visual Studio
 - Restaurez les packages NuGet
