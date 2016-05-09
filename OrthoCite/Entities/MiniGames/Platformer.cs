@@ -66,6 +66,7 @@ namespace OrthoCite.Entities.MiniGames
         bool _faceRight;
         List<Platform> _platforms;
         bool _lost = false;
+        bool _won = false;
 
         enum Direction
         {
@@ -104,7 +105,7 @@ namespace OrthoCite.Entities.MiniGames
 
         public override void Update(GameTime gameTime, KeyboardState keyboardState, Camera2D camera)
         {
-            if (_lost) return;
+            if (_won || _lost) return;
 
             /* Handle move */
             if (keyboardState.IsKeyDown(Keys.Space))
@@ -192,6 +193,7 @@ namespace OrthoCite.Entities.MiniGames
                             else
                             {
                                 _platforms.Remove(platform);
+                                if (_platforms.Count == 1) _won = true;
                                 break;
                             }
 
@@ -220,6 +222,7 @@ namespace OrthoCite.Entities.MiniGames
             spriteBatch.Draw(_isLanded ? _playerStraight : _playerJump, _playerPosition, null, null, null, 0, null, null, _faceRight ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
 
             if (_lost) spriteBatch.DrawString(_font, "Perdu", _playerPosition, Color.Red);
+            if (_won) spriteBatch.DrawString(_font, "Bravo", _playerPosition, Color.Green);
             spriteBatch.End();
         }
 
