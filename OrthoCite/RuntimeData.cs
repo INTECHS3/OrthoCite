@@ -11,8 +11,8 @@ namespace OrthoCite
 {
     public class RuntimeData
     {
-        Camera2D _camera;
         Rectangle _window;
+        DataSave _dataSave;
 
         public RuntimeData()
         {
@@ -23,5 +23,7 @@ namespace OrthoCite
             get { return _window; }
             set { _window = value; }
         }
+
+        public DataSave DataSave => _dataSave;
     }
 }
