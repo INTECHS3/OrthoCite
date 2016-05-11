@@ -139,7 +139,7 @@
 /processorParam:TextureFormat=Color
 /build:test.png
 
-#begin 1045_110.png
+#begin pont.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -149,5 +149,5 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:1045_110.png
+/build:pont.png
 

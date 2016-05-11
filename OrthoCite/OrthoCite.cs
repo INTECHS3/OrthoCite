@@ -82,8 +82,8 @@ namespace OrthoCite
 
             _runtimeData.Window = new Rectangle(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
 
-           //_entities.Add(new Map(_runtimeData));
-           _entities.Add(new Platformer(_runtimeData));
+           _entities.Add(new Map(_runtimeData));
+           //_entities.Add(new Platformer(_runtimeData));
 
 #if DEBUG
             _entities.Add(new DebugLayer(_runtimeData));
