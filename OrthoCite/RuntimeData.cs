@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 using MonoGame.Extended;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
+using MonoGame.Extended.ViewportAdapters;
 
 namespace OrthoCite
 {
     public class RuntimeData
     {
-        Camera2D _camera;
         Rectangle _window;
+        ViewportAdapter _viewAdapter;
 
         public RuntimeData()
         {
@@ -22,6 +23,12 @@ namespace OrthoCite
         {
             get { return _window; }
             set { _window = value; }
+        }
+        
+        public ViewportAdapter viewAdapter
+        {
+            get { return _viewAdapter; }
+            set { _viewAdapter = value; }
         }
     }
 }
