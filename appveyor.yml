@@ -4,7 +4,8 @@ branches:
     - master
 
 before_build:
-  - ps: Install-ChocolateyPackage 'monogame' 'exe' '/S' 'http://www.monogame.net/releases/v3.5.1/MonoGameSetup.exe'
+  - ps: Invoke-WebRequest 'http://www.monogame.net/releases/v3.5.1/MonoGameSetup.exe' -OutFile 'monogame.exe'
+  - monogame.exe /S
   - nuget restore
 
 build:
