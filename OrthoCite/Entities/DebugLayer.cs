@@ -35,15 +35,17 @@ namespace OrthoCite.Entities
         {
         }
 
-        public void Update(GameTime gameTime, KeyboardState keyboardState)
+        public void Update(GameTime gameTime, KeyboardState keyboardState, Camera2D camera)
         {
             _fpsCounter.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, Matrix frozenMatrix, Matrix cameraMatrix)
         {
+            spriteBatch.Begin(transformMatrix: frozenMatrix);
             spriteBatch.Draw(_bgRectangle, _rectangleBg, Color.White);
             spriteBatch.DrawString(_font, $"Debug mode - FPS: {_fpsCounter.CurrentFramesPerSecond:0}", new Vector2(10, 10), Color.White);
+            spriteBatch.End();
         }
     }
 }
