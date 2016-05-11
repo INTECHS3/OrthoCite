@@ -4,7 +4,8 @@ branches:
     - master
 
 before_build:
-  - cmd: nuget restore
+  - ps: choco install monogame --version 3.2.0
+  - ps: nuget restore
 
 build:
   verbosity: minimal
