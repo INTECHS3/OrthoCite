@@ -1,8 +1,8 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended;
 
 namespace OrthoCite.Entities.MiniGames
 {
@@ -11,8 +11,8 @@ namespace OrthoCite.Entities.MiniGames
         abstract public void LoadContent(ContentManager content, GraphicsDevice graphicsDevice);
         abstract public void UnloadContent();
 
-        abstract public void Update(GameTime gameTime, KeyboardState keyboardState);
-        abstract public void Draw(SpriteBatch spriteBatch);
+        abstract public void Update(GameTime gameTime, KeyboardState keyboardState, Camera2D camera);
+        abstract public void Draw(SpriteBatch spriteBatch, Matrix frozenMatrix, Matrix cameraMatrix);
 
         abstract internal void Start();
     }

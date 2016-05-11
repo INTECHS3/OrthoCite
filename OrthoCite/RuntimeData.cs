@@ -23,11 +23,5 @@ namespace OrthoCite
             get { return _window; }
             set { _window = value; }
         }
-
-        public Camera2D Camera
-        {
-            get { return _camera; }
-            set { _camera = value; }
-        }
     }
 }

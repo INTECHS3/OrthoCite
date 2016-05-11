@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended;
 using System;
 using System.Collections.Generic;
 
@@ -26,6 +27,35 @@ namespace OrthoCite.Entities.MiniGames
 
         SpriteFont _font;
 
+        struct Word
+        {
+            public string Value;
+            public bool IsValid;
+        }
+
+        struct WordCollection
+        {
+            public Word Valid;
+            public List<Word> Invalid;
+
+            public WordCollection(string valid)
+            {
+                Valid = new Word { IsValid = true, Value = valid };
+                Invalid = new List<Word>();
+            }
+
+            public void AddInvalid(string invalid)
+            {
+                Invalid.Add(new Word { Value = invalid });
+            }
+        }
+
+        struct Platform
+        {
+            public Rectangle Coords;
+            public Word Word;
+        }
+
         /* Game state */
         List<Vector2> _grid;
         Vector2 _playerPosition;
@@ -34,7 +64,9 @@ namespace OrthoCite.Entities.MiniGames
         bool _isLanded = true;
         bool _onPlatform = false;
         bool _faceRight;
-        List<Rectangle> _platforms;
+        List<Platform> _platforms;
+        bool _lost = false;
+        bool _won = false;
 
         enum Direction
         {
@@ -48,7 +80,7 @@ namespace OrthoCite.Entities.MiniGames
         public Platformer(RuntimeData runtimeData)
         {
             _runtimeData = runtimeData;
-            _platforms = new List<Rectangle>();
+            _platforms = new List<Platform>();
             _random = new Random();
             _grid = new List<Vector2>();
         }
@@ -71,8 +103,10 @@ namespace OrthoCite.Entities.MiniGames
         {
         }
 
-        public override void Update(GameTime gameTime, KeyboardState keyboardState)
+        public override void Update(GameTime gameTime, KeyboardState keyboardState, Camera2D camera)
         {
+            if (_won || _lost) return;
+
             /* Handle move */
             if (keyboardState.IsKeyDown(Keys.Space))
             {
@@ -118,17 +152,19 @@ namespace OrthoCite.Entities.MiniGames
             /* Handle collisions */
 
             // Borders
-            if (_playerPosition.X + _playerStraight.Width > _runtimeData.Window.Width) _playerPosition.X = _runtimeData.Window.Width - _playerStraight.Width; // Right
+            if (_playerPosition.X + _playerStraight.Width >= _runtimeData.Window.Width) _playerPosition.X = _runtimeData.Window.Width - _playerStraight.Width; // Right
             if (_playerPosition.X < 0) _playerPosition.X = 0; // Left
-            if (_playerPosition.Y + _playerStraight.Height > _runtimeData.Window.Height) // Bottom
+            if (_playerPosition.Y + _playerStraight.Height >= _runtimeData.Window.Height) // Bottom
             {
                 _playerPosition.Y = _runtimeData.Window.Height - _playerStraight.Height;
                 _currentSpeed = 0;
+                _direction = Direction.NONE;
                 _isLanded = true;
             }
-            if (_playerPosition.Y < 0) // Top
+            if (_playerPosition.Y <= 0) // Top
             {
                 _playerPosition.Y = 0;
+                _direction = Direction.NONE;
                 _currentSpeed = 0;
             }
 
@@ -139,35 +175,55 @@ namespace OrthoCite.Entities.MiniGames
                 bool stillOnPlatform = false;
                 foreach (var platform in _platforms)
                 {
-                    if ((_playerPosition.X + _playerStraight.Width > platform.X && _playerPosition.X <= platform.X + _platform.Width) && (platform.Y >= _playerPosition.Y + _playerStraight.Height - MAX_SPEED && platform.Y <= _playerPosition.Y + _playerStraight.Height))
+                    if ((_playerPosition.X + _playerStraight.Width > platform.Coords.X && _playerPosition.X <= platform.Coords.X + _platform.Width) && (platform.Coords.Y >= _playerPosition.Y + _playerStraight.Height - _currentSpeed && platform.Coords.Y <= _playerPosition.Y + _playerStraight.Height))
                     {
-                        _playerPosition.Y = platform.Y - _playerStraight.Height;
+                        // On platform
+                        _playerPosition.Y = platform.Coords.Y - _playerStraight.Height;
                         _currentSpeed = 0;
                         _isLanded = true;
                         _onPlatform = true;
                         stillOnPlatform = true;
+
+                        if (keyboardState.IsKeyDown(Keys.E))
+                        {
+                            if (platform.Word.IsValid)
+                            {
+                                _lost = true;
+                            }
+                            else
+                            {
+                                _platforms.Remove(platform);
+                                if (_platforms.Count == 1) _won = true;
+                                break;
+                            }
+
+                        }
                     }
                 }
 
                 if (wasOnPlatform && !stillOnPlatform)
                 {
+                    _onPlatform = false;
                     _isLanded = false;
                 }
             }
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch, Matrix frozenMatrix, Matrix cameraMatrix)
         {
+            spriteBatch.Begin(transformMatrix: cameraMatrix);
             spriteBatch.Draw(_background, new Vector2(0, 0));
             foreach (var platform in _platforms)
             {
-                spriteBatch.Draw(_platform, new Vector2(platform.X, platform.Y), _direction == Direction.UP ? Color.White * 0.7f : Color.White);
+                spriteBatch.Draw(_platform, new Vector2(platform.Coords.X, platform.Coords.Y), _direction == Direction.UP ? Color.White * 0.7f : Color.White);
+                spriteBatch.DrawString(_font, platform.Word.Value, new Vector2(platform.Coords.X + 20, platform.Coords.Y + 20), Color.White);
             }
 
             spriteBatch.Draw(_isLanded ? _playerStraight : _playerJump, _playerPosition, null, null, null, 0, null, null, _faceRight ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
 
-            spriteBatch.DrawString(_font, $"Direction {(_direction == Direction.DOWN ? "Down" : _direction == Direction.UP ? "Up" : "None")}", new Vector2(10, 300), Color.White);
-
+            if (_lost) spriteBatch.DrawString(_font, "Perdu", _playerPosition, Color.Red);
+            if (_won) spriteBatch.DrawString(_font, "Bravo", _playerPosition, Color.Green);
+            spriteBatch.End();
         }
 
         internal override void Start()
@@ -190,13 +246,30 @@ namespace OrthoCite.Entities.MiniGames
 
             /* Generate platforms */
 
-            int count = 10;
+            WordCollection words = new WordCollection("orthographe");
+            words.AddInvalid("ortographe");
+            words.AddInvalid("ortograf");
+            words.AddInvalid("aurtographe");
+            words.AddInvalid("orthaugraphe");
+
+            int count = 5;
             for (int i = 0; i < count; i++)
             {
-                int randomGridIndex = _random.Next(0, _grid.Count);
-                Vector2 position = _grid[randomGridIndex];
-                _grid.RemoveAt(randomGridIndex);
-                _platforms.Add(new Rectangle((int)position.X, (int)position.Y, _platform.Width, _platform.Height));
+                Vector2 position = _grid[_random.Next(0, _grid.Count)];
+                _grid.Remove(position);
+
+                Platform platform = new Platform();
+                platform.Coords = new Rectangle((int)position.X, (int)position.Y, _platform.Width, _platform.Height);
+
+                if (i == 0) platform.Word = words.Valid;
+                else
+                {
+                    Word invalidWord = words.Invalid[_random.Next(0, words.Invalid.Count)];
+                    words.Invalid.Remove(invalidWord);
+                    platform.Word = invalidWord;
+                }
+
+                _platforms.Add(platform);
             }
         }
     }
