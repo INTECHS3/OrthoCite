@@ -4,8 +4,8 @@ branches:
     - master
 
 before_build:
-  - ps: choco install monogame --version 3.2.0
-  - ps: nuget restore
+  ps: Install-ChocolateyPackage 'monogame' 'exe' '/S' 'http://www.monogame.net/releases/v3.5.1/MonoGameSetup.exe'
+  - nuget restore
 
 build:
   verbosity: minimal
