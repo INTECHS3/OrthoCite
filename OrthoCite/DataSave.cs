@@ -38,33 +38,43 @@ namespace OrthoCite
         public byte District
         {
             get { return _dataSave.District; }
-            set { _dataSave.District = value; }
+            set {
+                if (value <= 0 || value > 4) throw new ArgumentException("District must be between 1 and 4", nameof(value));
+                _dataSave.District = value;
+            }
         }
 
         public byte NumberOfLives
         {
             get { return _dataSave.NumberOfLives; }
-            set { _dataSave.NumberOfLives = value; }
+            set {
+                if (value < 0 || value > 10) throw new ArgumentException("Lives must be between 0 and 10", nameof(value));
+                _dataSave.NumberOfLives = value;
+            }
         }
 
         public bool MiniGameIsValidated(byte miniGameId)
         {
+            if (miniGameId <= 0 || miniGameId > 8) throw new ArgumentException("Mini-game ID must be between 1 and 8", nameof(miniGameId));
             return ((_dataSave.ValidatedMiniGames << (miniGameId - 1)) >> 7) == 1;
         }
 
         public void ValidateMiniGame(byte miniGameId)
         {
+            if (miniGameId <= 0 || miniGameId > 8) throw new ArgumentException("Mini-game ID must be between 1 and 8", nameof(miniGameId));
             int mask = 1 << 8 - miniGameId;
             _dataSave.ValidatedMiniGames |= (byte)mask;
         }
 
         public bool TrapsNpcWereTalkedTo(byte NpcId)
         {
+            if (NpcId <= 0 || NpcId > 8) throw new ArgumentException("NPC ID must be between 1 and 8", nameof(NpcId));
             return ((_dataSave.TrapsNpcTalkedTo << (NpcId - 1)) >> 7) == 1;
         }
 
         public void TrapsNpcTalkTo(byte NpcId)
         {
+            if (NpcId <= 0 || NpcId > 8) throw new ArgumentException("NPC ID must be between 1 and 8", nameof(NpcId));
             int mask = 1 << 8 - NpcId;
             _dataSave.TrapsNpcTalkedTo |= (byte)mask;
         }
