@@ -14,5 +14,6 @@ namespace OrthoCite
         void Update(GameTime gameTime, KeyboardState keyboardState, Camera2D camera);
         void Draw(SpriteBatch spriteBatch, Matrix frozenMatrix, Matrix cameraMatrix);
         void Dispose();
+        void Execute(params string[] param);
     }
 }

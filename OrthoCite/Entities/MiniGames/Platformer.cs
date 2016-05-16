@@ -18,6 +18,7 @@ namespace OrthoCite.Entities.MiniGames
         const int PLATFORM_MIN_TOP_BOTTOM_OFFSET = 10;
 
         RuntimeData _runtimeData;
+        OrthoCite _o;
         Random _random;
 
         Texture2D _background;
@@ -77,9 +78,10 @@ namespace OrthoCite.Entities.MiniGames
 
         Direction _direction = Direction.NONE;
 
-        public Platformer(RuntimeData runtimeData)
+        public Platformer(RuntimeData runtimeData, OrthoCite o)
         {
             _runtimeData = runtimeData;
+            _o = o;
             _platforms = new List<Platform>();
             _random = new Random();
             _grid = new List<Vector2>();
@@ -105,6 +107,16 @@ namespace OrthoCite.Entities.MiniGames
 
         public override void Update(GameTime gameTime, KeyboardState keyboardState, Camera2D camera)
         {
+            
+            camera.Position = new Vector2(0, 0);
+            camera.Zoom = 1;
+
+            if(keyboardState.IsKeyDown(Keys.F12))
+            {
+                _o._entitiesSelect = OrthoCite.nameEntity.MAP;
+                _o._entitiesModified = true;
+            }
+
             if (_won || _lost) return;
 
             /* Handle move */
@@ -227,6 +239,11 @@ namespace OrthoCite.Entities.MiniGames
         }
 
         public override void Dispose()
+        {
+
+        }
+
+        public override void Execute(params string[] param)
         {
 
         }

@@ -61,5 +61,10 @@ namespace OrthoCite.Entities
         {
 
         }
+
+        public void Execute(params string[] param)
+        {
+
+        }
     }
 }

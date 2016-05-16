@@ -16,11 +16,12 @@ namespace OrthoCite.Entities
 
         TiledMap textMap;
         TiledTileLayer _collisionLayer;
+        int _gidStart;
+        const int _gidSpawn = 1151;
 
         int _speed;
         int _walk;
         const int _zoom = 3;
-        bool firstUpdate;
 
         Vector2 _position;
         Vector2 _positionVirt;
@@ -40,18 +41,20 @@ namespace OrthoCite.Entities
         Dictionary<string, Texture2D> _textureCharacter;
 
 
-        public Map(RuntimeData runtimeData, OrthoCite o)
+        public Map(RuntimeData runtimeData, OrthoCite o, int i)
         {
             _o = o;
             _runtimeData = runtimeData;
+            _gidStart = i;
+
 
             _textureCharacter = new Dictionary<string, Texture2D>();
             _textureCharacterSelect = Direction.NONE;
 
             _walk = 0;
             _speed = 5;
-            firstUpdate = true;
         }
+
 
         void IEntity.LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
         {
@@ -62,11 +65,22 @@ namespace OrthoCite.Entities
                 if (e.Name == "Collision") _collisionLayer = e;
             }
 
-            foreach(TiledTile i in _collisionLayer.Tiles)
+            if(_gidStart != 0)
             {
-                if (i.Id == 1151) _positionVirt = new Vector2(i.X, i.Y);
+                foreach (TiledTile i in _collisionLayer.Tiles)
+                {
+                    if (i.Id == _gidStart) _positionVirt = new Vector2(i.X, i.Y + 1);
+                }
             }
-            if (_positionVirt.Length() == 0) _positionVirt = new Vector2(40, 40);
+
+            if(_positionVirt.Length() == 0)
+            {
+                foreach (TiledTile i in _collisionLayer.Tiles)
+                {
+                    if (i.Id == _gidSpawn) _positionVirt = new Vector2(i.X, i.Y);
+                }
+            }           
+            
             
 
             _textureCharacter.Add("RightLeft", content.Load<Texture2D>("map/champRightLeft"));
@@ -82,14 +96,8 @@ namespace OrthoCite.Entities
 
         void IEntity.Update(GameTime gameTime, KeyboardState keyboardState, Camera2D camera)
         {
-           
-            if (firstUpdate)
-            {
-                //camera.Origin = new Vector2(0, 0);
-                camera.Zoom = _zoom;
-
-                firstUpdate = false;
-            }
+            camera.Zoom = _zoom;
+            
 
             if(_walk == 0)
             {
@@ -108,7 +116,7 @@ namespace OrthoCite.Entities
             
             _position = new Vector2(_positionVirt.X * textMap.TileWidth, _positionVirt.Y * textMap.TileHeight);
             camera.LookAt(new Vector2(_position.X, _position.Y));
-            Console.WriteLine($"X : {_positionVirt.X} Y : {_positionVirt.Y} ");
+            //Console.WriteLine($"X : {_positionVirt.X} Y : {_positionVirt.Y} ");
         }
 
         void IEntity.Draw(SpriteBatch spriteBatch, Matrix frozenMatrix, Matrix cameraMatrix)
@@ -116,8 +124,8 @@ namespace OrthoCite.Entities
             spriteBatch.Begin(transformMatrix: cameraMatrix);
             
             spriteBatch.Draw(textMap);
-            _collisionLayer.IsVisible = false;
-            _collisionLayer.Draw(spriteBatch);
+            //_collisionLayer.IsVisible = true;
+            //_collisionLayer.Draw(spriteBatch);
 
             if (_textureCharacterSelect == Direction.RIGHT || _textureCharacterSelect == Direction.LEFT) spriteBatch.Draw(_textureCharacter["RightLeft"], _position, null, null, null, 0, null, null, _textureCharacterSelect == Direction.LEFT ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
             else if (_textureCharacterSelect == Direction.UP) spriteBatch.Draw(_textureCharacter["Up"], _position, Color.White);
@@ -127,10 +135,25 @@ namespace OrthoCite.Entities
             spriteBatch.End();
 
         }
-
+        
         void IEntity.Dispose()
         {
             //GOING FIX;
+        }
+
+        void IEntity.Execute(params string[] param)
+        {
+            
+            switch(param[0])
+            {
+                case "movePlayer":
+                    try{ MoveTo(new Vector2(Int32.Parse(param[1]), Int32.Parse(param[2]))); }
+                    catch { Console.WriteLine("Bad Params"); }
+                    break;
+                default:
+                    Console.WriteLine("Can't find method to invoke in Map Class");
+                    break;
+            }
         }
 
         private bool OutOfScreenTop(Camera2D camera)
@@ -186,20 +209,18 @@ namespace OrthoCite.Entities
             _textureCharacterSelect = Direction.RIGHT;
         }
 
+        private void MoveTo(Vector2 vec)
+        {
+            _positionVirt = vec;
+        }
         private bool ColUp()
         {
             foreach(TiledTile i in _collisionLayer.Tiles)
             {
                 if (i.X == _positionVirt.X && i.Y == _positionVirt.Y - 1 && i.Id == 889) return true;
+                checkIfWeLaunchInstance(i);
             }
-            foreach (TiledTile i in _collisionLayer.Tiles)
-            {
-                if (i.X == _positionVirt.X && i.Y == _positionVirt.Y - 1 && i.Id == 1190)
-                {
-                    _o._entitiesSelect = OrthoCite.nameEntity.PLATFORMER;
-                    _o._entitiesModified = true;
-                }
-            }
+            
             return false;
         }
 
@@ -229,5 +250,16 @@ namespace OrthoCite.Entities
             }
             return false;
         }
+
+        private void checkIfWeLaunchInstance(TiledTile i)
+        {
+            if (i.X == _positionVirt.X && i.Y == _positionVirt.Y - 1 && i.Id == 1190)
+            {
+                _o._gidLastForMap = 1190;
+                _o._entitiesSelect = OrthoCite.nameEntity.PLATFORMER;
+                _o._entitiesModified = true;
+            }
+        }
+
     }
 }

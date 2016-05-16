@@ -37,22 +37,33 @@ namespace OrthoCite
 
         public nameEntity _entitiesSelect;
         public bool _entitiesModified;
+        public int _gidLastForMap;
         
         private void onInstanceChange()
         {
-                switch (_entitiesSelect)
+            if(_entitiesSelect != nameEntity.NONE) _entities = new Dictionary<nameEntity, IEntity>();
+            switch (_entitiesSelect)
                 {
                     case nameEntity.PLATFORMER:
-                        _entities[nameEntity.MAP].Dispose();
-                        _entities.Remove(nameEntity.MAP);
-                        //_entities.Add(nameEntity.PLATFORMER, new Platformer(_runtimeData));
+                        _entities.Add(nameEntity.PLATFORMER, new Platformer(_runtimeData, this));
+                        break;
+                    case nameEntity.MAP:
+                        _entities.Add(nameEntity.MAP, new Map(_runtimeData, this, _gidLastForMap));
+                        _gidLastForMap = 0;  
                         break;
                     default:
                         System.Console.WriteLine("Nothing Entities Selected");
+                        _gidLastForMap = 0;
                         break;
 
                 }
-                _entitiesModified = false;
+
+#if DEBUG
+            _entities.Add(nameEntity.DEBUG, new DebugLayer(_runtimeData));
+#endif
+            _entitiesSelect = nameEntity.NONE;
+            _entitiesModified = false;
+            LoadContent();
         }
 
         [DllImport("kernel32.dll", SetLastError = true)]
@@ -96,7 +107,15 @@ namespace OrthoCite
         {
             _viewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, SCENE_WIDTH, SCENE_HEIGHT);
             _runtimeData.viewAdapter = _viewportAdapter;
+            //_runtimeData.Window = new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
+            _runtimeData.Window = new Rectangle(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
             _camera = new Camera2D(_viewportAdapter);
+
+            _entities.Add(nameEntity.MAP, new Map(_runtimeData, this, 0));
+
+#if DEBUG
+            _entities.Add(nameEntity.DEBUG, new DebugLayer(_runtimeData));
+#endif
 
             base.Initialize();
         }
@@ -110,15 +129,6 @@ namespace OrthoCite
 
             // Create a new SpriteBatch, which can be used to draw textures.
             _spriteBatch = new SpriteBatch(_graphics.GraphicsDevice);
-
-            _runtimeData.Window = new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
-
-           _entities.Add(nameEntity.MAP,new Map(_runtimeData, this));
-
-#if DEBUG
-            _entities.Add(nameEntity.DEBUG,new DebugLayer(_runtimeData));
-#endif
-
 
             foreach (KeyValuePair<nameEntity, IEntity> entity in _entities)
             {
@@ -138,7 +148,7 @@ namespace OrthoCite
                 entity.Value.UnloadContent();
             }
         }
-
+       
         /// <summary>
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
@@ -148,12 +158,22 @@ namespace OrthoCite
         {
             if (Keyboard.GetState().IsKeyDown(Keys.Escape)) Exit();
 
+#if DEBUG
+            if(Keyboard.GetState().IsKeyDown(Keys.F11))
+            {
+                string cmdTmp = System.Console.ReadLine();
+                string[] cmd = cmdTmp.Split(' ');
+                foreach (KeyValuePair<nameEntity, IEntity> entity in _entities)
+                {
+                    entity.Value.Execute(cmd);
+                }
+            }
+#endif
             foreach (KeyValuePair<nameEntity, IEntity> entity in _entities)
             {
                 entity.Value.Update(gameTime, Keyboard.GetState(), _camera);
             }
 
-            if (_entitiesModified) onInstanceChange();
             base.Update(gameTime);
         }
 
@@ -170,6 +190,7 @@ namespace OrthoCite
                 entity.Value.Draw(_spriteBatch, _viewportAdapter.GetScaleMatrix(), _camera.GetViewMatrix());
             }
 
+            if (_entitiesModified) onInstanceChange();
             base.Draw(gameTime);
         }
     }
