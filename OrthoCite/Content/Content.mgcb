@@ -151,3 +151,15 @@
 /processorParam:TextureFormat=Color
 /build:pont.png
 
+#begin minigames/platformer/font.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:minigames/platformer/font.spritefont
+
+#begin minigames/platformer/font-result.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:minigames/platformer/font-result.spritefont
+
