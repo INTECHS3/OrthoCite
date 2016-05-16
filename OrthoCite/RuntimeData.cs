@@ -30,5 +30,7 @@ namespace OrthoCite
             get { return _viewAdapter; }
             set { _viewAdapter = value; }
         }
+
+        
     }
 }

@@ -212,7 +212,7 @@ namespace OrthoCite.Entities.MiniGames
         public override void Draw(SpriteBatch spriteBatch, Matrix frozenMatrix, Matrix cameraMatrix)
         {
             spriteBatch.Begin(transformMatrix: cameraMatrix);
-            spriteBatch.Draw(_background, new Vector2(0, 0));
+            spriteBatch.Draw(_background, new Vector2(0, 0), Color.White);
             foreach (var platform in _platforms)
             {
                 spriteBatch.Draw(_platform, new Vector2(platform.Coords.X, platform.Coords.Y), _direction == Direction.UP ? Color.White * 0.7f : Color.White);
@@ -224,6 +224,11 @@ namespace OrthoCite.Entities.MiniGames
             if (_lost) spriteBatch.DrawString(_font, "Perdu", _playerPosition, Color.Red);
             if (_won) spriteBatch.DrawString(_font, "Bravo", _playerPosition, Color.Green);
             spriteBatch.End();
+        }
+
+        public override void Dispose()
+        {
+
         }
 
         internal override void Start()

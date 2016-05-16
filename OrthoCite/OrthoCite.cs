@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -16,15 +17,43 @@ namespace OrthoCite
     /// </summary>
     public class OrthoCite : Game
     {
+        public enum nameEntity
+        {
+            NONE,
+            DEBUG,
+            MAP,
+            PLATFORMER
+        }
+
         BoxingViewportAdapter _viewportAdapter;
         Camera2D _camera;
         RuntimeData _runtimeData;
         readonly GraphicsDeviceManager _graphics;
         SpriteBatch _spriteBatch;
-        readonly ArrayList _entities;
+        Dictionary<nameEntity, IEntity> _entities;
 
         public const int SCENE_WIDTH = 1366;
         public const int SCENE_HEIGHT = 768;
+
+        public nameEntity _entitiesSelect;
+        public bool _entitiesModified;
+        
+        private void onInstanceChange()
+        {
+                switch (_entitiesSelect)
+                {
+                    case nameEntity.PLATFORMER:
+                        _entities[nameEntity.MAP].Dispose();
+                        _entities.Remove(nameEntity.MAP);
+                        //_entities.Add(nameEntity.PLATFORMER, new Platformer(_runtimeData));
+                        break;
+                    default:
+                        System.Console.WriteLine("Nothing Entities Selected");
+                        break;
+
+                }
+                _entitiesModified = false;
+        }
 
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -37,11 +66,13 @@ namespace OrthoCite
             _runtimeData = new RuntimeData();
             _graphics = new GraphicsDeviceManager(this);
 
-            _entities = new ArrayList();
-#if DEBUG
-            _graphics.PreferredBackBufferWidth = 911;
-            _graphics.PreferredBackBufferHeight = 512;
+            _entities = new Dictionary<nameEntity, IEntity>();
+            _entitiesModified = false;
+            _entitiesSelect = nameEntity.NONE;
 
+#if DEBUG
+            _graphics.PreferredBackBufferWidth = 928;
+            _graphics.PreferredBackBufferHeight = 512;
             AllocConsole();
             System.Console.WriteLine("=== OrthoCite debug console ===");
 #else
@@ -52,7 +83,6 @@ namespace OrthoCite
 
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-
             Window.AllowUserResizing = true;
         }
 
@@ -81,19 +111,18 @@ namespace OrthoCite
             // Create a new SpriteBatch, which can be used to draw textures.
             _spriteBatch = new SpriteBatch(_graphics.GraphicsDevice);
 
-            _runtimeData.Window = new Rectangle(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
+            _runtimeData.Window = new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
 
-           _entities.Add(new Map(_runtimeData));
-           //_entities.Add(new Platformer(_runtimeData));
+           _entities.Add(nameEntity.MAP,new Map(_runtimeData, this));
 
 #if DEBUG
-            _entities.Add(new DebugLayer(_runtimeData));
+            _entities.Add(nameEntity.DEBUG,new DebugLayer(_runtimeData));
 #endif
 
 
-            foreach (IEntity entity in _entities)
+            foreach (KeyValuePair<nameEntity, IEntity> entity in _entities)
             {
-                entity.LoadContent(this.Content, this.GraphicsDevice);
+                entity.Value.LoadContent(this.Content, this.GraphicsDevice);
             }
         }
 
@@ -104,9 +133,9 @@ namespace OrthoCite
         /// </summary>
         protected override void UnloadContent()
         {
-            foreach (IEntity entity in _entities)
+            foreach (KeyValuePair<nameEntity, IEntity> entity in _entities)
             {
-                entity.UnloadContent();
+                entity.Value.UnloadContent();
             }
         }
 
@@ -118,12 +147,13 @@ namespace OrthoCite
         protected override void Update(GameTime gameTime)
         {
             if (Keyboard.GetState().IsKeyDown(Keys.Escape)) Exit();
-            
-            foreach (IEntity entity in _entities)
+
+            foreach (KeyValuePair<nameEntity, IEntity> entity in _entities)
             {
-                entity.Update(gameTime, Keyboard.GetState(), _camera);
+                entity.Value.Update(gameTime, Keyboard.GetState(), _camera);
             }
 
+            if (_entitiesModified) onInstanceChange();
             base.Update(gameTime);
         }
 
@@ -135,9 +165,9 @@ namespace OrthoCite
         {
             _graphics.GraphicsDevice.Clear(Color.Black);
             
-            foreach (IEntity entity in _entities)
+            foreach (KeyValuePair<nameEntity, IEntity> entity in _entities)
             {
-                entity.Draw(_spriteBatch, _viewportAdapter.GetScaleMatrix(), _camera.GetViewMatrix());
+                entity.Value.Draw(_spriteBatch, _viewportAdapter.GetScaleMatrix(), _camera.GetViewMatrix());
             }
 
             base.Draw(gameTime);

@@ -56,5 +56,10 @@ namespace OrthoCite.Entities
             spriteBatch.DrawString(_font, $"Debug mode - Mouse Position: X: {_mousePosition.X} Y: {_mousePosition.Y}", new Vector2(10, 50), Color.White);
             spriteBatch.End();
         }
+
+        public void Dispose()
+        {
+
+        }
     }
 }
