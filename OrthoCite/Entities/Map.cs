@@ -122,10 +122,11 @@ namespace OrthoCite.Entities
         void IEntity.Draw(SpriteBatch spriteBatch, Matrix frozenMatrix, Matrix cameraMatrix)
         {
             spriteBatch.Begin(transformMatrix: cameraMatrix);
-            
+
+            _collisionLayer.IsVisible = false;
             spriteBatch.Draw(textMap);
-            //_collisionLayer.IsVisible = true;
-            //_collisionLayer.Draw(spriteBatch);
+
+            
 
             if (_textureCharacterSelect == Direction.RIGHT || _textureCharacterSelect == Direction.LEFT) spriteBatch.Draw(_textureCharacter["RightLeft"], _position, null, null, null, 0, null, null, _textureCharacterSelect == Direction.LEFT ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
             else if (_textureCharacterSelect == Direction.UP) spriteBatch.Draw(_textureCharacter["Up"], _position, Color.White);
