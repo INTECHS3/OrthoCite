@@ -55,6 +55,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="DataSave.cs" />
     <Compile Include="Entities\DebugLayer.cs" />
     <Compile Include="Entities\Map.cs" />
     <Compile Include="Entities\MiniGames\MiniGame.cs" />

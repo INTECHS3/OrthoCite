@@ -82,7 +82,7 @@ namespace OrthoCite
         protected override void Initialize()
         {
             _viewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, SCENE_WIDTH, SCENE_HEIGHT);
-            _runtimeData.viewAdapter = _viewportAdapter;
+            _runtimeData.ViewAdapter = _viewportAdapter;
             _runtimeData.Scene = new Rectangle(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
             _camera = new Camera2D(_viewportAdapter);
 

@@ -27,6 +27,7 @@ namespace OrthoCite.Entities.MiniGames
         Texture2D _playerStraight;
 
         SpriteFont _font;
+        SpriteFont _fontResult;
 
         struct Word
         {
@@ -94,7 +95,8 @@ namespace OrthoCite.Entities.MiniGames
             _playerJump = content.Load<Texture2D>("minigames/platformer/player-jump");
             _playerStraight = content.Load<Texture2D>("minigames/platformer/player-straight");
 
-            _font = content.Load<SpriteFont>("debug");
+            _font = content.Load<SpriteFont>("minigames/platformer/font");
+            _fontResult = content.Load<SpriteFont>("minigames/platformer/font-result");
 
             _playerPosition = new Vector2((_runtimeData.Scene.Width / 2) - (_playerStraight.Width / 2), _runtimeData.Scene.Height - _playerStraight.Height);
 
@@ -233,8 +235,8 @@ namespace OrthoCite.Entities.MiniGames
 
             spriteBatch.Draw(_isLanded ? _playerStraight : _playerJump, _playerPosition, null, null, null, 0, null, null, _faceRight ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
 
-            if (_lost) spriteBatch.DrawString(_font, "Perdu", _playerPosition, Color.Red);
-            if (_won) spriteBatch.DrawString(_font, "Bravo", _playerPosition, Color.Green);
+            if (_lost) spriteBatch.DrawString(_fontResult, "Perdu", _playerPosition, Color.Red);
+            if (_won) spriteBatch.DrawString(_fontResult, "Bravo", _playerPosition, Color.Green);
             spriteBatch.End();
         }
 

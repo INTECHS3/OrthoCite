@@ -43,7 +43,7 @@ namespace OrthoCite.Entities
             _fpsCounter.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
             _camera = camera;
             var mouseState = Mouse.GetState();
-            _mousePosition = _runtimeData.viewAdapter.PointToScreen(mouseState.X, mouseState.Y);
+            _mousePosition = _runtimeData.ViewAdapter.PointToScreen(mouseState.X, mouseState.Y);
         }
 
         public void Draw(SpriteBatch spriteBatch, Matrix frozenMatrix, Matrix cameraMatrix)
