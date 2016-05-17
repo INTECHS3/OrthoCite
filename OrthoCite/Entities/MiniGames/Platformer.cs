@@ -96,7 +96,7 @@ namespace OrthoCite.Entities.MiniGames
 
             _font = content.Load<SpriteFont>("debug");
 
-            _playerPosition = new Vector2((_runtimeData.Window.Width / 2) - (_playerStraight.Width / 2), _runtimeData.Window.Height - _playerStraight.Height);
+            _playerPosition = new Vector2((_runtimeData.Scene.Width / 2) - (_playerStraight.Width / 2), _runtimeData.Scene.Height - _playerStraight.Height);
 
             Start();
         }
@@ -164,11 +164,11 @@ namespace OrthoCite.Entities.MiniGames
             /* Handle collisions */
 
             // Borders
-            if (_playerPosition.X + _playerStraight.Width >= _runtimeData.Window.Width) _playerPosition.X = _runtimeData.Window.Width - _playerStraight.Width; // Right
+            if (_playerPosition.X + _playerStraight.Width >= _runtimeData.Scene.Width) _playerPosition.X = _runtimeData.Scene.Width - _playerStraight.Width; // Right
             if (_playerPosition.X < 0) _playerPosition.X = 0; // Left
-            if (_playerPosition.Y + _playerStraight.Height >= _runtimeData.Window.Height) // Bottom
+            if (_playerPosition.Y + _playerStraight.Height >= _runtimeData.Scene.Height) // Bottom
             {
-                _playerPosition.Y = _runtimeData.Window.Height - _playerStraight.Height;
+                _playerPosition.Y = _runtimeData.Scene.Height - _playerStraight.Height;
                 _currentSpeed = 0;
                 _direction = Direction.NONE;
                 _isLanded = true;
@@ -251,11 +251,11 @@ namespace OrthoCite.Entities.MiniGames
         internal override void Start()
         {
             /* Generate grid */
-            int columns = _runtimeData.Window.Width / (_platform.Width + _playerStraight.Width + PLATFORM_MIN_TOP_BOTTOM_OFFSET * 2);
-            int lines = _runtimeData.Window.Height / (_platform.Height + _playerStraight.Height);
+            int columns = _runtimeData.Scene.Width / (_platform.Width + _playerStraight.Width + PLATFORM_MIN_TOP_BOTTOM_OFFSET * 2);
+            int lines = _runtimeData.Scene.Height / (_platform.Height + _playerStraight.Height);
             lines--; // FIX ME
 
-            int xOffset = (_runtimeData.Window.Width % (columns * (_platform.Width + _playerStraight.Width + PLATFORM_MIN_TOP_BOTTOM_OFFSET * 2) - _playerStraight.Width - PLATFORM_MIN_TOP_BOTTOM_OFFSET * 2)) / 2;
+            int xOffset = (_runtimeData.Scene.Width % (columns * (_platform.Width + _playerStraight.Width + PLATFORM_MIN_TOP_BOTTOM_OFFSET * 2) - _playerStraight.Width - PLATFORM_MIN_TOP_BOTTOM_OFFSET * 2)) / 2;
             int yOffset = PLATFORM_MIN_TOP_BOTTOM_OFFSET + _playerStraight.Height;
 
             for (int line = 0; line < lines; line++)

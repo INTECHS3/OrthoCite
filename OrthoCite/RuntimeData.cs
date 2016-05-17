@@ -12,17 +12,17 @@ namespace OrthoCite
 {
     public class RuntimeData
     {
-        Rectangle _window;
+        Rectangle _scene;
         ViewportAdapter _viewAdapter;
 
         public RuntimeData()
         {
         }
 
-        public Rectangle Window
+        public Rectangle Scene
         {
-            get { return _window; }
-            set { _window = value; }
+            get { return _scene; }
+            set { _scene = value; }
         }
         
         public ViewportAdapter viewAdapter

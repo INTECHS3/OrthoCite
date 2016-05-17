@@ -173,12 +173,12 @@ namespace OrthoCite.Entities
         }
         private bool OutOfScreenRight(Camera2D camera)
         {
-            if (camera.Position.X >= textMap.WidthInPixels - _runtimeData.Window.Width - _speed) return true;
+            if (camera.Position.X >= textMap.WidthInPixels - _runtimeData.Scene.Width - _speed) return true;
             return false;
         }
         private bool OutOfScreenBottom(Camera2D camera)
         {
-            if (camera.Position.Y >= textMap.HeightInPixels - _runtimeData.Window.Height - _speed) return true;
+            if (camera.Position.Y >= textMap.HeightInPixels - _runtimeData.Scene.Height - _speed) return true;
             return false;
         }
 

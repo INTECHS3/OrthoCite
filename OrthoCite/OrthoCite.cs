@@ -83,7 +83,7 @@ namespace OrthoCite
         {
             _viewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, SCENE_WIDTH, SCENE_HEIGHT);
             _runtimeData.viewAdapter = _viewportAdapter;
-            _runtimeData.Window = new Rectangle(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
+            _runtimeData.Scene = new Rectangle(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
             _camera = new Camera2D(_viewportAdapter);
 
             _entities.Add(nameEntity.MAP, new Map(_runtimeData, this, 0));
