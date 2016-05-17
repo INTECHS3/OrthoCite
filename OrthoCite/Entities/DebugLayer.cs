@@ -59,7 +59,7 @@ namespace OrthoCite.Entities
 
         public void Dispose()
         {
-
+            System.Console.WriteLine($"Disose class : {this.GetType().Name}");
         }
 
         public void Execute(params string[] param)

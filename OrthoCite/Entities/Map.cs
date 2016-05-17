@@ -5,7 +5,6 @@ using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Maps.Tiled;
 using MonoGame.Extended;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace OrthoCite.Entities
@@ -20,7 +19,8 @@ namespace OrthoCite.Entities
         const int _gidSpawn = 1151;
 
         int _speed;
-        int _walk;
+        int _separeTime;
+        const int _maxTime = 5;
         const int _zoom = 3;
 
         Vector2 _position;
@@ -51,7 +51,7 @@ namespace OrthoCite.Entities
             _textureCharacter = new Dictionary<string, Texture2D>();
             _textureCharacterSelect = Direction.NONE;
 
-            _walk = 0;
+            _separeTime = 0;
             _speed = 5;
         }
 
@@ -64,8 +64,9 @@ namespace OrthoCite.Entities
             {
                 if (e.Name == "Collision") _collisionLayer = e;
             }
-
-            if(_gidStart != 0)
+            _collisionLayer.IsVisible = false;
+            
+            if (_gidStart != 0)
             {
                 foreach (TiledTile i in _collisionLayer.Tiles)
                 {
@@ -92,6 +93,7 @@ namespace OrthoCite.Entities
 
         void IEntity.UnloadContent()
         {
+
         }
 
         void IEntity.Update(GameTime gameTime, KeyboardState keyboardState, Camera2D camera)
@@ -99,19 +101,21 @@ namespace OrthoCite.Entities
             camera.Zoom = _zoom;
             
 
-            if(_walk == 0)
+            if(_separeTime == 0)
             {
                 if (keyboardState.IsKeyDown(Keys.Down) && !ColDown()) MoveDownChamp();
                 if (keyboardState.IsKeyDown(Keys.Up) && !ColUp()) MoveUpChamp();
                 if (keyboardState.IsKeyDown(Keys.Left) && !ColLeft()) MoveLeftChamp();
                 if (keyboardState.IsKeyDown(Keys.Right) && !ColRight()) MoveRightChamp();
-                _walk++;
+
+                if (keyboardState.IsKeyDown(Keys.F9)) _collisionLayer.IsVisible = !_collisionLayer.IsVisible;
+                _separeTime++;
             }
             else
             {
-                _walk++;
-                if (_walk >= 5 && keyboardState.IsKeyDown(Keys.LeftShift)) _walk = 0;
-                else if (_walk >= 10) _walk = 0;
+                _separeTime++;
+                if (_separeTime >= _maxTime && keyboardState.IsKeyDown(Keys.LeftShift)) _separeTime = 0;
+                else if (_separeTime >= _maxTime * 2)_separeTime = 0;
             }
             
             _position = new Vector2(_positionVirt.X * textMap.TileWidth, _positionVirt.Y * textMap.TileHeight);
@@ -123,7 +127,7 @@ namespace OrthoCite.Entities
         {
             spriteBatch.Begin(transformMatrix: cameraMatrix);
 
-            _collisionLayer.IsVisible = false;
+            
             spriteBatch.Draw(textMap);
 
             
@@ -139,7 +143,7 @@ namespace OrthoCite.Entities
         
         void IEntity.Dispose()
         {
-            //GOING FIX;
+            Console.WriteLine($"Disose class : {this.GetType().Name}");
         }
 
         void IEntity.Execute(params string[] param)
@@ -149,7 +153,7 @@ namespace OrthoCite.Entities
             {
                 case "movePlayer":
                     try{ MoveTo(new Vector2(Int32.Parse(param[1]), Int32.Parse(param[2]))); }
-                    catch { Console.WriteLine("Bad Params"); }
+                    catch { Console.WriteLine("Bad Params => movePlayer {x] {y}"); }
                     break;
                 default:
                     Console.WriteLine("Can't find method to invoke in Map Class");

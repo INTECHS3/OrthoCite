@@ -8,7 +8,7 @@ using OrthoCite.Entities.MiniGames;
 using MonoGame.Extended;
 using MonoGame.Extended.ViewportAdapters;
 using System.Runtime.InteropServices;
-
+using System;
 
 namespace OrthoCite
 {
@@ -38,33 +38,9 @@ namespace OrthoCite
         public nameEntity _entitiesSelect;
         public bool _entitiesModified;
         public int _gidLastForMap;
+
+        public static void writeSpacerConsole() { System.Console.WriteLine("==========================================="); }
         
-        private void onInstanceChange()
-        {
-            if(_entitiesSelect != nameEntity.NONE) _entities = new Dictionary<nameEntity, IEntity>();
-            switch (_entitiesSelect)
-                {
-                    case nameEntity.PLATFORMER:
-                        _entities.Add(nameEntity.PLATFORMER, new Platformer(_runtimeData, this));
-                        break;
-                    case nameEntity.MAP:
-                        _entities.Add(nameEntity.MAP, new Map(_runtimeData, this, _gidLastForMap));
-                        _gidLastForMap = 0;  
-                        break;
-                    default:
-                        System.Console.WriteLine("Nothing Entities Selected");
-                        _gidLastForMap = 0;
-                        break;
-
-                }
-
-#if DEBUG
-            _entities.Add(nameEntity.DEBUG, new DebugLayer(_runtimeData));
-#endif
-            _entitiesSelect = nameEntity.NONE;
-            _entitiesModified = false;
-            LoadContent();
-        }
 
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -107,7 +83,6 @@ namespace OrthoCite
         {
             _viewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, SCENE_WIDTH, SCENE_HEIGHT);
             _runtimeData.viewAdapter = _viewportAdapter;
-            //_runtimeData.Window = new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
             _runtimeData.Window = new Rectangle(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
             _camera = new Camera2D(_viewportAdapter);
 
@@ -159,15 +134,7 @@ namespace OrthoCite
             if (Keyboard.GetState().IsKeyDown(Keys.Escape)) Exit();
 
 #if DEBUG
-            if(Keyboard.GetState().IsKeyDown(Keys.F11))
-            {
-                string cmdTmp = System.Console.ReadLine();
-                string[] cmd = cmdTmp.Split(' ');
-                foreach (KeyValuePair<nameEntity, IEntity> entity in _entities)
-                {
-                    entity.Value.Execute(cmd);
-                }
-            }
+            if(Keyboard.GetState().IsKeyDown(Keys.F11)) { recordConsole();  }
 #endif
             foreach (KeyValuePair<nameEntity, IEntity> entity in _entities)
             {
@@ -192,6 +159,53 @@ namespace OrthoCite
 
             if (_entitiesModified) onInstanceChange();
             base.Draw(gameTime);
+        }
+
+        private void onInstanceChange()
+        {
+            if (_entitiesSelect != nameEntity.NONE)
+            {
+                writeSpacerConsole();
+                foreach (KeyValuePair<nameEntity, IEntity> e in _entities)
+                {
+
+                    e.Value.Dispose();
+                }
+                _entities = new Dictionary<nameEntity, IEntity>();
+                writeSpacerConsole();
+            }
+            switch (_entitiesSelect)
+            {
+                case nameEntity.PLATFORMER:
+                    _entities.Add(nameEntity.PLATFORMER, new Platformer(_runtimeData, this));
+                    break;
+                case nameEntity.MAP:
+                    _entities.Add(nameEntity.MAP, new Map(_runtimeData, this, _gidLastForMap));
+                    _gidLastForMap = 0;
+                    break;
+                default:
+                    System.Console.WriteLine("Nothing Entities Selected");
+                    _gidLastForMap = 0;
+                    break;
+
+            }
+
+#if DEBUG
+            _entities.Add(nameEntity.DEBUG, new DebugLayer(_runtimeData));
+#endif
+            _entitiesSelect = nameEntity.NONE;
+            _entitiesModified = false;
+            LoadContent();
+        }
+
+        private void recordConsole()
+        {
+            string cmdTmp = System.Console.ReadLine();
+            string[] cmd = cmdTmp.Split(' ');
+            foreach (KeyValuePair<nameEntity, IEntity> entity in _entities)
+            {
+                entity.Value.Execute(cmd);
+            }
         }
     }
 }

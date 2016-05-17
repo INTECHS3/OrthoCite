@@ -240,7 +240,7 @@ namespace OrthoCite.Entities.MiniGames
 
         public override void Dispose()
         {
-
+            System.Console.WriteLine($"Disose class : {this.GetType().Name}");
         }
 
         public override void Execute(params string[] param)
