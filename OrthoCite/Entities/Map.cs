@@ -6,6 +6,7 @@ using MonoGame.Extended.Maps.Tiled;
 using MonoGame.Extended;
 using System;
 using System.Collections.Generic;
+using System.Collections;
 
 namespace OrthoCite.Entities
 {
@@ -15,6 +16,8 @@ namespace OrthoCite.Entities
 
         TiledMap textMap;
         TiledTileLayer _collisionLayer;
+        TiledTileLayer _upLayer;
+
         int _gidStart;
         const int _gidSpawn = 1151;
 
@@ -63,6 +66,7 @@ namespace OrthoCite.Entities
             foreach (TiledTileLayer e in textMap.TileLayers)
             {
                 if (e.Name == "Collision") _collisionLayer = e;
+                else if (e.Name == "Up") _upLayer = e;
             }
             _collisionLayer.IsVisible = false;
             
@@ -98,7 +102,7 @@ namespace OrthoCite.Entities
 
         void IEntity.Update(GameTime gameTime, KeyboardState keyboardState, Camera2D camera)
         {
-            camera.Zoom = _zoom;
+            camera.Zoom = 1;
             
 
             if(_separeTime == 0)
@@ -127,15 +131,18 @@ namespace OrthoCite.Entities
         {
             spriteBatch.Begin(transformMatrix: cameraMatrix);
 
-            
+            _upLayer.IsVisible = false;
             spriteBatch.Draw(textMap);
-
             
 
             if (_textureCharacterSelect == Direction.RIGHT || _textureCharacterSelect == Direction.LEFT) spriteBatch.Draw(_textureCharacter["RightLeft"], _position, null, null, null, 0, null, null, _textureCharacterSelect == Direction.LEFT ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
             else if (_textureCharacterSelect == Direction.UP) spriteBatch.Draw(_textureCharacter["Up"], _position, Color.White);
             else if (_textureCharacterSelect == Direction.DOWN) spriteBatch.Draw(_textureCharacter["Down"], _position, Color.White);
             else if (_textureCharacterSelect == Direction.NONE) spriteBatch.Draw(_textureCharacter["None"], _position, Color.White);
+
+
+            _upLayer.IsVisible = true;
+            _upLayer.Draw(spriteBatch);
 
             spriteBatch.End();
 
@@ -258,9 +265,9 @@ namespace OrthoCite.Entities
 
         private void checkIfWeLaunchInstance(TiledTile i)
         {
-            if (i.X == _positionVirt.X && i.Y == _positionVirt.Y - 1 && i.Id == 1190)
+            if (i.X == _positionVirt.X && i.Y == _positionVirt.Y - 1 && i.Id == 1165)
             {
-                _o._gidLastForMap = 1190;
+                _o._gidLastForMap = 1165;
                 _o._entitiesSelect = OrthoCite.nameEntity.PLATFORMER;
                 _o._entitiesModified = true;
             }
