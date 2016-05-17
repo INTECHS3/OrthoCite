@@ -18,6 +18,7 @@ namespace OrthoCite.Entities.MiniGames
         const int PLATFORM_MIN_TOP_BOTTOM_OFFSET = 10;
 
         RuntimeData _runtimeData;
+        OrthoCite _o;
         Random _random;
 
         Texture2D _background;
@@ -26,6 +27,7 @@ namespace OrthoCite.Entities.MiniGames
         Texture2D _playerStraight;
 
         SpriteFont _font;
+        SpriteFont _fontResult;
 
         struct Word
         {
@@ -77,9 +79,10 @@ namespace OrthoCite.Entities.MiniGames
 
         Direction _direction = Direction.NONE;
 
-        public Platformer(RuntimeData runtimeData)
+        public Platformer(RuntimeData runtimeData, OrthoCite o)
         {
             _runtimeData = runtimeData;
+            _o = o;
             _platforms = new List<Platform>();
             _random = new Random();
             _grid = new List<Vector2>();
@@ -92,9 +95,10 @@ namespace OrthoCite.Entities.MiniGames
             _playerJump = content.Load<Texture2D>("minigames/platformer/player-jump");
             _playerStraight = content.Load<Texture2D>("minigames/platformer/player-straight");
 
-            _font = content.Load<SpriteFont>("debug");
+            _font = content.Load<SpriteFont>("minigames/platformer/font");
+            _fontResult = content.Load<SpriteFont>("minigames/platformer/font-result");
 
-            _playerPosition = new Vector2((_runtimeData.Window.Width / 2) - (_playerStraight.Width / 2), _runtimeData.Window.Height - _playerStraight.Height);
+            _playerPosition = new Vector2((_runtimeData.Scene.Width / 2) - (_playerStraight.Width / 2), _runtimeData.Scene.Height - _playerStraight.Height);
 
             Start();
         }
@@ -105,6 +109,16 @@ namespace OrthoCite.Entities.MiniGames
 
         public override void Update(GameTime gameTime, KeyboardState keyboardState, Camera2D camera)
         {
+            
+            camera.Position = new Vector2(0, 0);
+            camera.Zoom = 1;
+
+            if(keyboardState.IsKeyDown(Keys.F12))
+            {
+                _o._entitiesSelect = OrthoCite.nameEntity.MAP;
+                _o._entitiesModified = true;
+            }
+
             if (_won || _lost) return;
 
             /* Handle move */
@@ -152,11 +166,11 @@ namespace OrthoCite.Entities.MiniGames
             /* Handle collisions */
 
             // Borders
-            if (_playerPosition.X + _playerStraight.Width >= _runtimeData.Window.Width) _playerPosition.X = _runtimeData.Window.Width - _playerStraight.Width; // Right
+            if (_playerPosition.X + _playerStraight.Width >= _runtimeData.Scene.Width) _playerPosition.X = _runtimeData.Scene.Width - _playerStraight.Width; // Right
             if (_playerPosition.X < 0) _playerPosition.X = 0; // Left
-            if (_playerPosition.Y + _playerStraight.Height >= _runtimeData.Window.Height) // Bottom
+            if (_playerPosition.Y + _playerStraight.Height >= _runtimeData.Scene.Height) // Bottom
             {
-                _playerPosition.Y = _runtimeData.Window.Height - _playerStraight.Height;
+                _playerPosition.Y = _runtimeData.Scene.Height - _playerStraight.Height;
                 _currentSpeed = 0;
                 _direction = Direction.NONE;
                 _isLanded = true;
@@ -212,7 +226,7 @@ namespace OrthoCite.Entities.MiniGames
         public override void Draw(SpriteBatch spriteBatch, Matrix frozenMatrix, Matrix cameraMatrix)
         {
             spriteBatch.Begin(transformMatrix: cameraMatrix);
-            spriteBatch.Draw(_background, new Vector2(0, 0));
+            spriteBatch.Draw(_background, new Vector2(0, 0), Color.White);
             foreach (var platform in _platforms)
             {
                 spriteBatch.Draw(_platform, new Vector2(platform.Coords.X, platform.Coords.Y), _direction == Direction.UP ? Color.White * 0.7f : Color.White);
@@ -221,19 +235,29 @@ namespace OrthoCite.Entities.MiniGames
 
             spriteBatch.Draw(_isLanded ? _playerStraight : _playerJump, _playerPosition, null, null, null, 0, null, null, _faceRight ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
 
-            if (_lost) spriteBatch.DrawString(_font, "Perdu", _playerPosition, Color.Red);
-            if (_won) spriteBatch.DrawString(_font, "Bravo", _playerPosition, Color.Green);
+            if (_lost) spriteBatch.DrawString(_fontResult, "Perdu", _playerPosition, Color.Red);
+            if (_won) spriteBatch.DrawString(_fontResult, "Bravo", _playerPosition, Color.Green);
             spriteBatch.End();
+        }
+
+        public override void Dispose()
+        {
+            System.Console.WriteLine($"Disose class : {this.GetType().Name}");
+        }
+
+        public override void Execute(params string[] param)
+        {
+
         }
 
         internal override void Start()
         {
             /* Generate grid */
-            int columns = _runtimeData.Window.Width / (_platform.Width + _playerStraight.Width + PLATFORM_MIN_TOP_BOTTOM_OFFSET * 2);
-            int lines = _runtimeData.Window.Height / (_platform.Height + _playerStraight.Height);
+            int columns = _runtimeData.Scene.Width / (_platform.Width + _playerStraight.Width + PLATFORM_MIN_TOP_BOTTOM_OFFSET * 2);
+            int lines = _runtimeData.Scene.Height / (_platform.Height + _playerStraight.Height);
             lines--; // FIX ME
 
-            int xOffset = (_runtimeData.Window.Width % (columns * (_platform.Width + _playerStraight.Width + PLATFORM_MIN_TOP_BOTTOM_OFFSET * 2) - _playerStraight.Width - PLATFORM_MIN_TOP_BOTTOM_OFFSET * 2)) / 2;
+            int xOffset = (_runtimeData.Scene.Width % (columns * (_platform.Width + _playerStraight.Width + PLATFORM_MIN_TOP_BOTTOM_OFFSET * 2) - _playerStraight.Width - PLATFORM_MIN_TOP_BOTTOM_OFFSET * 2)) / 2;
             int yOffset = PLATFORM_MIN_TOP_BOTTOM_OFFSET + _playerStraight.Height;
 
             for (int line = 0; line < lines; line++)

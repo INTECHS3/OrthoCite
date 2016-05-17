@@ -43,7 +43,7 @@ namespace OrthoCite.Entities
             _fpsCounter.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
             _camera = camera;
             var mouseState = Mouse.GetState();
-            _mousePosition = _runtimeData.viewAdapter.PointToScreen(mouseState.X, mouseState.Y);
+            _mousePosition = _runtimeData.ViewAdapter.PointToScreen(mouseState.X, mouseState.Y);
         }
 
         public void Draw(SpriteBatch spriteBatch, Matrix frozenMatrix, Matrix cameraMatrix)
@@ -55,6 +55,16 @@ namespace OrthoCite.Entities
             spriteBatch.DrawString(_font, $"Debug mode - Camera Position: X: {_camera.Position.X} Y: {_camera.Position.Y}", new Vector2(10, 30), Color.White);
             spriteBatch.DrawString(_font, $"Debug mode - Mouse Position: X: {_mousePosition.X} Y: {_mousePosition.Y}", new Vector2(10, 50), Color.White);
             spriteBatch.End();
+        }
+
+        public void Dispose()
+        {
+            System.Console.WriteLine($"Disose class : {this.GetType().Name}");
+        }
+
+        public void Execute(params string[] param)
+        {
+
         }
     }
 }

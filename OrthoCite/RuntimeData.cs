@@ -12,23 +12,27 @@ namespace OrthoCite
 {
     public class RuntimeData
     {
-        Rectangle _window;
+        Rectangle _scene;
+        DataSave _dataSave;
         ViewportAdapter _viewAdapter;
 
         public RuntimeData()
         {
+            _dataSave = new DataSave();
         }
 
-        public Rectangle Window
+        public Rectangle Scene
         {
-            get { return _window; }
-            set { _window = value; }
+            get { return _scene; }
+            set { _scene = value; }
         }
         
-        public ViewportAdapter viewAdapter
+        public ViewportAdapter ViewAdapter
         {
             get { return _viewAdapter; }
             set { _viewAdapter = value; }
         }
+
+        public DataSave DataSave => _dataSave;
     }
 }

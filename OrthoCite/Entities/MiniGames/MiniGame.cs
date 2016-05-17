@@ -14,6 +14,9 @@ namespace OrthoCite.Entities.MiniGames
         abstract public void Update(GameTime gameTime, KeyboardState keyboardState, Camera2D camera);
         abstract public void Draw(SpriteBatch spriteBatch, Matrix frozenMatrix, Matrix cameraMatrix);
 
+        abstract public void Execute(params string[] param);
+        abstract public void Dispose();
+
         abstract internal void Start();
     }
 }
