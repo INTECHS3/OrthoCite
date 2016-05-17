@@ -50,7 +50,7 @@ namespace OrthoCite
         {
             
             
-            _runtimeData = new RuntimeData();
+            _runtimeData = new RuntimeData(this);
             _graphics = new GraphicsDeviceManager(this);
 
             _entities = new Dictionary<nameEntity, IEntity>();
@@ -86,7 +86,7 @@ namespace OrthoCite
             _runtimeData.Scene = new Rectangle(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
             _camera = new Camera2D(_viewportAdapter);
 
-            _entities.Add(nameEntity.MAP, new Map(_runtimeData, this, 0));
+            _entities.Add(nameEntity.MAP, new Map(_runtimeData, 0));
 
 #if DEBUG
             _entities.Add(nameEntity.DEBUG, new DebugLayer(_runtimeData));
@@ -177,10 +177,10 @@ namespace OrthoCite
             switch (_entitiesSelect)
             {
                 case nameEntity.PLATFORMER:
-                    _entities.Add(nameEntity.PLATFORMER, new Platformer(_runtimeData, this));
+                    _entities.Add(nameEntity.PLATFORMER, new Platformer(_runtimeData));
                     break;
                 case nameEntity.MAP:
-                    _entities.Add(nameEntity.MAP, new Map(_runtimeData, this, _gidLastForMap));
+                    _entities.Add(nameEntity.MAP, new Map(_runtimeData, _gidLastForMap));
                     _gidLastForMap = 0;
                     break;
                 default:

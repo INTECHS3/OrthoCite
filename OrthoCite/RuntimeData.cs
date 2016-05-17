@@ -15,9 +15,11 @@ namespace OrthoCite
         Rectangle _scene;
         DataSave _dataSave;
         ViewportAdapter _viewAdapter;
+        readonly OrthoCite _orthoCite;
 
-        public RuntimeData()
+        public RuntimeData(OrthoCite orthoCite)
         {
+            _orthoCite = orthoCite;
             _dataSave = new DataSave();
         }
 
@@ -34,5 +36,10 @@ namespace OrthoCite
         }
 
         public DataSave DataSave => _dataSave;
+
+        public OrthoCite OrthoCite
+        {
+            get { return _orthoCite; }
+        }
     }
 }

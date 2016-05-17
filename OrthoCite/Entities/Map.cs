@@ -28,8 +28,7 @@ namespace OrthoCite.Entities
 
         Vector2 _position;
         Vector2 _positionVirt;
-
-        OrthoCite _o;
+        
 
         enum Direction
         {
@@ -44,9 +43,8 @@ namespace OrthoCite.Entities
         Dictionary<string, Texture2D> _textureCharacter;
 
 
-        public Map(RuntimeData runtimeData, OrthoCite o, int i)
+        public Map(RuntimeData runtimeData, int i)
         {
-            _o = o;
             _runtimeData = runtimeData;
             _gidStart = i;
 
@@ -102,26 +100,26 @@ namespace OrthoCite.Entities
 
         void IEntity.Update(GameTime gameTime, KeyboardState keyboardState, Camera2D camera)
         {
-            camera.Zoom = 1;
+            camera.Zoom = _zoom;
             
 
-            if(_separeTime == 0)
+            if(_separeTime == 0 && keyboardState.GetPressedKeys().Length != 0)
             {
                 if (keyboardState.IsKeyDown(Keys.Down) && !ColDown()) MoveDownChamp();
-                if (keyboardState.IsKeyDown(Keys.Up) && !ColUp()) MoveUpChamp();
+                else if (keyboardState.IsKeyDown(Keys.Up) && !ColUp()) MoveUpChamp();
                 if (keyboardState.IsKeyDown(Keys.Left) && !ColLeft()) MoveLeftChamp();
-                if (keyboardState.IsKeyDown(Keys.Right) && !ColRight()) MoveRightChamp();
+                else if (keyboardState.IsKeyDown(Keys.Right) && !ColRight()) MoveRightChamp();
 
                 if (keyboardState.IsKeyDown(Keys.F9)) _collisionLayer.IsVisible = !_collisionLayer.IsVisible;
                 _separeTime++;
             }
-            else
+            else  if (_separeTime != 0)
             {
                 _separeTime++;
                 if (_separeTime >= _maxTime && keyboardState.IsKeyDown(Keys.LeftShift)) _separeTime = 0;
                 else if (_separeTime >= _maxTime * 2)_separeTime = 0;
             }
-            
+
             _position = new Vector2(_positionVirt.X * textMap.TileWidth, _positionVirt.Y * textMap.TileHeight);
             camera.LookAt(new Vector2(_position.X, _position.Y));
             //Console.WriteLine($"X : {_positionVirt.X} Y : {_positionVirt.Y} ");
@@ -267,9 +265,9 @@ namespace OrthoCite.Entities
         {
             if (i.X == _positionVirt.X && i.Y == _positionVirt.Y - 1 && i.Id == 1165)
             {
-                _o._gidLastForMap = 1165;
-                _o._entitiesSelect = OrthoCite.nameEntity.PLATFORMER;
-                _o._entitiesModified = true;
+                _runtimeData.OrthoCite._gidLastForMap = 1165;
+                _runtimeData.OrthoCite._entitiesSelect = OrthoCite.nameEntity.PLATFORMER;
+                _runtimeData.OrthoCite._entitiesModified = true;
             }
         }
 
