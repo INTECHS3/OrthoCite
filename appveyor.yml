@@ -4,6 +4,7 @@ branches:
     - master
 
 before_build:
+  - ps: (New-Object -ComObject Shell.Application).Namespace(0x14).CopyHere("OrthoCite/Content/dialogbox/ERASBD.TTF")
   - ps: Invoke-WebRequest 'http://www.monogame.net/releases/v3.5.1/MonoGameSetup.exe' -OutFile 'monogame.exe'
   - monogame.exe /S
   - nuget restore

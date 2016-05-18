@@ -8,8 +8,8 @@ namespace OrthoCite.Entities
     class DialogBox : IEntity
     {
         const int PADDING = 20;
-        const int MARGIN_BOTTOM = 20;
-        const int MAX_BOX_WIDTH = 1000;
+        const int MARGIN_TOP = 20;
+        const int MAX_MARGIN_BORDERS = 20;
         const int INTERLINE = 2;
 
         RuntimeData _runtimeData;
@@ -28,7 +28,7 @@ namespace OrthoCite.Entities
             _blackTexture = new Texture2D(graphicsDevice, 1, 1);
             _blackTexture.SetData(new Color[] { Color.Black });
             _font = content.Load<SpriteFont>("dialogbox/font");
-            _wrappedText = TextHelper.WrapString(_font, "Salut ! Comment vas-tu ? Moi ça va. Cette boîte de dialogue se redimensionne en fonction du texte qu'on lui donne. Je sais, c'est stock. Mais Marvin est stock de toute façon.", MAX_BOX_WIDTH, INTERLINE);
+            _wrappedText = TextHelper.WrapString(_font, "Salut ! Comment vas-tu ? Moi ça va. Cette boîte de dialogue se redimensionne en fonction du texte qu'on lui donne. Je sais, c'est stock. Mais Marvin est stock de toute façon.", _runtimeData.Scene.Width - (MAX_MARGIN_BORDERS *2), INTERLINE);
         }
 
         public void UnloadContent()
@@ -43,8 +43,8 @@ namespace OrthoCite.Entities
         {
             spriteBatch.Begin(transformMatrix: frozenMatrix);
             int xOffset = (_runtimeData.Scene.Width - (int)_wrappedText.Bounds.X - (PADDING * 2)) / 2;
-            int yOffset = (_runtimeData.Scene.Height - (int)_wrappedText.Bounds.Y - (PADDING * 2)) - MARGIN_BOTTOM;
-            spriteBatch.Draw(_blackTexture, new Rectangle(xOffset, yOffset, (int)_wrappedText.Bounds.X + (PADDING * 2), (int)_wrappedText.Bounds.Y + (PADDING * 2)), Color.White);
+            int yOffset = MARGIN_TOP;
+            spriteBatch.Draw(_blackTexture, new Rectangle(xOffset, yOffset, (int)_wrappedText.Bounds.X + (PADDING * 2), (int)_wrappedText.Bounds.Y + (PADDING * 2)), Color.White * 0.7f);
 
             foreach (WrappedTextLine line in _wrappedText.Lines)
             {
