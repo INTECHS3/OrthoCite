@@ -415,3 +415,8 @@
 /processorParam:TextureFormat=Color
 /build:menu/charge.png
 
+#begin dialogbox/font.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:dialogbox/font.spritefont

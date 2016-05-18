@@ -50,10 +50,10 @@ namespace OrthoCite.Entities
         Dictionary<string, Texture2D> _textureCharacter;
 
 
-        public Map(RuntimeData runtimeData, int i)
+        public Map(RuntimeData runtimeData)
         {
             _runtimeData = runtimeData;
-            _gidStart = i;
+            _gidStart = _runtimeData.gidLast;
 
 
             _textureCharacter = new Dictionary<string, Texture2D>();
@@ -93,8 +93,8 @@ namespace OrthoCite.Entities
                 {
                     if (i.Id == _gidSpawn) _positionVirt = new Vector2(i.X, i.Y);
                 }
-            }           
-            
+            }
+            _runtimeData.gidLast = 0;
             
 
             _textureCharacter.Add("RightLeft", content.Load<Texture2D>("map/champRightLeft"));
@@ -303,9 +303,8 @@ namespace OrthoCite.Entities
         {
             if (i.X == _positionVirt.X && i.Y == _positionVirt.Y - 1 && i.Id == 1165)
             {
-                _runtimeData.OrthoCite._gidLastForMap = 1165;
-                _runtimeData.OrthoCite._entitiesSelect = OrthoCite.nameEntity.PLATFORMER;
-                _runtimeData.OrthoCite._entitiesModified = true;
+                _runtimeData.gidLast = 1165;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_PLATFORMER);
             }
         }
 

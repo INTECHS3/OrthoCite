@@ -12,35 +12,34 @@ using System;
 
 namespace OrthoCite
 {
+    public enum GameContext
+    {
+        MENU,
+        MAP,
+        MINIGAME_PLATFORMER
+    }
+
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
     public class OrthoCite : Game
     {
-        public enum nameEntity
-        {
-            NONE,
-            DEBUG,
-            MAP,
-            PLATFORMER,
-            MENU
-        }
 
         BoxingViewportAdapter _viewportAdapter;
         Camera2D _camera;
         RuntimeData _runtimeData;
         readonly GraphicsDeviceManager _graphics;
         SpriteBatch _spriteBatch;
-        Dictionary<nameEntity, IEntity> _entities;
+        List<IEntity> _entities;
 
-        public const int SCENE_WIDTH = 1366;
-        public const int SCENE_HEIGHT = 768;
+        const int SCENE_WIDTH = 1366;
+        const int SCENE_HEIGHT = 768;
 
-        public nameEntity _entitiesSelect;
-        public bool _entitiesModified;
-        public int _gidLastForMap;
+        GameContext _gameContext;
+        public bool _gameContextChanged;
+        
 
-        public static void writeSpacerConsole() { System.Console.WriteLine("==========================================="); }
+        public static void writeSpacerConsole() => System.Console.WriteLine("===========================================");
         
 
         [DllImport("kernel32.dll", SetLastError = true)]
@@ -54,9 +53,8 @@ namespace OrthoCite
             _runtimeData = new RuntimeData(this);
             _graphics = new GraphicsDeviceManager(this);
 
-            _entities = new Dictionary<nameEntity, IEntity>();
-            _entitiesModified = false;
-            _entitiesSelect = nameEntity.NONE;
+            _entities = new List<IEntity>();
+            ChangeGameContext(GameContext.MENU);
 
 #if DEBUG
             _graphics.PreferredBackBufferWidth = 928;
@@ -87,12 +85,6 @@ namespace OrthoCite
             _runtimeData.Scene = new Rectangle(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
             _camera = new Camera2D(_viewportAdapter);
 
-            _entities.Add(nameEntity.MENU, new Mainmenu(_runtimeData));
-
-#if DEBUG
-            _entities.Add(nameEntity.DEBUG, new DebugLayer(_runtimeData));
-#endif
-
             base.Initialize();
         }
 
@@ -106,9 +98,9 @@ namespace OrthoCite
             // Create a new SpriteBatch, which can be used to draw textures.
             _spriteBatch = new SpriteBatch(_graphics.GraphicsDevice);
 
-            foreach (KeyValuePair<nameEntity, IEntity> entity in _entities)
+            foreach (var entity in _entities)
             {
-                entity.Value.LoadContent(this.Content, this.GraphicsDevice);
+                entity.LoadContent(this.Content, this.GraphicsDevice);
             }
         }
 
@@ -119,9 +111,9 @@ namespace OrthoCite
         /// </summary>
         protected override void UnloadContent()
         {
-            foreach (KeyValuePair<nameEntity, IEntity> entity in _entities)
+            foreach (var entity in _entities)
             {
-                entity.Value.UnloadContent();
+                entity.UnloadContent();
             }
         }
        
@@ -137,9 +129,9 @@ namespace OrthoCite
 #if DEBUG
             if(Keyboard.GetState().IsKeyDown(Keys.F11)) { recordConsole();  }
 #endif
-            foreach (KeyValuePair<nameEntity, IEntity> entity in _entities)
+            foreach (var entity in _entities)
             {
-                entity.Value.Update(gameTime, Keyboard.GetState(), _camera);
+                entity.Update(gameTime, Keyboard.GetState(), _camera);
             }
 
             base.Update(gameTime);
@@ -153,45 +145,53 @@ namespace OrthoCite
         {
             _graphics.GraphicsDevice.Clear(Color.Black);
             
-            foreach (KeyValuePair<nameEntity, IEntity> entity in _entities)
+            foreach (var entity in _entities)
             {
-                entity.Value.Draw(_spriteBatch, _viewportAdapter.GetScaleMatrix(), _camera.GetViewMatrix());
+                entity.Draw(_spriteBatch, _viewportAdapter.GetScaleMatrix(), _camera.GetViewMatrix());
             }
 
-            if (_entitiesModified) onInstanceChange();
+            if (_gameContextChanged) PopulateEntitiesFromGameContext();
+
             base.Draw(gameTime);
         }
 
-        private void onInstanceChange()
+        public void ChangeGameContext(GameContext context)
         {
-            if (_entitiesSelect != nameEntity.NONE)
-            {
-                writeSpacerConsole();
-                Console.WriteLine("Kill all instance");
-                _entities = new Dictionary<nameEntity, IEntity>();
-                writeSpacerConsole();
-            }
-            switch (_entitiesSelect)
-            {
-                case nameEntity.PLATFORMER:
-                    _entities.Add(nameEntity.PLATFORMER, new Platformer(_runtimeData));
-                    break;
-                case nameEntity.MAP:
-                    _entities.Add(nameEntity.MAP, new Map(_runtimeData, _gidLastForMap));
-                    _gidLastForMap = 0;
-                    break;
-                default:
-                    System.Console.WriteLine("Nothing Entities Selected");
-                    _gidLastForMap = 0;
-                    break;
+            _gameContext = context;
+            _gameContextChanged = true;
+        }
 
+        void PopulateEntitiesFromGameContext()
+        {
+            _entities.Clear();
+            writeSpacerConsole();
+            Console.Write("Context switched to ");
+
+            switch (_gameContext)
+            {
+                case GameContext.MENU:
+                    Console.WriteLine("Menu");
+                    _entities.Add(new Mainmenu(_runtimeData));
+                    break;
+                case GameContext.MAP:
+                    Console.WriteLine("map");
+                    _entities.Add(new Map(_runtimeData));
+                    _entities.Add(new DialogBox(_runtimeData));
+                    
+                    break;
+                case GameContext.MINIGAME_PLATFORMER:
+                    Console.WriteLine("platformer minigame");
+                    _entities.Add(new Platformer(_runtimeData));
+                    
+                    break;
             }
+
+            _gameContextChanged = false;
 
 #if DEBUG
-            _entities.Add(nameEntity.DEBUG, new DebugLayer(_runtimeData));
+            _entities.Add(new DebugLayer(_runtimeData));
 #endif
-            _entitiesSelect = nameEntity.NONE;
-            _entitiesModified = false;
+
             LoadContent();
         }
 
@@ -199,9 +199,9 @@ namespace OrthoCite
         {
             string cmdTmp = System.Console.ReadLine();
             string[] cmd = cmdTmp.Split(' ');
-            foreach (KeyValuePair<nameEntity, IEntity> entity in _entities)
+            foreach (var entity in _entities)
             {
-                entity.Value.Execute(cmd);
+                entity.Execute(cmd);
             }
         }
     }

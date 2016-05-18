@@ -100,8 +100,7 @@ namespace OrthoCite.Entities
                     GetKeys();
                     break;
                 case GameState.inGame:
-                    _runtimeData.OrthoCite._entitiesModified = true;
-                    _runtimeData.OrthoCite._entitiesSelect = OrthoCite.nameEntity.MAP; 
+                    _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
                     break;
                 default:
                     break;
