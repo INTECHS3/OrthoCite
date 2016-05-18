@@ -113,8 +113,7 @@ namespace OrthoCite.Entities.MiniGames
 
             if(keyboardState.IsKeyDown(Keys.F12))
             {
-                _runtimeData.OrthoCite._entitiesSelect = OrthoCite.nameEntity.MAP;
-                _runtimeData.OrthoCite._entitiesModified = true;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
             }
 
             if (_won || _lost) return;

@@ -17,7 +17,7 @@ namespace OrthoCite
 
     class WrappedText
     {
-        public Rectangle Bounds;
+        public Vector2 Bounds;
         public List<WrappedTextLine> Lines;
     }
 
@@ -58,6 +58,7 @@ namespace OrthoCite
             {
                 WrappedTextLine line = new WrappedTextLine { Text = currentLine, Position = new Vector2(0, currentLineY) };
                 lines.Add(line);
+                if (currentWidth > maxLineWidth) maxLineWidth = currentWidth;
             }
 
             foreach (WrappedTextLine line in lines) // center lines
@@ -67,7 +68,7 @@ namespace OrthoCite
                 line.Position.X = (maxLineWidth - lineWidth) / 2;
             }
 
-            return new WrappedText { Bounds = new Rectangle(0, 0, maxLineWidth, currentLineY + fontHeight), Lines = lines };
+            return new WrappedText { Bounds = new Vector2(maxLineWidth, currentLineY + fontHeight), Lines = lines };
         }
     }
 }

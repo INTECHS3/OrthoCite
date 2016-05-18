@@ -266,8 +266,7 @@ namespace OrthoCite.Entities
             if (i.X == _positionVirt.X && i.Y == _positionVirt.Y - 1 && i.Id == 1165)
             {
                 _runtimeData.OrthoCite._gidLastForMap = 1165;
-                _runtimeData.OrthoCite._entitiesSelect = OrthoCite.nameEntity.PLATFORMER;
-                _runtimeData.OrthoCite._entitiesModified = true;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_PLATFORMER);
             }
         }
 
