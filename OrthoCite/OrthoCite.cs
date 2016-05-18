@@ -22,7 +22,8 @@ namespace OrthoCite
             NONE,
             DEBUG,
             MAP,
-            PLATFORMER
+            PLATFORMER,
+            MENU
         }
 
         BoxingViewportAdapter _viewportAdapter;
@@ -86,7 +87,7 @@ namespace OrthoCite
             _runtimeData.Scene = new Rectangle(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
             _camera = new Camera2D(_viewportAdapter);
 
-            _entities.Add(nameEntity.MAP, new Map(_runtimeData, 0));
+            _entities.Add(nameEntity.MENU, new Mainmenu(_runtimeData));
 
 #if DEBUG
             _entities.Add(nameEntity.DEBUG, new DebugLayer(_runtimeData));
@@ -166,11 +167,7 @@ namespace OrthoCite
             if (_entitiesSelect != nameEntity.NONE)
             {
                 writeSpacerConsole();
-                foreach (KeyValuePair<nameEntity, IEntity> e in _entities)
-                {
-
-                    e.Value.Dispose();
-                }
+                Console.WriteLine("Kill all instance");
                 _entities = new Dictionary<nameEntity, IEntity>();
                 writeSpacerConsole();
             }
