@@ -124,10 +124,26 @@ namespace OrthoCite.Entities
                 if (keyboardState.IsKeyDown(Keys.LeftShift)) _actualFrame = _fastFrame;
                 else _actualFrame = _lowFrame;
 
-                if (keyboardState.IsKeyDown(Keys.Down) && !ColDown()) _actualDir = Direction.DOWN;
-                if (keyboardState.IsKeyDown(Keys.Up) && !ColUp()) _actualDir = Direction.UP;
-                if (keyboardState.IsKeyDown(Keys.Left) && !ColLeft()) _actualDir = Direction.LEFT;
-                if (keyboardState.IsKeyDown(Keys.Right) && !ColRight()) _actualDir = Direction.RIGHT;
+                if (keyboardState.IsKeyDown(Keys.Down) && !ColDown())
+                {
+                    _actualDir = Direction.DOWN;
+                    _textureCharacterSelect = Direction.DOWN;
+                }
+                if (keyboardState.IsKeyDown(Keys.Up) && !ColUp())
+                {
+                    _actualDir = Direction.UP;
+                    _textureCharacterSelect = Direction.UP;
+                }
+                if (keyboardState.IsKeyDown(Keys.Left) && !ColLeft())
+                {
+                    _actualDir = Direction.LEFT;
+                    _textureCharacterSelect = Direction.LEFT;
+                }
+                if (keyboardState.IsKeyDown(Keys.Right) && !ColRight())
+                {
+                    _actualDir = Direction.RIGHT;
+                    _textureCharacterSelect = Direction.RIGHT;
+                }
                 
 
                 if (keyboardState.IsKeyDown(Keys.F9)) _collisionLayer.IsVisible = !_collisionLayer.IsVisible;
@@ -233,28 +249,24 @@ namespace OrthoCite.Entities
         {
             
             _positionVirt += new Vector2(0, -1);
-            _textureCharacterSelect = Direction.UP;
         }
 
         private void MoveDownChamp()
         {
             if (_positionVirt.Y >= textMap.Height - 1) return;
             _positionVirt += new Vector2(0, +1);
-            _textureCharacterSelect = Direction.DOWN;
         }
 
         private void MoveLeftChamp()
         {
             if (_positionVirt.X <= 0) return;
             _positionVirt += new Vector2(-1, 0);
-            _textureCharacterSelect = Direction.LEFT;
         }
 
         private void MoveRightChamp()
         {
             if (_positionVirt.X >= textMap.Width - 1) return;
             _positionVirt += new Vector2(+1, 0);
-            _textureCharacterSelect = Direction.RIGHT;
         }
 
         private void MoveTo(Vector2 vec)
