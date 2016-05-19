@@ -20,8 +20,6 @@ namespace OrthoCite.Entities
         List<element> main = new List<element>();
         List<element> enterName = new List<element>();
 
-        private Keys[] lastPressedKeys = new Keys[6];
-
         private string myName = string.Empty;
         RuntimeData _runtimeData;
 
@@ -45,7 +43,7 @@ namespace OrthoCite.Entities
             enterName.Add(new element("joename"));
             enterName.Add(new element("namepdg"));
 
-
+            EventInput.CharEntered += EventInput_CharEntered;
         }
 
         void IEntity.LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
@@ -97,7 +95,6 @@ namespace OrthoCite.Entities
                     {
                         element.Update();
                     }
-                    GetKeys();
                     break;
                 case GameState.inGame:
                     _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
@@ -164,34 +161,16 @@ namespace OrthoCite.Entities
             }
         }
 
-        public void GetKeys()
+        private void EventInput_CharEntered(object sender, CharacterEventArgs e)
         {
-            KeyboardState kbState = Keyboard.GetState();
-
-            Keys[] pressedKeys = kbState.GetPressedKeys();
-
-            foreach (Keys key in lastPressedKeys)
+            if (e.Character == '\b')
             {
-                if (!pressedKeys.Contains(key))
-                {
-                    OnKeyUp(key);
-                }
+                if (myName != "") myName = myName.Remove(myName.Length - 1);
             }
-
-            foreach (Keys key in pressedKeys)
+            else
             {
-                if (!lastPressedKeys.Contains(key))
-                {
-                    OnKeyDown(key);
-                }
+                myName += e.Character;
             }
-
-            lastPressedKeys = pressedKeys;
-        }
-
-        public void OnKeyUp(Keys key)
-        {
-
         }
 
         public void OnKeyDown(Keys key)
@@ -204,8 +183,6 @@ namespace OrthoCite.Entities
             {
                 myName += key.ToString();
             }
-
-
         }
 
     }

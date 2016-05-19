@@ -59,9 +59,12 @@
     <Compile Include="Entities\DialogBox.cs" />
     <Compile Include="Entities\DebugLayer.cs" />
     <Compile Include="Entities\Map.cs" />
+    <Compile Include="Entities\MiniGames\BossGame.cs" />
     <Compile Include="Entities\MiniGames\DoorGame.cs" />
     <Compile Include="Entities\MiniGames\MiniGame.cs" />
     <Compile Include="Entities\MiniGames\Platformer.cs" />
+    <Compile Include="EventInput.cs" />
+    <Compile Include="Helpers\DrawingHelper.cs" />
     <Compile Include="IEntity.cs" />
     <Compile Include="Entities\Menu\Element.cs" />
     <Compile Include="Entities\Menu\MainMenu.cs" />
@@ -69,7 +72,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RuntimeData.cs" />
-    <Compile Include="TextHelper.cs" />
+    <Compile Include="Helpers\TextHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Extended, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -77,15 +80,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="MonoGame.Framework, Version=3.5.1.1679, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MonoGame.Framework.DesktopGL.3.5.1.1679\lib\net40\MonoGame.Framework.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="NVorbis, Version=0.8.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MonoGame.Framework.DesktopGL.3.5.1.1679\lib\net40\NVorbis.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
-      <HintPath>..\packages\MonoGame.Framework.DesktopGL.3.5.1.1679\lib\net40\OpenTK.dll</HintPath>
+      <HintPath>..\packages\MonoGame.Framework.WindowsDX.3.5.1.1679\lib\net40\MonoGame.Framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />

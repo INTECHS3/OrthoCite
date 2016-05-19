@@ -16,7 +16,8 @@ namespace OrthoCite
     {
         MENU,
         MAP,
-        MINIGAME_PLATFORMER
+        MINIGAME_PLATFORMER,
+        MINIGAME_BOSS
     }
 
     /// <summary>
@@ -54,6 +55,7 @@ namespace OrthoCite
             _graphics = new GraphicsDeviceManager(this);
 
             _entities = new List<IEntity>();
+
             ChangeGameContext(GameContext.MENU);
 
 #if DEBUG
@@ -80,6 +82,8 @@ namespace OrthoCite
         /// </summary>
         protected override void Initialize()
         {
+            EventInput.Initialize(Window);
+
             _viewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, SCENE_WIDTH, SCENE_HEIGHT);
             _runtimeData.ViewAdapter = _viewportAdapter;
             _runtimeData.Scene = new Rectangle(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
@@ -181,6 +185,10 @@ namespace OrthoCite
                 case GameContext.MINIGAME_PLATFORMER:
                     Console.WriteLine("platformer minigame");
                     _entities.Add(new Platformer(_runtimeData));
+                    break;
+                case GameContext.MINIGAME_BOSS:
+                    Console.WriteLine("boss minigame");
+                    _entities.Add(new BossGame(_runtimeData));
                     break;
             }
 
