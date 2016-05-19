@@ -24,6 +24,7 @@ namespace OrthoCite
     /// </summary>
     public class OrthoCite : Game
     {
+
         BoxingViewportAdapter _viewportAdapter;
         Camera2D _camera;
         RuntimeData _runtimeData;
@@ -36,7 +37,7 @@ namespace OrthoCite
 
         GameContext _gameContext;
         public bool _gameContextChanged;
-        public int _gidLastForMap;
+        
 
         public static void writeSpacerConsole() => System.Console.WriteLine("===========================================");
         
@@ -53,7 +54,7 @@ namespace OrthoCite
             _graphics = new GraphicsDeviceManager(this);
 
             _entities = new List<IEntity>();
-            ChangeGameContext(GameContext.MAP);
+            ChangeGameContext(GameContext.MENU);
 
 #if DEBUG
             _graphics.PreferredBackBufferWidth = 928;
@@ -168,16 +169,18 @@ namespace OrthoCite
 
             switch (_gameContext)
             {
+                case GameContext.MENU:
+                    Console.WriteLine("Menu");
+                    _entities.Add(new Mainmenu(_runtimeData));
+                    break;
                 case GameContext.MAP:
                     Console.WriteLine("map");
-                    _entities.Add(new Map(_runtimeData, _gidLastForMap));
-                    _entities.Add(new DialogBox(_runtimeData));
-                    _gidLastForMap = 0;
+                    _entities.Add(new Map(_runtimeData));
+                    //_entities.Add(new DialogBox(_runtimeData));
                     break;
                 case GameContext.MINIGAME_PLATFORMER:
                     Console.WriteLine("platformer minigame");
                     _entities.Add(new Platformer(_runtimeData));
-                    _gidLastForMap = 0;
                     break;
             }
 

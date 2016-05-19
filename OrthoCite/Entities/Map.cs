@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Maps.Tiled;
 using MonoGame.Extended;
+using MonoGame.Extended.Animations;
 using System;
 using System.Collections.Generic;
 using System.Collections;
@@ -13,7 +14,6 @@ namespace OrthoCite.Entities
     class Map : IEntity
     {
         RuntimeData _runtimeData;
-
         TiledMap textMap;
         TiledTileLayer _collisionLayer;
         TiledTileLayer _upLayer;
@@ -21,15 +21,21 @@ namespace OrthoCite.Entities
         int _gidStart;
         const int _gidSpawn = 1151;
 
-        int _speed;
-        int _separeTime;
-        const int _maxTime = 5;
+        const int _fastSpeed = 5;
+        const int _lowSpeed = 10;
+        
+        int _separeFrame;
+        int _actualFrame;
+        int _fastFrame;
+        int _lowFrame;
         const int _zoom = 3;
 
         Vector2 _position;
         Vector2 _positionVirt;
-        
 
+        Direction _actualDir;
+        bool _firstUpdate;
+        
         enum Direction
         {
             NONE,
@@ -38,22 +44,27 @@ namespace OrthoCite.Entities
             UP,
             DOWN
         }
-
+        
+        
         Direction _textureCharacterSelect;
         Dictionary<string, Texture2D> _textureCharacter;
 
 
-        public Map(RuntimeData runtimeData, int i)
+        public Map(RuntimeData runtimeData)
         {
             _runtimeData = runtimeData;
-            _gidStart = i;
+            _gidStart = _runtimeData.gidLast;
 
 
             _textureCharacter = new Dictionary<string, Texture2D>();
             _textureCharacterSelect = Direction.NONE;
 
-            _separeTime = 0;
-            _speed = 5;
+            _separeFrame = 0;
+            _lowFrame = _lowSpeed;
+            _fastFrame = _fastSpeed;
+
+            _firstUpdate = true;
+            
         }
 
 
@@ -82,15 +93,15 @@ namespace OrthoCite.Entities
                 {
                     if (i.Id == _gidSpawn) _positionVirt = new Vector2(i.X, i.Y);
                 }
-            }           
-            
+            }
+            _runtimeData.gidLast = 0;
             
 
             _textureCharacter.Add("RightLeft", content.Load<Texture2D>("map/champRightLeft"));
             _textureCharacter.Add("Up", content.Load<Texture2D>("map/champUp"));
             _textureCharacter.Add("Down", content.Load<Texture2D>("map/champDown"));
             _textureCharacter.Add("None", content.Load<Texture2D>("map/champNone"));
-            
+            _actualDir = Direction.NONE;
         }
 
         void IEntity.UnloadContent()
@@ -100,27 +111,57 @@ namespace OrthoCite.Entities
 
         void IEntity.Update(GameTime gameTime, KeyboardState keyboardState, Camera2D camera)
         {
-            camera.Zoom = _zoom;
-            
-
-            if(_separeTime == 0 && keyboardState.GetPressedKeys().Length != 0)
+            if(_firstUpdate)
             {
-                if (keyboardState.IsKeyDown(Keys.Down) && !ColDown()) MoveDownChamp();
-                else if (keyboardState.IsKeyDown(Keys.Up) && !ColUp()) MoveUpChamp();
-                if (keyboardState.IsKeyDown(Keys.Left) && !ColLeft()) MoveLeftChamp();
-                else if (keyboardState.IsKeyDown(Keys.Right) && !ColRight()) MoveRightChamp();
+                camera.Zoom = _zoom;
+                _position = new Vector2(_positionVirt.X * textMap.TileWidth, _positionVirt.Y * textMap.TileHeight);
+                _firstUpdate = !_firstUpdate;
+            }
+            
+            
+            if(_separeFrame == 0 && keyboardState.GetPressedKeys().Length != 0 && _actualDir == Direction.NONE)
+            {
+                if (keyboardState.IsKeyDown(Keys.LeftShift)) _actualFrame = _fastFrame;
+                else _actualFrame = _lowFrame;
+
+                if (keyboardState.IsKeyDown(Keys.Down) && !ColDown()) _actualDir = Direction.DOWN;
+                if (keyboardState.IsKeyDown(Keys.Up) && !ColUp()) _actualDir = Direction.UP;
+                if (keyboardState.IsKeyDown(Keys.Left) && !ColLeft()) _actualDir = Direction.LEFT;
+                if (keyboardState.IsKeyDown(Keys.Right) && !ColRight()) _actualDir = Direction.RIGHT;
+                
 
                 if (keyboardState.IsKeyDown(Keys.F9)) _collisionLayer.IsVisible = !_collisionLayer.IsVisible;
-                _separeTime++;
-            }
-            else  if (_separeTime != 0)
-            {
-                _separeTime++;
-                if (_separeTime >= _maxTime && keyboardState.IsKeyDown(Keys.LeftShift)) _separeTime = 0;
-                else if (_separeTime >= _maxTime * 2)_separeTime = 0;
-            }
 
-            _position = new Vector2(_positionVirt.X * textMap.TileWidth, _positionVirt.Y * textMap.TileHeight);
+                _separeFrame++;
+            }
+            else  if (_separeFrame != 0)
+            {
+
+                if(_separeFrame >= _actualFrame)
+                {
+                    if (_actualDir == Direction.DOWN) MoveDownChamp();
+                    if (_actualDir == Direction.UP) MoveUpChamp();
+                    if (_actualDir == Direction.LEFT) MoveLeftChamp();
+                    if (_actualDir == Direction.RIGHT) MoveRightChamp();
+
+                    _position = new Vector2(_positionVirt.X * textMap.TileWidth, _positionVirt.Y * textMap.TileHeight);
+
+                    _actualDir = Direction.NONE;
+                    _separeFrame = 0;
+                }
+                else
+                {
+                    if (_actualDir == Direction.DOWN) _position.Y += textMap.TileHeight / _actualFrame;
+                    if (_actualDir == Direction.UP) _position.Y += -(textMap.TileHeight / _actualFrame);
+                    if (_actualDir == Direction.LEFT) _position.X += -(textMap.TileWidth / _actualFrame);
+                    if (_actualDir == Direction.RIGHT) _position.X += textMap.TileWidth / _actualFrame;
+
+                   _separeFrame++;
+                }
+            }
+            
+
+            
             camera.LookAt(new Vector2(_position.X, _position.Y));
             //Console.WriteLine($"X : {_positionVirt.X} Y : {_positionVirt.Y} ");
         }
@@ -146,10 +187,7 @@ namespace OrthoCite.Entities
 
         }
         
-        void IEntity.Dispose()
-        {
-            Console.WriteLine($"Disose class : {this.GetType().Name}");
-        }
+        
 
         void IEntity.Execute(params string[] param)
         {
@@ -178,12 +216,12 @@ namespace OrthoCite.Entities
         }
         private bool OutOfScreenRight(Camera2D camera)
         {
-            if (camera.Position.X >= textMap.WidthInPixels - _runtimeData.Scene.Width - _speed) return true;
+            if (camera.Position.X >= textMap.WidthInPixels - _runtimeData.Scene.Width) return true;
             return false;
         }
         private bool OutOfScreenBottom(Camera2D camera)
         {
-            if (camera.Position.Y >= textMap.HeightInPixels - _runtimeData.Scene.Height - _speed) return true;
+            if (camera.Position.Y >= textMap.HeightInPixels - _runtimeData.Scene.Height) return true;
             return false;
         }
 
@@ -193,7 +231,7 @@ namespace OrthoCite.Entities
 
         private void MoveUpChamp()
         {
-            if (_positionVirt.Y <= 0) return;
+            
             _positionVirt += new Vector2(0, -1);
             _textureCharacterSelect = Direction.UP;
         }
@@ -225,7 +263,8 @@ namespace OrthoCite.Entities
         }
         private bool ColUp()
         {
-            foreach(TiledTile i in _collisionLayer.Tiles)
+            if (_positionVirt.Y <= 0) return false;
+            foreach (TiledTile i in _collisionLayer.Tiles)
             {
                 if (i.X == _positionVirt.X && i.Y == _positionVirt.Y - 1 && i.Id == 889) return true;
                 checkIfWeLaunchInstance(i);
@@ -265,7 +304,7 @@ namespace OrthoCite.Entities
         {
             if (i.X == _positionVirt.X && i.Y == _positionVirt.Y - 1 && i.Id == 1165)
             {
-                _runtimeData.OrthoCite._gidLastForMap = 1165;
+                _runtimeData.gidLast = 1165;
                 _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_PLATFORMER);
             }
         }

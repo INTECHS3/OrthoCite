@@ -35,10 +35,7 @@ namespace OrthoCite.Entities.MiniGames
             throw new NotImplementedException();
         }
 
-        public override void Dispose()
-        {
-            throw new NotImplementedException();
-        }
+        
 
         public override void Execute(params string[] param)
         {

@@ -237,10 +237,7 @@ namespace OrthoCite.Entities.MiniGames
             spriteBatch.End();
         }
 
-        public override void Dispose()
-        {
-            System.Console.WriteLine($"Disose class : {this.GetType().Name}");
-        }
+       
 
         public override void Execute(params string[] param)
         {
