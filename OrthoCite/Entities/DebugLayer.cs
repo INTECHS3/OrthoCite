@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -16,12 +17,15 @@ namespace OrthoCite.Entities
         SpriteFont _font;
         Point _mousePosition;
 
-
+        bool _itVisible;
+        int _frameCounter;
 
         public DebugLayer(RuntimeData runtimeData)
         {
             _runtimeData = runtimeData;
             _fpsCounter = new FramesPerSecondCounter();
+            _itVisible = true;
+            _frameCounter = 0;
         }
 
         public void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
@@ -40,21 +44,39 @@ namespace OrthoCite.Entities
 
         public void Update(GameTime gameTime, KeyboardState keyboardState, Camera2D camera)
         {
+            
+            if (keyboardState.IsKeyDown(Keys.F4) && isDrawable()) _itVisible = !_itVisible;
+
             _fpsCounter.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
             _camera = camera;
             var mouseState = Mouse.GetState();
             _mousePosition = _runtimeData.ViewAdapter.PointToScreen(mouseState.X, mouseState.Y);
+            _frameCounter++;
+        }
+
+        private bool isDrawable()
+        {
+            if (_frameCounter >= 10)
+            {
+                _frameCounter = 0;
+                return true;
+            }
+            return false;
         }
 
         public void Draw(SpriteBatch spriteBatch, Matrix frozenMatrix, Matrix cameraMatrix)
         {
-            spriteBatch.Begin(transformMatrix: frozenMatrix);
-            spriteBatch.Draw(_bgRectangle, _rectangleBg, Color.White);
-            spriteBatch.Draw(_bgRectangle, _rectangleBgPosition, Color.White);
-            spriteBatch.DrawString(_font, $"Debug mode - FPS: {_fpsCounter.CurrentFramesPerSecond:0}", new Vector2(10, 10), Color.White);
-            spriteBatch.DrawString(_font, $"Debug mode - Camera Position: X: {_camera.Position.X} Y: {_camera.Position.Y}", new Vector2(10, 30), Color.White);
-            spriteBatch.DrawString(_font, $"Debug mode - Mouse Position: X: {_mousePosition.X} Y: {_mousePosition.Y}", new Vector2(10, 50), Color.White);
-            spriteBatch.End();
+            if(_itVisible)
+            {
+                spriteBatch.Begin(transformMatrix: frozenMatrix);
+                spriteBatch.Draw(_bgRectangle, _rectangleBg, Color.White);
+                spriteBatch.Draw(_bgRectangle, _rectangleBgPosition, Color.White);
+                spriteBatch.DrawString(_font, $"Debug mode - FPS: {_fpsCounter.CurrentFramesPerSecond:0}", new Vector2(10, 10), Color.White);
+                spriteBatch.DrawString(_font, $"Debug mode - Camera Position: X: {_camera.Position.X} Y: {_camera.Position.Y}", new Vector2(10, 30), Color.White);
+                spriteBatch.DrawString(_font, $"Debug mode - Mouse Position: X: {_mousePosition.X} Y: {_mousePosition.Y}", new Vector2(10, 50), Color.White);
+                spriteBatch.End();
+            }
+            
         }
 
         public void Dispose()

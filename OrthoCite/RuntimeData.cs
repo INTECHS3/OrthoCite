@@ -16,7 +16,9 @@ namespace OrthoCite
         DataSave _dataSave;
         ViewportAdapter _viewAdapter;
         readonly OrthoCite _orthoCite;
+
         public int gidLast { set; get; }
+
 
         public RuntimeData(OrthoCite orthoCite)
         {
