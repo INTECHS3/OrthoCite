@@ -108,8 +108,8 @@ namespace OrthoCite.Entities.MiniGames
         public override void Update(GameTime gameTime, KeyboardState keyboardState, Camera2D camera)
         {
             
-            camera.Position = new Vector2(0, 0);
-            camera.Zoom = 1;
+            //camera.Position = new Vector2(0, 0);
+            //camera.Zoom = 1;
 
             if(keyboardState.IsKeyDown(Keys.F12))
             {
@@ -222,7 +222,7 @@ namespace OrthoCite.Entities.MiniGames
 
         public override void Draw(SpriteBatch spriteBatch, Matrix frozenMatrix, Matrix cameraMatrix)
         {
-            spriteBatch.Begin(transformMatrix: cameraMatrix);
+            spriteBatch.Begin(transformMatrix: frozenMatrix);
             spriteBatch.Draw(_background, new Vector2(0, 0), Color.White);
             foreach (var platform in _platforms)
             {
