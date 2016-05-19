@@ -5,6 +5,12 @@ using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Maps.Tiled;
 using MonoGame.Extended;
 using MonoGame.Extended.Animations;
+using MonoGame.Extended.Animations.SpriteSheets;
+using MonoGame.Extended.BitmapFonts;
+using MonoGame.Extended.Collisions;
+using MonoGame.Extended.Sprites;
+using MonoGame.Extended.TextureAtlases;
+using MonoGame.Extended.ViewportAdapters;
 using System;
 using System.Collections.Generic;
 using System.Collections;
@@ -17,6 +23,8 @@ namespace OrthoCite.Entities
         TiledMap textMap;
         TiledTileLayer _collisionLayer;
         TiledTileLayer _upLayer;
+        SpriteSheetAnimator _heroAnimations;
+        Sprite _heroSprite;
 
         int _gidStart;
         const int _gidSpawn = 1151;
@@ -95,7 +103,17 @@ namespace OrthoCite.Entities
                 }
             }
             _runtimeData.gidLast = 0;
-            
+
+            var HeroWalking = content.Load<Texture2D>("animations/Walking");
+            var HeroAtlas = TextureAtlas.Create(HeroWalking, 32, 32);
+            var HeroWalkingFactory = new SpriteSheetAnimationFactory(HeroAtlas);
+            HeroWalkingFactory.Add("idle", new SpriteSheetAnimationData(new[] { 0 }));
+            HeroWalkingFactory.Add("walkSouth", new SpriteSheetAnimationData(new[] { 5, 0, 10, 0 }, isLooping: false));
+            HeroWalkingFactory.Add("walkWest", new SpriteSheetAnimationData(new[] {0 , 0, 0,  0}, isLooping: false));
+            HeroWalkingFactory.Add("walkEast", new SpriteSheetAnimationData(new[] { 32, 26, 37, 26 }, isLooping: false));
+            HeroWalkingFactory.Add("walkNorth", new SpriteSheetAnimationData(new[] { 19, 13, 24, 13 }, isLooping: false));
+            _heroAnimations = new SpriteSheetAnimator(HeroWalkingFactory);
+            _heroSprite = _heroAnimations.CreateSprite(_positionVirt);
 
             _textureCharacter.Add("RightLeft", content.Load<Texture2D>("map/champRightLeft"));
             _textureCharacter.Add("Up", content.Load<Texture2D>("map/champUp"));
@@ -111,7 +129,9 @@ namespace OrthoCite.Entities
 
         void IEntity.Update(GameTime gameTime, KeyboardState keyboardState, Camera2D camera)
         {
-            if(_firstUpdate)
+            var deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            _heroAnimations.Update(deltaSeconds);
+            if (_firstUpdate)
             {
                 camera.Zoom = _zoom;
                 _position = new Vector2(_positionVirt.X * textMap.TileWidth, _positionVirt.Y * textMap.TileHeight);
@@ -127,12 +147,14 @@ namespace OrthoCite.Entities
                 if (keyboardState.IsKeyDown(Keys.Down) && !ColDown())
                 {
                     _actualDir = Direction.DOWN;
-                    _textureCharacterSelect = Direction.DOWN;
+                    _heroAnimations.Play("walkSouth");
                 }
                 if (keyboardState.IsKeyDown(Keys.Up) && !ColUp())
                 {
+                  
                     _actualDir = Direction.UP;
                     _textureCharacterSelect = Direction.UP;
+                    _heroAnimations.Play("walkSouth");
                 }
                 if (keyboardState.IsKeyDown(Keys.Left) && !ColLeft())
                 {
@@ -155,12 +177,30 @@ namespace OrthoCite.Entities
 
                 if(_separeFrame >= _actualFrame)
                 {
-                    if (_actualDir == Direction.DOWN) MoveDownChamp();
-                    if (_actualDir == Direction.UP) MoveUpChamp();
-                    if (_actualDir == Direction.LEFT) MoveLeftChamp();
-                    if (_actualDir == Direction.RIGHT) MoveRightChamp();
-
+                    if (_actualDir == Direction.DOWN)
+                    {
+                        _heroAnimations.Play("walkSouth");
+                        MoveDownChamp();
+                        
+                    }
+                    if (_actualDir == Direction.UP)
+                    {
+                        MoveUpChamp();
+                        _heroAnimations.Play("walkNorth");
+                    }
+                    if (_actualDir == Direction.LEFT)
+                    {
+                        MoveLeftChamp();
+                        _heroAnimations.Play("walkWest");
+                    }
+                    if (_actualDir == Direction.RIGHT)
+                    {
+                        MoveRightChamp();
+                        _heroAnimations.Play("walkEast");
+                    }
+                        
                     _position = new Vector2(_positionVirt.X * textMap.TileWidth, _positionVirt.Y * textMap.TileHeight);
+                    
 
                     _actualDir = Direction.NONE;
                     _separeFrame = 0;
@@ -172,12 +212,14 @@ namespace OrthoCite.Entities
                     if (_actualDir == Direction.LEFT) _position.X += -(textMap.TileWidth / _actualFrame);
                     if (_actualDir == Direction.RIGHT) _position.X += textMap.TileWidth / _actualFrame;
 
+
                    _separeFrame++;
                 }
+                
             }
-            
 
             
+            _heroSprite.Position = new Vector2(_position.X + textMap.TileWidth / 2, _position.Y + textMap.TileHeight / 2);
             camera.LookAt(new Vector2(_position.X, _position.Y));
             //Console.WriteLine($"X : {_positionVirt.X} Y : {_positionVirt.Y} ");
         }
@@ -188,17 +230,18 @@ namespace OrthoCite.Entities
 
             _upLayer.IsVisible = false;
             spriteBatch.Draw(textMap);
+            spriteBatch.Draw(_heroSprite);
             
 
-            if (_textureCharacterSelect == Direction.RIGHT || _textureCharacterSelect == Direction.LEFT) spriteBatch.Draw(_textureCharacter["RightLeft"], _position, null, null, null, 0, null, null, _textureCharacterSelect == Direction.LEFT ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
-            else if (_textureCharacterSelect == Direction.UP) spriteBatch.Draw(_textureCharacter["Up"], _position, Color.White);
-            else if (_textureCharacterSelect == Direction.DOWN) spriteBatch.Draw(_textureCharacter["Down"], _position, Color.White);
-            else if (_textureCharacterSelect == Direction.NONE) spriteBatch.Draw(_textureCharacter["None"], _position, Color.White);
+            //if (_textureCharacterSelect == Direction.RIGHT || _textureCharacterSelect == Direction.LEFT) spriteBatch.Draw(_textureCharacter["RightLeft"], _position, null, null, null, 0, null, null, _textureCharacterSelect == Direction.LEFT ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
+            //else if (_textureCharacterSelect == Direction.UP) _heroAnimations.Play("walkNorth");
+            //else if (_textureCharacterSelect == Direction.DOWN) _heroAnimations.Play("walkSouth");
+            //else if (_textureCharacterSelect == Direction.NONE) spriteBatch.Draw(_textureCharacter["None"], _position, Color.White);
 
 
             _upLayer.IsVisible = true;
             _upLayer.Draw(spriteBatch);
-
+            
             spriteBatch.End();
 
         }
