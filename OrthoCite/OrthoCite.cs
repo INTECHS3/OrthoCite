@@ -176,13 +176,11 @@ namespace OrthoCite
                 case GameContext.MAP:
                     Console.WriteLine("map");
                     _entities.Add(new Map(_runtimeData));
-                    _entities.Add(new DialogBox(_runtimeData));
-                    
+                    //_entities.Add(new DialogBox(_runtimeData));
                     break;
                 case GameContext.MINIGAME_PLATFORMER:
                     Console.WriteLine("platformer minigame");
                     _entities.Add(new Platformer(_runtimeData));
-                    
                     break;
             }
 

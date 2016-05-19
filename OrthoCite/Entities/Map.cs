@@ -23,7 +23,7 @@ namespace OrthoCite.Entities
 
         const int _fastSpeed = 5;
         const int _lowSpeed = 10;
-
+        
         int _separeFrame;
         int _actualFrame;
         int _fastFrame;
@@ -35,7 +35,7 @@ namespace OrthoCite.Entities
 
         Direction _actualDir;
         bool _firstUpdate;
-
+        
         enum Direction
         {
             NONE,
@@ -45,7 +45,7 @@ namespace OrthoCite.Entities
             DOWN
         }
         
-
+        
         Direction _textureCharacterSelect;
         Dictionary<string, Texture2D> _textureCharacter;
 
@@ -231,7 +231,7 @@ namespace OrthoCite.Entities
 
         private void MoveUpChamp()
         {
-            if (_positionVirt.Y <= 0) return;
+            
             _positionVirt += new Vector2(0, -1);
             _textureCharacterSelect = Direction.UP;
         }
@@ -263,7 +263,8 @@ namespace OrthoCite.Entities
         }
         private bool ColUp()
         {
-            foreach(TiledTile i in _collisionLayer.Tiles)
+            if (_positionVirt.Y <= 0) return false;
+            foreach (TiledTile i in _collisionLayer.Tiles)
             {
                 if (i.X == _positionVirt.X && i.Y == _positionVirt.Y - 1 && i.Id == 889) return true;
                 checkIfWeLaunchInstance(i);
