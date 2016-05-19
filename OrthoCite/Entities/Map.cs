@@ -17,7 +17,7 @@ namespace OrthoCite.Entities
         TiledMap textMap;
         TiledTileLayer _collisionLayer;
         TiledTileLayer _upLayer;
-
+        
         int _gidStart;
         const int _gidSpawn = 1151;
 
@@ -117,31 +117,30 @@ namespace OrthoCite.Entities
                 _position = new Vector2(_positionVirt.X * textMap.TileWidth, _positionVirt.Y * textMap.TileHeight);
                 _firstUpdate = !_firstUpdate;
             }
-            
-            
+
             if(_separeFrame == 0 && keyboardState.GetPressedKeys().Length != 0 && _actualDir == Direction.NONE)
             {
                 if (keyboardState.IsKeyDown(Keys.LeftShift)) _actualFrame = _fastFrame;
                 else _actualFrame = _lowFrame;
 
-                if (keyboardState.IsKeyDown(Keys.Down) && !ColDown())
+                if (keyboardState.IsKeyDown(Keys.Down))
                 {
-                    _actualDir = Direction.DOWN;
+                    if(!ColDown()) _actualDir = Direction.DOWN;
                     _textureCharacterSelect = Direction.DOWN;
                 }
-                if (keyboardState.IsKeyDown(Keys.Up) && !ColUp())
+                if (keyboardState.IsKeyDown(Keys.Up))
                 {
-                    _actualDir = Direction.UP;
+                    if(!ColUp()) _actualDir = Direction.UP;
                     _textureCharacterSelect = Direction.UP;
                 }
-                if (keyboardState.IsKeyDown(Keys.Left) && !ColLeft())
+                if (keyboardState.IsKeyDown(Keys.Left))
                 {
-                    _actualDir = Direction.LEFT;
+                    if(!ColLeft()) _actualDir = Direction.LEFT;
                     _textureCharacterSelect = Direction.LEFT;
                 }
-                if (keyboardState.IsKeyDown(Keys.Right) && !ColRight())
+                if (keyboardState.IsKeyDown(Keys.Right))
                 {
-                    _actualDir = Direction.RIGHT;
+                    if(!ColRight())_actualDir = Direction.RIGHT;
                     _textureCharacterSelect = Direction.RIGHT;
                 }
                 
@@ -175,10 +174,8 @@ namespace OrthoCite.Entities
                    _separeFrame++;
                 }
             }
-            
 
-            
-            camera.LookAt(new Vector2(_position.X, _position.Y));
+            checkCamera(camera);
             //Console.WriteLine($"X : {_positionVirt.X} Y : {_positionVirt.Y} ");
         }
 
@@ -212,7 +209,7 @@ namespace OrthoCite.Entities
             {
                 case "movePlayer":
                     try{ MoveTo(new Vector2(Int32.Parse(param[1]), Int32.Parse(param[2]))); }
-                    catch { Console.WriteLine("Bad Params => movePlayer {x] {y}"); }
+                    catch { Console.WriteLine("use : movePlayer {x] {y}"); }
                     break;
                 default:
                     Console.WriteLine("Can't find method to invoke in Map Class");
@@ -220,24 +217,40 @@ namespace OrthoCite.Entities
             }
         }
 
+        private void checkCamera(Camera2D camera)
+        {
+            camera.LookAt(new Vector2(_position.X, _position.Y));
+            if (OutOfScreenTop(camera)) camera.LookAt(new Vector2(_position.X, -_runtimeData.Scene.Height / _zoom + _runtimeData.Scene.Height / 2));
+            if (OutOfScreenLeft(camera)) camera.LookAt(new Vector2(-_runtimeData.Scene.Width / _zoom + _runtimeData.Scene.Width / 2, _position.Y));
+            if (OutOfScreenRight(camera)) camera.LookAt(new Vector2(textMap.WidthInPixels - (_runtimeData.Scene.Width / _zoom) * 2 + _runtimeData.Scene.Width / 2, _position.Y));
+            if (OutOfScreenBottom(camera)) camera.LookAt(new Vector2(_position.X, textMap.HeightInPixels - (_runtimeData.Scene.Height / _zoom) * 2 + _runtimeData.Scene.Height / 2));
+
+            if (OutOfScreenLeft(camera) && OutOfScreenBottom(camera)) camera.LookAt(new Vector2(-_runtimeData.Scene.Width / _zoom + _runtimeData.Scene.Width / 2, textMap.HeightInPixels - (_runtimeData.Scene.Height / _zoom) * 2 + _runtimeData.Scene.Height / 2));
+            if (OutOfScreenLeft(camera) && OutOfScreenTop(camera)) camera.LookAt(new Vector2(-_runtimeData.Scene.Width / _zoom + _runtimeData.Scene.Width / 2, -_runtimeData.Scene.Height / _zoom + _runtimeData.Scene.Height / 2));
+
+            if (OutOfScreenRight(camera) && OutOfScreenTop(camera)) camera.LookAt(new Vector2(textMap.WidthInPixels - (_runtimeData.Scene.Width / _zoom) * 2 + _runtimeData.Scene.Width / 2, textMap.HeightInPixels - (_runtimeData.Scene.Height / _zoom) * 2 + _runtimeData.Scene.Height / 2));
+            if (OutOfScreenRight(camera) && OutOfScreenBottom(camera)) camera.LookAt(new Vector2(textMap.WidthInPixels - (_runtimeData.Scene.Width / _zoom) * 2 + _runtimeData.Scene.Width / 2, -_runtimeData.Scene.Height / _zoom + _runtimeData.Scene.Height / 2));
+
+        }
+
         private bool OutOfScreenTop(Camera2D camera)
         {
-            if(camera.Position.Y <= 0) return true;
+            if(camera.Position.Y < -_runtimeData.Scene.Height / _zoom) return true;
             return false;
         }
         private bool OutOfScreenLeft(Camera2D camera)
         {
-            if (camera.Position.X <= 0) return true;
+            if (camera.Position.X <= -_runtimeData.Scene.Width / _zoom) return true;
             return false;
         }
         private bool OutOfScreenRight(Camera2D camera)
         {
-            if (camera.Position.X >= textMap.WidthInPixels - _runtimeData.Scene.Width) return true;
+            if (camera.Position.X >= textMap.WidthInPixels - (_runtimeData.Scene.Width / _zoom) * 2) return true;
             return false;
         }
         private bool OutOfScreenBottom(Camera2D camera)
         {
-            if (camera.Position.Y >= textMap.HeightInPixels - _runtimeData.Scene.Height) return true;
+            if (camera.Position.Y >= textMap.HeightInPixels - (_runtimeData.Scene.Height / _zoom) * 2) return true;
             return false;
         }
 
@@ -253,19 +266,16 @@ namespace OrthoCite.Entities
 
         private void MoveDownChamp()
         {
-            if (_positionVirt.Y >= textMap.Height - 1) return;
             _positionVirt += new Vector2(0, +1);
         }
 
         private void MoveLeftChamp()
         {
-            if (_positionVirt.X <= 0) return;
             _positionVirt += new Vector2(-1, 0);
         }
 
         private void MoveRightChamp()
         {
-            if (_positionVirt.X >= textMap.Width - 1) return;
             _positionVirt += new Vector2(+1, 0);
         }
 
@@ -273,9 +283,10 @@ namespace OrthoCite.Entities
         {
             _positionVirt = vec;
         }
+
         private bool ColUp()
         {
-            if (_positionVirt.Y <= 0) return false;
+            if (_positionVirt.Y <= 0) return true;
             foreach (TiledTile i in _collisionLayer.Tiles)
             {
                 if (i.X == _positionVirt.X && i.Y == _positionVirt.Y - 1 && i.Id == 889) return true;
@@ -287,6 +298,8 @@ namespace OrthoCite.Entities
 
         private bool ColDown()
         {
+
+            if (_positionVirt.Y >= textMap.Height - 1) return true;
             foreach (TiledTile i in _collisionLayer.Tiles)
             {
                 if (i.X == _positionVirt.X && i.Y == _positionVirt.Y + 1 && i.Id == 889) return true;
@@ -296,6 +309,7 @@ namespace OrthoCite.Entities
 
         private bool ColLeft()
         {
+            if (_positionVirt.X <= 0) return true;
             foreach (TiledTile i in _collisionLayer.Tiles)
             {
                 if (i.X == _positionVirt.X - 1 && i.Y == _positionVirt.Y && i.Id == 889) return true;
@@ -305,6 +319,7 @@ namespace OrthoCite.Entities
 
         private bool ColRight()
         {
+            if (_positionVirt.X >= textMap.Width - 1) return true;
             foreach (TiledTile i in _collisionLayer.Tiles)
             {
                 if (i.X == _positionVirt.X + 1 && i.Y == _positionVirt.Y && i.Id == 889) return true;
