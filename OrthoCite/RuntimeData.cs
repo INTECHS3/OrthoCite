@@ -17,6 +17,7 @@ namespace OrthoCite
         ViewportAdapter _viewAdapter;
         readonly OrthoCite _orthoCite;
 
+        public GameTime GameTime { set; get; }
         public int gidLast { set; get; }
 
 

@@ -147,6 +147,7 @@ namespace OrthoCite
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+            _runtimeData.GameTime = gameTime;
             _graphics.GraphicsDevice.Clear(Color.Black);
             
             foreach (var entity in _entities)

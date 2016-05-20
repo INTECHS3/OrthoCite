@@ -31,8 +31,8 @@ namespace OrthoCite.Entities
         int _gidStart;
         const int _gidSpawn = 1151;
 
-        const int _fastSpeed = 5;
-        const int _lowSpeed = 10;
+        const int _fastSpeed = 8;
+        const int _lowSpeed = 13;
         
         int _separeFrame;
         int _actualFrame;
@@ -44,6 +44,7 @@ namespace OrthoCite.Entities
         Vector2 _positionVirt;
 
         Direction _actualDir;
+        Direction _lastDir;
         bool _firstUpdate;
         
         enum Direction
@@ -69,7 +70,6 @@ namespace OrthoCite.Entities
             _firstUpdate = true;
             
         }
-
 
         void IEntity.LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
         {
@@ -105,7 +105,7 @@ namespace OrthoCite.Entities
 
             HeroWalkingFactory.Add(Direction.NONE.ToString(), new SpriteSheetAnimationData(new[] { 0 }));
             HeroWalkingFactory.Add(Direction.DOWN.ToString(), new SpriteSheetAnimationData(new[] { 5, 0, 10, 0 }, isLooping: false));
-            HeroWalkingFactory.Add(Direction.LEFT.ToString(), new SpriteSheetAnimationData(new[] {0 , 0, 0,  0}, isLooping: false));
+            HeroWalkingFactory.Add(Direction.LEFT.ToString(), new SpriteSheetAnimationData(new[] {32 , 26, 37,  26}, isLooping: false));
             HeroWalkingFactory.Add(Direction.RIGHT.ToString(), new SpriteSheetAnimationData(new[] { 32, 26, 37, 26 }, isLooping: false));
             HeroWalkingFactory.Add(Direction.UP.ToString(), new SpriteSheetAnimationData(new[] { 19, 13, 24, 13 }, isLooping: false));
 
@@ -113,6 +113,7 @@ namespace OrthoCite.Entities
             _heroSprite = _heroAnimations.CreateSprite(_positionVirt);
 
             _actualDir = Direction.NONE;
+            _lastDir = _actualDir;
         }
 
         void IEntity.UnloadContent()
@@ -139,7 +140,12 @@ namespace OrthoCite.Entities
             spriteBatch.Begin(transformMatrix: cameraMatrix);
 
             _upLayer.IsVisible = false;
-            spriteBatch.Draw(textMap);
+
+
+            spriteBatch.Draw(textMap, gameTime: _runtimeData.GameTime);
+
+            if(_lastDir == Direction.LEFT) _heroSprite.Effect = SpriteEffects.FlipHorizontally;
+            else _heroSprite.Effect = SpriteEffects.None;
 
             spriteBatch.Draw(_heroSprite);
 
@@ -167,12 +173,6 @@ namespace OrthoCite.Entities
             }
         }
 
-        ~Map()
-        {
-            //Destruct Map element and save data.
-            Console.WriteLine($"A developper destroy us : {this.GetType().Name} :'(");
-        }
-
         private void checkMove(KeyboardState keyboardState, Camera2D camera)
         {
             if (_firstUpdate)
@@ -190,22 +190,26 @@ namespace OrthoCite.Entities
                 if (keyboardState.IsKeyDown(Keys.Down))
                 {
                     if (!ColDown()) _actualDir = Direction.DOWN;
+                    _lastDir = _actualDir;
                     _heroAnimations.Play(Direction.DOWN.ToString());
 
                 }
                 if (keyboardState.IsKeyDown(Keys.Up))
                 {
                     if (!ColUp()) _actualDir = Direction.UP;
+                    _lastDir = _actualDir;
                     _heroAnimations.Play(Direction.UP.ToString());
                 }
                 if (keyboardState.IsKeyDown(Keys.Left))
                 {
                     if (!ColLeft()) _actualDir = Direction.LEFT;
+                    _lastDir = _actualDir;
                     _heroAnimations.Play(Direction.LEFT.ToString());
                 }
                 if (keyboardState.IsKeyDown(Keys.Right))
                 {
                     if (!ColRight()) _actualDir = Direction.RIGHT;
+                    _lastDir = _actualDir;
                     _heroAnimations.Play(Direction.RIGHT.ToString());
                 }
 
