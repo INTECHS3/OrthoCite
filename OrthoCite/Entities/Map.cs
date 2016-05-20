@@ -55,19 +55,12 @@ namespace OrthoCite.Entities
             DOWN
         }
         
-        
-        Direction _textureCharacterSelect;
-        Dictionary<string, Texture2D> _textureCharacter;
 
 
         public Map(RuntimeData runtimeData)
         {
             _runtimeData = runtimeData;
             _gidStart = _runtimeData.gidLast;
-
-
-            _textureCharacter = new Dictionary<string, Texture2D>();
-            _textureCharacterSelect = Direction.NONE;
 
             _separeFrame = 0;
             _lowFrame = _lowSpeed;
@@ -109,118 +102,33 @@ namespace OrthoCite.Entities
             var HeroWalking = content.Load<Texture2D>("animations/Walking");
             var HeroAtlas = TextureAtlas.Create(HeroWalking, 32, 32);
             var HeroWalkingFactory = new SpriteSheetAnimationFactory(HeroAtlas);
-            HeroWalkingFactory.Add("idle", new SpriteSheetAnimationData(new[] { 0 }));
-            HeroWalkingFactory.Add("walkSouth", new SpriteSheetAnimationData(new[] { 5, 0, 10, 0 }, isLooping: false));
-            HeroWalkingFactory.Add("walkWest", new SpriteSheetAnimationData(new[] {0 , 0, 0,  0}, isLooping: false));
-            HeroWalkingFactory.Add("walkEast", new SpriteSheetAnimationData(new[] { 32, 26, 37, 26 }, isLooping: false));
-            HeroWalkingFactory.Add("walkNorth", new SpriteSheetAnimationData(new[] { 19, 13, 24, 13 }, isLooping: false));
+
+            HeroWalkingFactory.Add(Direction.NONE.ToString(), new SpriteSheetAnimationData(new[] { 0 }));
+            HeroWalkingFactory.Add(Direction.DOWN.ToString(), new SpriteSheetAnimationData(new[] { 5, 0, 10, 0 }, isLooping: false));
+            HeroWalkingFactory.Add(Direction.LEFT.ToString(), new SpriteSheetAnimationData(new[] {0 , 0, 0,  0}, isLooping: false));
+            HeroWalkingFactory.Add(Direction.RIGHT.ToString(), new SpriteSheetAnimationData(new[] { 32, 26, 37, 26 }, isLooping: false));
+            HeroWalkingFactory.Add(Direction.UP.ToString(), new SpriteSheetAnimationData(new[] { 19, 13, 24, 13 }, isLooping: false));
+
             _heroAnimations = new SpriteSheetAnimator(HeroWalkingFactory);
             _heroSprite = _heroAnimations.CreateSprite(_positionVirt);
 
-            _textureCharacter.Add("RightLeft", content.Load<Texture2D>("map/champRightLeft"));
-            _textureCharacter.Add("Up", content.Load<Texture2D>("map/champUp"));
-            _textureCharacter.Add("Down", content.Load<Texture2D>("map/champDown"));
-            _textureCharacter.Add("None", content.Load<Texture2D>("map/champNone"));
             _actualDir = Direction.NONE;
         }
 
         void IEntity.UnloadContent()
         {
-
+            
         }
 
         void IEntity.Update(GameTime gameTime, KeyboardState keyboardState, Camera2D camera)
         {
             var deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            _heroAnimations.Update(deltaSeconds);
-            if (_firstUpdate)
-            {
-                camera.Zoom = _zoom;
-                _position = new Vector2(_positionVirt.X * textMap.TileWidth, _positionVirt.Y * textMap.TileHeight);
-                _firstUpdate = !_firstUpdate;
-            }
 
-            if(_separeFrame == 0 && keyboardState.GetPressedKeys().Length != 0 && _actualDir == Direction.NONE)
-            {
-                if (keyboardState.IsKeyDown(Keys.LeftShift)) _actualFrame = _fastFrame;
-                else _actualFrame = _lowFrame;
-
-                if (keyboardState.IsKeyDown(Keys.Down))
-                {
-                    if (!ColDown()) _actualDir = Direction.DOWN;
-                    _heroAnimations.Play("walkSouth");
-                }
-                if (keyboardState.IsKeyDown(Keys.Up))
-                {
-                    if(!ColUp()) _actualDir = Direction.UP;
-                    _textureCharacterSelect = Direction.UP;
-                    _heroAnimations.Play("walkNorth");
-                }
-                if (keyboardState.IsKeyDown(Keys.Left))
-                {
-                    if(!ColLeft()) _actualDir = Direction.LEFT;
-                    _textureCharacterSelect = Direction.LEFT;
-                }
-                if (keyboardState.IsKeyDown(Keys.Right))
-                {
-                    if(!ColRight())_actualDir = Direction.RIGHT;
-                    _textureCharacterSelect = Direction.RIGHT;
-                }
-                
-
-                if (keyboardState.IsKeyDown(Keys.F9)) _collisionLayer.IsVisible = !_collisionLayer.IsVisible;
-
-                _separeFrame++;
-            }
-            else  if (_separeFrame != 0)
-            {
-
-                if(_separeFrame >= _actualFrame)
-                {
-                    if (_actualDir == Direction.DOWN)
-                    {
-                        _heroAnimations.Play("walkSouth");
-                        MoveDownChamp();
-                        
-                    }
-                    if (_actualDir == Direction.UP)
-                    {
-                        MoveUpChamp();
-                        _heroAnimations.Play("walkNorth");
-                    }
-                    if (_actualDir == Direction.LEFT)
-                    {
-                        MoveLeftChamp();
-                        _heroAnimations.Play("walkWest");
-                    }
-                    if (_actualDir == Direction.RIGHT)
-                    {
-                        MoveRightChamp();
-                        _heroAnimations.Play("walkEast");
-                    }
-                        
-                    _position = new Vector2(_positionVirt.X * textMap.TileWidth, _positionVirt.Y * textMap.TileHeight);
-                    
-
-                    _actualDir = Direction.NONE;
-                    _separeFrame = 0;
-                }
-                else
-                {
-                    if (_actualDir == Direction.DOWN) _position.Y += textMap.TileHeight / _actualFrame;
-                    if (_actualDir == Direction.UP) _position.Y += -(textMap.TileHeight / _actualFrame);
-                    if (_actualDir == Direction.LEFT) _position.X += -(textMap.TileWidth / _actualFrame);
-                    if (_actualDir == Direction.RIGHT) _position.X += textMap.TileWidth / _actualFrame;
-
-
-                   _separeFrame++;
-                }
-                
-            }
-
-
+            checkMove(keyboardState, camera);
             
+            _heroAnimations.Update(deltaSeconds);
             _heroSprite.Position = new Vector2(_position.X + textMap.TileWidth / 2, _position.Y + textMap.TileHeight / 2);
+
             checkCamera(camera);
 
             //Console.WriteLine($"X : {_positionVirt.X} Y : {_positionVirt.Y} ");
@@ -232,14 +140,8 @@ namespace OrthoCite.Entities
 
             _upLayer.IsVisible = false;
             spriteBatch.Draw(textMap);
+
             spriteBatch.Draw(_heroSprite);
-            
-
-            //if (_textureCharacterSelect == Direction.RIGHT || _textureCharacterSelect == Direction.LEFT) spriteBatch.Draw(_textureCharacter["RightLeft"], _position, null, null, null, 0, null, null, _textureCharacterSelect == Direction.LEFT ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
-            //else if (_textureCharacterSelect == Direction.UP) _heroAnimations.Play("walkNorth");
-            //else if (_textureCharacterSelect == Direction.DOWN) _heroAnimations.Play("walkSouth");
-            //else if (_textureCharacterSelect == Direction.NONE) spriteBatch.Draw(_textureCharacter["None"], _position, Color.White);
-
 
             _upLayer.IsVisible = true;
             _upLayer.Draw(spriteBatch);
@@ -262,6 +164,114 @@ namespace OrthoCite.Entities
                 default:
                     Console.WriteLine("Can't find method to invoke in Map Class");
                     break;
+            }
+        }
+
+        ~Map()
+        {
+            //Destruct Map element and save data.
+            Console.WriteLine($"A developper destroy us : {this.GetType().Name} :'(");
+        }
+
+        private void checkMove(KeyboardState keyboardState, Camera2D camera)
+        {
+            if (_firstUpdate)
+            {
+                camera.Zoom = _zoom;
+                _position = new Vector2(_positionVirt.X * textMap.TileWidth, _positionVirt.Y * textMap.TileHeight);
+                _firstUpdate = !_firstUpdate;
+            }
+
+            if (_separeFrame == 0 && keyboardState.GetPressedKeys().Length != 0 && _actualDir == Direction.NONE)
+            {
+                if (keyboardState.IsKeyDown(Keys.LeftShift)) _actualFrame = _fastFrame;
+                else _actualFrame = _lowFrame;
+
+                if (keyboardState.IsKeyDown(Keys.Down))
+                {
+                    if (!ColDown()) _actualDir = Direction.DOWN;
+                    _heroAnimations.Play(Direction.DOWN.ToString());
+
+                }
+                if (keyboardState.IsKeyDown(Keys.Up))
+                {
+                    if (!ColUp()) _actualDir = Direction.UP;
+                    _heroAnimations.Play(Direction.UP.ToString());
+                }
+                if (keyboardState.IsKeyDown(Keys.Left))
+                {
+                    if (!ColLeft()) _actualDir = Direction.LEFT;
+                    _heroAnimations.Play(Direction.LEFT.ToString());
+                }
+                if (keyboardState.IsKeyDown(Keys.Right))
+                {
+                    if (!ColRight()) _actualDir = Direction.RIGHT;
+                    _heroAnimations.Play(Direction.RIGHT.ToString());
+                }
+
+
+                if (keyboardState.IsKeyDown(Keys.F9)) _collisionLayer.IsVisible = !_collisionLayer.IsVisible;
+
+                _separeFrame++;
+            }
+            else if (_separeFrame != 0)
+            {
+
+                if (_separeFrame >= _actualFrame)
+                {
+                    if (_actualDir == Direction.DOWN)
+                    {
+                        _heroAnimations.Play(Direction.DOWN.ToString());
+                        MoveDownChamp();
+
+                    }
+                    if (_actualDir == Direction.UP)
+                    {
+                        MoveUpChamp();
+                        _heroAnimations.Play(Direction.UP.ToString());
+                    }
+                    if (_actualDir == Direction.LEFT)
+                    {
+                        MoveLeftChamp();
+                        _heroAnimations.Play(Direction.LEFT.ToString());
+                    }
+                    if (_actualDir == Direction.RIGHT)
+                    {
+                        MoveRightChamp();
+                        _heroAnimations.Play(Direction.RIGHT.ToString());
+                    }
+
+                    _position = new Vector2(_positionVirt.X * textMap.TileWidth, _positionVirt.Y * textMap.TileHeight);
+
+
+                    _actualDir = Direction.NONE;
+                    _separeFrame = 0;
+                }
+                else
+                {
+                    if (_actualDir == Direction.DOWN)
+                    {
+                        _position.Y += textMap.TileHeight / _actualFrame;
+                        _heroAnimations.Play(Direction.DOWN.ToString());
+                    }
+                    if (_actualDir == Direction.UP)
+                    {
+                        _position.Y += -(textMap.TileHeight / _actualFrame);
+                        _heroAnimations.Play(Direction.UP.ToString());
+                    }
+                    if (_actualDir == Direction.LEFT)
+                    {
+                        _position.X += -(textMap.TileWidth / _actualFrame);
+                        _heroAnimations.Play(Direction.LEFT.ToString());
+                    }
+                    if (_actualDir == Direction.RIGHT)
+                    {
+                        _position.X += textMap.TileWidth / _actualFrame;
+                        _heroAnimations.Play(Direction.RIGHT.ToString());
+                    }
+                    _separeFrame++;
+                }
+
             }
         }
 
@@ -301,10 +311,6 @@ namespace OrthoCite.Entities
             if (camera.Position.Y >= textMap.HeightInPixels - (_runtimeData.Scene.Height / _zoom) * 2) return true;
             return false;
         }
-
-       
-
-        
 
         private void MoveUpChamp()
         {
