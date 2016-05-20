@@ -190,26 +190,26 @@ namespace OrthoCite.Entities
                 if (keyboardState.IsKeyDown(Keys.Down))
                 {
                     if (!ColDown()) _actualDir = Direction.DOWN;
-                    _lastDir = _actualDir;
+                    _lastDir = Direction.DOWN;
                     _heroAnimations.Play(Direction.DOWN.ToString());
 
                 }
                 if (keyboardState.IsKeyDown(Keys.Up))
                 {
                     if (!ColUp()) _actualDir = Direction.UP;
-                    _lastDir = _actualDir;
+                    _lastDir = Direction.UP;
                     _heroAnimations.Play(Direction.UP.ToString());
                 }
                 if (keyboardState.IsKeyDown(Keys.Left))
                 {
                     if (!ColLeft()) _actualDir = Direction.LEFT;
-                    _lastDir = _actualDir;
+                    _lastDir = Direction.LEFT;
                     _heroAnimations.Play(Direction.LEFT.ToString());
                 }
                 if (keyboardState.IsKeyDown(Keys.Right))
                 {
                     if (!ColRight()) _actualDir = Direction.RIGHT;
-                    _lastDir = _actualDir;
+                    _lastDir = Direction.RIGHT;
                     _heroAnimations.Play(Direction.RIGHT.ToString());
                 }
 
