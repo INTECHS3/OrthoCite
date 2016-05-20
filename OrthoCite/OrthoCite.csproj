@@ -56,10 +56,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="DataSave.cs" />
+    <Compile Include="Entities\Lives.cs" />
     <Compile Include="Entities\DialogBox.cs" />
     <Compile Include="Entities\DebugLayer.cs" />
     <Compile Include="Entities\Map.cs" />
-    <Compile Include="Entities\MiniGames\BossGame.cs" />
+    <Compile Include="Entities\MiniGames\Boss\BossGame.cs" />
     <Compile Include="Entities\MiniGames\DoorGame.cs" />
     <Compile Include="Entities\MiniGames\MiniGame.cs" />
     <Compile Include="Entities\MiniGames\Platformer.cs" />
