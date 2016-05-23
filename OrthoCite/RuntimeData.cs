@@ -16,6 +16,7 @@ namespace OrthoCite
         Rectangle _scene;
         DataSave _dataSave;
         ViewportAdapter _viewAdapter;
+        DialogBox _dialogBox;
         readonly OrthoCite _orthoCite;
 
         public GameTime GameTime { set; get; }
@@ -54,12 +55,17 @@ namespace OrthoCite
             get { return _lives; }
             set { _lives = value; }
         }
-
+        
         public Map Map
         {
             get { return map; }
             set { map = value; }
         }
-        
+       
+        public DialogBox DialogBox
+        {
+            get { return _dialogBox; }
+            set { _dialogBox = value; }
+        }
     }
 }
