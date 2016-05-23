@@ -7,6 +7,7 @@ using MonoGame.Extended;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended.ViewportAdapters;
+using OrthoCite.Entities;
 
 namespace OrthoCite
 {
@@ -15,6 +16,7 @@ namespace OrthoCite
         Rectangle _scene;
         DataSave _dataSave;
         ViewportAdapter _viewAdapter;
+        DialogBox _dialogBox;
         readonly OrthoCite _orthoCite;
 
         public GameTime GameTime { set; get; }
@@ -51,6 +53,12 @@ namespace OrthoCite
         {
             get { return _lives; }
             set { _lives = value; }
+        }
+
+        public DialogBox DialogBox
+        {
+            get { return _dialogBox; }
+            set { _dialogBox = value; }
         }
     }
 }
