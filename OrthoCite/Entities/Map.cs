@@ -4,19 +4,16 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Maps.Tiled;
 using MonoGame.Extended;
-using MonoGame.Extended.Animations;
 using MonoGame.Extended.Animations.SpriteSheets;
-using MonoGame.Extended.BitmapFonts;
-using MonoGame.Extended.Collisions;
 using MonoGame.Extended.Sprites;
 using MonoGame.Extended.TextureAtlases;
-using MonoGame.Extended.ViewportAdapters;
 using System;
-using System.Collections.Generic;
-using System.Collections;
+
 
 namespace OrthoCite.Entities
 {
+    
+
     class Map : IEntity
     {
         RuntimeData _runtimeData;
@@ -24,10 +21,9 @@ namespace OrthoCite.Entities
         TiledTileLayer _collisionLayer;
         TiledTileLayer _upLayer;
 
-        SpriteSheetAnimator _heroAnimations;
-        Sprite _heroSprite;
 
-
+        Helpers.Player _player;
+  
         int _gidStart;
         const int _gidSpawn = 1151;
 
@@ -39,25 +35,9 @@ namespace OrthoCite.Entities
         int _fastFrame;
         int _lowFrame;
         const int _zoom = 3;
-
-        Vector2 _position;
-        Vector2 _positionVirt;
-
-        Direction _actualDir;
-        Direction _lastDir;
         bool _firstUpdate;
+       
         
-        enum Direction
-        {
-            NONE,
-            LEFT,
-            RIGHT,
-            UP,
-            DOWN
-        }
-        
-
-
         public Map(RuntimeData runtimeData)
         {
             _runtimeData = runtimeData;
@@ -68,7 +48,9 @@ namespace OrthoCite.Entities
             _fastFrame = _fastSpeed;
 
             _firstUpdate = true;
-            
+
+            _player = new Helpers.Player(Helpers.TypePlayer.WithSpriteSheet, new Vector2(0, 0), _runtimeData, "animations/walking");
+
         }
 
         void IEntity.LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
@@ -86,34 +68,27 @@ namespace OrthoCite.Entities
             {
                 foreach (TiledTile i in _collisionLayer.Tiles)
                 {
-                    if (i.Id == _gidStart) _positionVirt = new Vector2(i.X, i.Y + 1);
+                    if (i.Id == _gidStart) _player.positionVirt = new Vector2(i.X, i.Y + 1);
                 }
             }
 
-            if(_positionVirt.Length() == 0)
+            if(_player.positionVirt.Length() == 0)
             {
                 foreach (TiledTile i in _collisionLayer.Tiles)
                 {
-                    if (i.Id == _gidSpawn) _positionVirt = new Vector2(i.X, i.Y);
+                    if (i.Id == _gidSpawn) _player.positionVirt = new Vector2(i.X, i.Y);
                 }
             }
             _runtimeData.gidLast = 0;
 
-            var HeroWalking = content.Load<Texture2D>("animations/Walking");
-            var HeroAtlas = TextureAtlas.Create(HeroWalking, 32, 32);
-            var HeroWalkingFactory = new SpriteSheetAnimationFactory(HeroAtlas);
 
-            HeroWalkingFactory.Add(Direction.NONE.ToString(), new SpriteSheetAnimationData(new[] { 0 }));
-            HeroWalkingFactory.Add(Direction.DOWN.ToString(), new SpriteSheetAnimationData(new[] { 5, 0, 10, 0 }, isLooping: false));
-            HeroWalkingFactory.Add(Direction.LEFT.ToString(), new SpriteSheetAnimationData(new[] {32 , 26, 37,  26}, isLooping: false));
-            HeroWalkingFactory.Add(Direction.RIGHT.ToString(), new SpriteSheetAnimationData(new[] { 32, 26, 37, 26 }, isLooping: false));
-            HeroWalkingFactory.Add(Direction.UP.ToString(), new SpriteSheetAnimationData(new[] { 19, 13, 24, 13 }, isLooping: false));
+            _player.spriteFactory.Add(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 0 }));
+            _player.spriteFactory.Add(Helpers.Direction.DOWN, new SpriteSheetAnimationData(new[] { 5, 0, 10, 0 }, isLooping: false));
+            _player.spriteFactory.Add(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 32, 26, 37, 26 }, isLooping: false));
+            _player.spriteFactory.Add(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 32, 26, 37, 26 }, isLooping: false));
+            _player.spriteFactory.Add(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 19, 13, 24, 13 }, isLooping: false));
 
-            _heroAnimations = new SpriteSheetAnimator(HeroWalkingFactory);
-            _heroSprite = _heroAnimations.CreateSprite(_positionVirt);
-
-            _actualDir = Direction.NONE;
-            _lastDir = _actualDir;
+            _player.LoadContent(content);
         }
 
         void IEntity.UnloadContent()
@@ -127,8 +102,8 @@ namespace OrthoCite.Entities
 
             checkMove(keyboardState, camera);
             
-            _heroAnimations.Update(deltaSeconds);
-            _heroSprite.Position = new Vector2(_position.X + textMap.TileWidth / 2, _position.Y + textMap.TileHeight / 2);
+            _player.heroAnimations.Update(deltaSeconds);
+            _player.heroSprite.Position = new Vector2(_player.position.X + textMap.TileWidth / 2, _player.position.Y + textMap.TileHeight / 2);
 
             checkCamera(camera);
 
@@ -140,14 +115,9 @@ namespace OrthoCite.Entities
             spriteBatch.Begin(transformMatrix: cameraMatrix);
 
             _upLayer.IsVisible = false;
-
-
             spriteBatch.Draw(textMap, gameTime: _runtimeData.GameTime);
 
-            if(_lastDir == Direction.LEFT) _heroSprite.Effect = SpriteEffects.FlipHorizontally;
-            else _heroSprite.Effect = SpriteEffects.None;
-
-            spriteBatch.Draw(_heroSprite);
+            _player.Draw(spriteBatch);
 
             _upLayer.IsVisible = true;
             _upLayer.Draw(spriteBatch);
@@ -178,39 +148,39 @@ namespace OrthoCite.Entities
             if (_firstUpdate)
             {
                 camera.Zoom = _zoom;
-                _position = new Vector2(_positionVirt.X * textMap.TileWidth, _positionVirt.Y * textMap.TileHeight);
+                _player.position = new Vector2(_player.positionVirt.X * textMap.TileWidth, _player.positionVirt.Y * textMap.TileHeight);
                 _firstUpdate = !_firstUpdate;
             }
 
-            if (_separeFrame == 0 && keyboardState.GetPressedKeys().Length != 0 && _actualDir == Direction.NONE)
+            if (_separeFrame == 0 && keyboardState.GetPressedKeys().Length != 0 && _player.actualDir == Helpers.Direction.NONE)
             {
                 if (keyboardState.IsKeyDown(Keys.LeftShift)) _actualFrame = _fastFrame;
                 else _actualFrame = _lowFrame;
 
                 if (keyboardState.IsKeyDown(Keys.Down))
                 {
-                    if (!ColDown()) _actualDir = Direction.DOWN;
-                    _lastDir = Direction.DOWN;
-                    _heroAnimations.Play(Direction.DOWN.ToString());
+                    if (!ColDown()) _player.actualDir = Helpers.Direction.DOWN;
+                    _player.lastDir = Helpers.Direction.DOWN;
+                    _player.heroAnimations.Play(Helpers.Direction.DOWN.ToString());
 
                 }
-                if (keyboardState.IsKeyDown(Keys.Up))
+                else if (keyboardState.IsKeyDown(Keys.Up))
                 {
-                    if (!ColUp()) _actualDir = Direction.UP;
-                    _lastDir = Direction.UP;
-                    _heroAnimations.Play(Direction.UP.ToString());
+                    if (!ColUp()) _player.actualDir = Helpers.Direction.UP;
+                    _player.lastDir = Helpers.Direction.UP;
+                    _player.heroAnimations.Play(Helpers.Direction.UP.ToString());
                 }
-                if (keyboardState.IsKeyDown(Keys.Left))
+                else if (keyboardState.IsKeyDown(Keys.Left))
                 {
-                    if (!ColLeft()) _actualDir = Direction.LEFT;
-                    _lastDir = Direction.LEFT;
-                    _heroAnimations.Play(Direction.LEFT.ToString());
+                    if (!ColLeft()) _player.actualDir = Helpers.Direction.LEFT;
+                    _player.lastDir = Helpers.Direction.LEFT;
+                    _player.heroAnimations.Play(Helpers.Direction.LEFT.ToString());
                 }
-                if (keyboardState.IsKeyDown(Keys.Right))
+                else if (keyboardState.IsKeyDown(Keys.Right))
                 {
-                    if (!ColRight()) _actualDir = Direction.RIGHT;
-                    _lastDir = Direction.RIGHT;
-                    _heroAnimations.Play(Direction.RIGHT.ToString());
+                    if (!ColRight()) _player.actualDir = Helpers.Direction.RIGHT;
+                    _player.lastDir = Helpers.Direction.RIGHT;
+                    _player.heroAnimations.Play(Helpers.Direction.RIGHT.ToString());
                 }
 
 
@@ -223,55 +193,56 @@ namespace OrthoCite.Entities
 
                 if (_separeFrame >= _actualFrame)
                 {
-                    if (_actualDir == Direction.DOWN)
+                    if (_player.actualDir == Helpers.Direction.DOWN)
                     {
-                        _heroAnimations.Play(Direction.DOWN.ToString());
-                        MoveDownChamp();
+                        _player.heroAnimations.Play(Helpers.Direction.DOWN.ToString());
+                        _player.MoveDownChamp();
 
                     }
-                    if (_actualDir == Direction.UP)
+                    if (_player.actualDir == Helpers.Direction.UP)
                     {
-                        MoveUpChamp();
-                        _heroAnimations.Play(Direction.UP.ToString());
+                        _player.MoveUpChamp();
+                        _player.heroAnimations.Play(Helpers.Direction.UP.ToString());
                     }
-                    if (_actualDir == Direction.LEFT)
+                    if (_player.actualDir == Helpers.Direction.LEFT)
                     {
-                        MoveLeftChamp();
-                        _heroAnimations.Play(Direction.LEFT.ToString());
+                        _player.MoveLeftChamp();
+                        _player.heroAnimations.Play(Helpers.Direction.LEFT.ToString());
                     }
-                    if (_actualDir == Direction.RIGHT)
+                    if (_player.actualDir == Helpers.Direction.RIGHT)
                     {
-                        MoveRightChamp();
-                        _heroAnimations.Play(Direction.RIGHT.ToString());
+                        _player.MoveRightChamp();
+                        _player.heroAnimations.Play(Helpers.Direction.RIGHT.ToString());
                     }
 
-                    _position = new Vector2(_positionVirt.X * textMap.TileWidth, _positionVirt.Y * textMap.TileHeight);
+                    _player.position = new Vector2(_player.positionVirt.X * textMap.TileWidth, _player.positionVirt.Y * textMap.TileHeight);
 
 
-                    _actualDir = Direction.NONE;
+                    _player.actualDir = Helpers.Direction.NONE;
                     _separeFrame = 0;
                 }
                 else
                 {
-                    if (_actualDir == Direction.DOWN)
+                    if (_player.actualDir == Helpers.Direction.DOWN)
                     {
-                        _position.Y += textMap.TileHeight / _actualFrame;
-                        _heroAnimations.Play(Direction.DOWN.ToString());
+                        _player.position += new Vector2(0, textMap.TileHeight / _actualFrame);
+                        _player.heroAnimations.Play(Helpers.Direction.DOWN.ToString());
                     }
-                    if (_actualDir == Direction.UP)
+                    if (_player.actualDir == Helpers.Direction.UP)
                     {
-                        _position.Y += -(textMap.TileHeight / _actualFrame);
-                        _heroAnimations.Play(Direction.UP.ToString());
+                        _player.position += new Vector2(0,-(textMap.TileHeight / _actualFrame));
+                        _player.heroAnimations.Play(Helpers.Direction.UP.ToString());
                     }
-                    if (_actualDir == Direction.LEFT)
+                    if (_player.actualDir == Helpers.Direction.LEFT)
                     {
-                        _position.X += -(textMap.TileWidth / _actualFrame);
-                        _heroAnimations.Play(Direction.LEFT.ToString());
+                        _player.position += new Vector2(-(textMap.TileWidth / _actualFrame),0);
+                        _player.heroAnimations.Play(Helpers.Direction.LEFT.ToString());
                     }
-                    if (_actualDir == Direction.RIGHT)
+                    if (_player.actualDir == Helpers.Direction.RIGHT)
                     {
-                        _position.X += textMap.TileWidth / _actualFrame;
-                        _heroAnimations.Play(Direction.RIGHT.ToString());
+                       
+                        _player.position += new Vector2(textMap.TileWidth / _actualFrame, 0);
+                        _player.heroAnimations.Play(Helpers.Direction.RIGHT.ToString());
                     }
                     _separeFrame++;
                 }
@@ -281,11 +252,11 @@ namespace OrthoCite.Entities
 
         private void checkCamera(Camera2D camera)
         {
-            camera.LookAt(new Vector2(_position.X, _position.Y));
-            if (OutOfScreenTop(camera)) camera.LookAt(new Vector2(_position.X, -_runtimeData.Scene.Height / _zoom + _runtimeData.Scene.Height / 2));
-            if (OutOfScreenLeft(camera)) camera.LookAt(new Vector2(-_runtimeData.Scene.Width / _zoom + _runtimeData.Scene.Width / 2, _position.Y));
-            if (OutOfScreenRight(camera)) camera.LookAt(new Vector2(textMap.WidthInPixels - (_runtimeData.Scene.Width / _zoom) * 2 + _runtimeData.Scene.Width / 2, _position.Y));
-            if (OutOfScreenBottom(camera)) camera.LookAt(new Vector2(_position.X, textMap.HeightInPixels - (_runtimeData.Scene.Height / _zoom) * 2 + _runtimeData.Scene.Height / 2));
+            camera.LookAt(new Vector2(_player.position.X, _player.position.Y));
+            if (OutOfScreenTop(camera)) camera.LookAt(new Vector2(_player.position.X, -_runtimeData.Scene.Height / _zoom + _runtimeData.Scene.Height / 2));
+            if (OutOfScreenLeft(camera)) camera.LookAt(new Vector2(-_runtimeData.Scene.Width / _zoom + _runtimeData.Scene.Width / 2, _player.position.Y));
+            if (OutOfScreenRight(camera)) camera.LookAt(new Vector2(textMap.WidthInPixels - (_runtimeData.Scene.Width / _zoom) * 2 + _runtimeData.Scene.Width / 2, _player.position.Y));
+            if (OutOfScreenBottom(camera)) camera.LookAt(new Vector2(_player.position.X, textMap.HeightInPixels - (_runtimeData.Scene.Height / _zoom) * 2 + _runtimeData.Scene.Height / 2));
 
             if (OutOfScreenLeft(camera) && OutOfScreenBottom(camera)) camera.LookAt(new Vector2(-_runtimeData.Scene.Width / _zoom + _runtimeData.Scene.Width / 2, textMap.HeightInPixels - (_runtimeData.Scene.Height / _zoom) * 2 + _runtimeData.Scene.Height / 2));
             if (OutOfScreenLeft(camera) && OutOfScreenTop(camera)) camera.LookAt(new Vector2(-_runtimeData.Scene.Width / _zoom + _runtimeData.Scene.Width / 2, -_runtimeData.Scene.Height / _zoom + _runtimeData.Scene.Height / 2));
@@ -316,38 +287,18 @@ namespace OrthoCite.Entities
             return false;
         }
 
-        private void MoveUpChamp()
-        {
-            
-            _positionVirt += new Vector2(0, -1);
-        }
-
-        private void MoveDownChamp()
-        {
-            _positionVirt += new Vector2(0, +1);
-        }
-
-        private void MoveLeftChamp()
-        {
-            _positionVirt += new Vector2(-1, 0);
-        }
-
-        private void MoveRightChamp()
-        {
-            _positionVirt += new Vector2(+1, 0);
-        }
 
         private void MoveTo(Vector2 vec)
         {
-            _positionVirt = vec;
+            _player.positionVirt = vec;
         }
 
         private bool ColUp()
         {
-            if (_positionVirt.Y <= 0) return true;
+            if (_player.positionVirt.Y <= 0) return true;
             foreach (TiledTile i in _collisionLayer.Tiles)
             {
-                if (i.X == _positionVirt.X && i.Y == _positionVirt.Y - 1 && i.Id == 889) return true;
+                if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 889) return true;
                 checkIfWeLaunchInstance(i);
             }
             
@@ -357,37 +308,37 @@ namespace OrthoCite.Entities
         private bool ColDown()
         {
 
-            if (_positionVirt.Y >= textMap.Height - 1) return true;
+            if (_player.positionVirt.Y >= textMap.Height - 1) return true;
             foreach (TiledTile i in _collisionLayer.Tiles)
             {
-                if (i.X == _positionVirt.X && i.Y == _positionVirt.Y + 1 && i.Id == 889) return true;
+                if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y + 1 && i.Id == 889) return true;
             }
             return false;
         }
 
         private bool ColLeft()
         {
-            if (_positionVirt.X <= 0) return true;
+            if (_player.positionVirt.X <= 0) return true;
             foreach (TiledTile i in _collisionLayer.Tiles)
             {
-                if (i.X == _positionVirt.X - 1 && i.Y == _positionVirt.Y && i.Id == 889) return true;
+                if (i.X == _player.positionVirt.X - 1 && i.Y == _player.positionVirt.Y && i.Id == 889) return true;
             }
             return false;
         }
 
         private bool ColRight()
         {
-            if (_positionVirt.X >= textMap.Width - 1) return true;
+            if (_player.positionVirt.X >= textMap.Width - 1) return true;
             foreach (TiledTile i in _collisionLayer.Tiles)
             {
-                if (i.X == _positionVirt.X + 1 && i.Y == _positionVirt.Y && i.Id == 889) return true;
+                if (i.X == _player.positionVirt.X + 1 && i.Y == _player.positionVirt.Y && i.Id == 889) return true;
             }
             return false;
         }
 
         private void checkIfWeLaunchInstance(TiledTile i)
         {
-            if (i.X == _positionVirt.X && i.Y == _positionVirt.Y - 1 && i.Id == 1165)
+            if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 1165)
             {
                 _runtimeData.gidLast = 1165;
                 _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_PLATFORMER);
