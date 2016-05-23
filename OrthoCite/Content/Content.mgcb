@@ -421,7 +421,6 @@
 /processorParam:TextureFormat=Color
 /build:map/water_sun.png
 
-
 #begin lives/heart.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -457,4 +456,21 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:minigames/boss/background.png
+
+#begin minigames/DoorGame/sallePorte.tmx
+/importer:TiledMapImporter
+/processor:TiledMapProcessor
+/build:minigames/DoorGame/sallePorte.tmx
+
+#begin minigames/DoorGame/zelda.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:minigames/DoorGame/zelda.png
 

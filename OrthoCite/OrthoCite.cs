@@ -17,7 +17,8 @@ namespace OrthoCite
         MENU,
         MAP,
         MINIGAME_PLATFORMER,
-        MINIGAME_BOSS
+        MINIGAME_BOSS,
+        MINIGAME_DOORGAME
     }
 
     /// <summary>
@@ -25,7 +26,7 @@ namespace OrthoCite
     /// </summary>
     public class OrthoCite : Game
     {
-        const GameContext STARTING_ENTITY = GameContext.MENU;
+        const GameContext STARTING_ENTITY = GameContext.MINIGAME_DOORGAME;
 
         BoxingViewportAdapter _viewportAdapter;
         Camera2D _camera;
@@ -193,6 +194,10 @@ namespace OrthoCite
                 case GameContext.MINIGAME_BOSS:
                     Console.WriteLine("boss minigame");
                     _entities.Add(new BossGame(_runtimeData));
+                    break;
+                case GameContext.MINIGAME_DOORGAME:
+                    Console.WriteLine("DoorGame");
+                    _entities.Add(new DoorGame(_runtimeData));
                     break;
             }
 
