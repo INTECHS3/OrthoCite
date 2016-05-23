@@ -46,12 +46,17 @@ namespace OrthoCite.Entities
             _player.separeFrame = 0;
             _player.lowFrame = _lowSpeedPlayer;
             _player.fastFrame = _fastSpeedPlayer;
+            _player.typeDeplacement = TypeDeplacement.WithKey;
         }
 
         void IEntity.LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
         {
             textMap = content.Load<TiledMap>("map/Map");
-            
+            _player.tileHeight = textMap.TileHeight;
+            _player.tileWidth = textMap.TileWidth;
+            _player.mapHeight = textMap.Height;
+            _player.mapWidth = textMap.Width;
+
             foreach (TiledTileLayer e in textMap.TileLayers)
             {
                 if (e.Name == "Collision") _player.collisionLayer = e;
