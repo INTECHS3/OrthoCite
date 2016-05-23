@@ -41,13 +41,15 @@ namespace OrthoCite.Helpers
         public Direction lastDir { set; get; }
         public Dictionary<Direction, SpriteSheetAnimationData> spriteFactory { get; set; }
         public TypePlayer typePlayer { set; get; }
+        public TiledTileLayer collisionLayer { set; get; }
 
         public int separeFrame { set; get; }
         public int actualFrame { set; get; }
         public int fastFrame { set; get; }
         public int lowFrame { set; get; }
 
-        Entities.Map _map;
+        
+
 
         string _texture;
 
@@ -139,26 +141,26 @@ namespace OrthoCite.Helpers
 
                 if (keyboardState.IsKeyDown(Keys.Down))
                 {
-                    if (!_runtimeData.Map.ColDown()) actualDir = Helpers.Direction.DOWN;
+                    if (!ColDown()) actualDir = Helpers.Direction.DOWN;
                     lastDir = Helpers.Direction.DOWN;
                     heroAnimations.Play(Helpers.Direction.DOWN.ToString());
 
                 }
                 else if (keyboardState.IsKeyDown(Keys.Up))
                 {
-                    if (!_runtimeData.Map.ColUp()) actualDir = Helpers.Direction.UP;
+                    if (!ColUp()) actualDir = Helpers.Direction.UP;
                     lastDir = Helpers.Direction.UP;
                     heroAnimations.Play(Helpers.Direction.UP.ToString());
                 }
                 else if (keyboardState.IsKeyDown(Keys.Left))
                 {
-                    if (!_runtimeData.Map.ColLeft()) actualDir = Helpers.Direction.LEFT;
+                    if (!ColLeft()) actualDir = Helpers.Direction.LEFT;
                     lastDir = Helpers.Direction.LEFT;
                     heroAnimations.Play(Helpers.Direction.LEFT.ToString());
                 }
                 else if (keyboardState.IsKeyDown(Keys.Right))
                 {
-                    if (!_runtimeData.Map.ColRight()) actualDir = Helpers.Direction.RIGHT;
+                    if (!ColRight()) actualDir = Helpers.Direction.RIGHT;
                     lastDir = Helpers.Direction.RIGHT;
                     heroAnimations.Play(Helpers.Direction.RIGHT.ToString());
                 }
@@ -228,6 +230,49 @@ namespace OrthoCite.Helpers
                 }
 
             }
+        }
+
+        public bool ColUp()
+        {
+            if (positionVirt.Y <= 0) return true;
+            foreach (TiledTile i in collisionLayer.Tiles)
+            {
+                if (i.X == positionVirt.X && i.Y == positionVirt.Y - 1 && i.Id == 889) return true;
+                _runtimeData.Map.checkIfWeLaunchInstance(i);
+            }
+
+            return false;
+        }
+
+        public bool ColDown()
+        {
+
+            if (positionVirt.Y >= _runtimeData.Map.textMap.Height - 1) return true;
+            foreach (TiledTile i in collisionLayer.Tiles)
+            {
+                if (i.X == positionVirt.X && i.Y == positionVirt.Y + 1 && i.Id == 889) return true;
+            }
+            return false;
+        }
+
+        public bool ColLeft()
+        {
+            if (positionVirt.X <= 0) return true;
+            foreach (TiledTile i in collisionLayer.Tiles)
+            {
+                if (i.X == positionVirt.X - 1 && i.Y == positionVirt.Y && i.Id == 889) return true;
+            }
+            return false;
+        }
+
+        public bool ColRight()
+        {
+            if (positionVirt.X >= _runtimeData.Map.textMap.Width - 1) return true;
+            foreach (TiledTile i in collisionLayer.Tiles)
+            {
+                if (i.X == positionVirt.X + 1 && i.Y == positionVirt.Y && i.Id == 889) return true;
+            }
+            return false;
         }
     }
 }

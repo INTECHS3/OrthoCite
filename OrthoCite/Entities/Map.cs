@@ -19,7 +19,6 @@ namespace OrthoCite.Entities
     {
         RuntimeData _runtimeData;
         public TiledMap textMap;
-        TiledTileLayer _collisionLayer;
         TiledTileLayer _upLayer;
 
 
@@ -55,14 +54,14 @@ namespace OrthoCite.Entities
             
             foreach (TiledTileLayer e in textMap.TileLayers)
             {
-                if (e.Name == "Collision") _collisionLayer = e;
+                if (e.Name == "Collision") _player.collisionLayer = e;
                 else if (e.Name == "Up") _upLayer = e;
             }
-            _collisionLayer.IsVisible = false;
+            _player.collisionLayer.IsVisible = false;
             
             if (_gidStart != 0)
             {
-                foreach (TiledTile i in _collisionLayer.Tiles)
+                foreach (TiledTile i in _player.collisionLayer.Tiles)
                 {
                     if (i.Id == _gidStart) _player.positionVirt = new Vector2(i.X, i.Y + 1);
                 }
@@ -70,7 +69,7 @@ namespace OrthoCite.Entities
 
             if(_player.positionVirt.Length() == 0)
             {
-                foreach (TiledTile i in _collisionLayer.Tiles)
+                foreach (TiledTile i in _player.collisionLayer.Tiles)
                 {
                     if (i.Id == _gidSpawn) _player.positionVirt = new Vector2(i.X, i.Y);
                 }
@@ -110,7 +109,7 @@ namespace OrthoCite.Entities
 
             checkCamera(camera);
 
-            if (keyboardState.IsKeyDown(Keys.F9)) _collisionLayer.IsVisible = !_collisionLayer.IsVisible;
+            if (keyboardState.IsKeyDown(Keys.F9)) _player.collisionLayer.IsVisible = !_player.collisionLayer.IsVisible;
 
             //Console.WriteLine($"X : {_positionVirt.X} Y : {_positionVirt.Y} ");
         }
@@ -131,8 +130,6 @@ namespace OrthoCite.Entities
 
         }
         
-        
-
         void IEntity.Execute(params string[] param)
         {
             
@@ -193,50 +190,7 @@ namespace OrthoCite.Entities
             _player.positionVirt = vec;
         }
 
-        public bool ColUp()
-        {
-            if (_player.positionVirt.Y <= 0) return true;
-            foreach (TiledTile i in _collisionLayer.Tiles)
-            {
-                if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 889) return true;
-                checkIfWeLaunchInstance(i);
-            }
-            
-            return false;
-        }
-
-        public bool ColDown()
-        {
-
-            if (_player.positionVirt.Y >= textMap.Height - 1) return true;
-            foreach (TiledTile i in _collisionLayer.Tiles)
-            {
-                if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y + 1 && i.Id == 889) return true;
-            }
-            return false;
-        }
-
-        public bool ColLeft()
-        {
-            if (_player.positionVirt.X <= 0) return true;
-            foreach (TiledTile i in _collisionLayer.Tiles)
-            {
-                if (i.X == _player.positionVirt.X - 1 && i.Y == _player.positionVirt.Y && i.Id == 889) return true;
-            }
-            return false;
-        }
-
-        public bool ColRight()
-        {
-            if (_player.positionVirt.X >= textMap.Width - 1) return true;
-            foreach (TiledTile i in _collisionLayer.Tiles)
-            {
-                if (i.X == _player.positionVirt.X + 1 && i.Y == _player.positionVirt.Y && i.Id == 889) return true;
-            }
-            return false;
-        }
-
-        private void checkIfWeLaunchInstance(TiledTile i)
+        public void checkIfWeLaunchInstance(TiledTile i)
         {
             if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 1165)
             {
