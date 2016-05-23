@@ -9,6 +9,7 @@ using MonoGame.Extended;
 using MonoGame.Extended.ViewportAdapters;
 using System.Runtime.InteropServices;
 using System;
+using MonoGame.Extended.Animations;
 
 namespace OrthoCite
 {
@@ -85,6 +86,7 @@ namespace OrthoCite
         protected override void Initialize()
         {
             EventInput.Initialize(Window);
+            Components.Add(new AnimationComponent(this));
 
             _viewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, SCENE_WIDTH, SCENE_HEIGHT);
             _runtimeData.ViewAdapter = _viewportAdapter;
