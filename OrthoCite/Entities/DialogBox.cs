@@ -3,9 +3,11 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
+using System;
+
 namespace OrthoCite.Entities
 {
-    class DialogBox : IEntity
+    public class DialogBox : IEntity
     {
         const int PADDING = 20;
         const int MARGIN_TOP = 20;
@@ -15,12 +17,34 @@ namespace OrthoCite.Entities
         RuntimeData _runtimeData;
         Texture2D _blackTexture;
         SpriteFont _font;
-        Point _mousePosition;
         WrappedText _wrappedText;
+        bool _visible = false;
+        int _delay;
+        DateTime _timeShown;
 
         public DialogBox(RuntimeData runtimeData)
         {
             _runtimeData = runtimeData;
+        }
+
+        public DialogBox SetText(string text)
+        {
+            _wrappedText = TextHelper.WrapString(_font, text, _runtimeData.Scene.Width - (MAX_MARGIN_BORDERS * 2), INTERLINE);
+            return this;
+        }
+
+        public DialogBox Show(int delay = 0)
+        {
+            _delay = delay;
+            _timeShown = DateTime.Now;
+            _visible = true;
+            return this;
+        }
+
+        public DialogBox Hide()
+        { 
+            _visible = false;
+            return this;
         }
 
         public void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
@@ -28,7 +52,6 @@ namespace OrthoCite.Entities
             _blackTexture = new Texture2D(graphicsDevice, 1, 1);
             _blackTexture.SetData(new Color[] { Color.Black });
             _font = content.Load<SpriteFont>("dialogbox/font");
-            _wrappedText = TextHelper.WrapString(_font, "Salut ! Comment vas-tu ? Moi ça va. Cette boîte de dialogue se redimensionne en fonction du texte qu'on lui donne. Je sais, c'est stock. Mais Marvin est stock de toute façon.", _runtimeData.Scene.Width - (MAX_MARGIN_BORDERS *2), INTERLINE);
         }
 
         public void UnloadContent()
@@ -37,10 +60,17 @@ namespace OrthoCite.Entities
 
         public void Update(GameTime gameTime, KeyboardState keyboardState, Camera2D camera)
         {
+            if (_delay != 0 && DateTime.Now - _timeShown >= TimeSpan.FromSeconds(_delay))
+            {
+                _visible = false;
+                return;
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch, Matrix frozenMatrix, Matrix cameraMatrix)
         {
+            if (!_visible) return;
+
             spriteBatch.Begin(transformMatrix: frozenMatrix);
             int xOffset = (_runtimeData.Scene.Width - (int)_wrappedText.Bounds.X - (PADDING * 2)) / 2;
             int yOffset = MARGIN_TOP;
