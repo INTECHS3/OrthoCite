@@ -8,16 +8,17 @@ using MonoGame.Extended.Animations.SpriteSheets;
 using MonoGame.Extended.Sprites;
 using MonoGame.Extended.TextureAtlases;
 using System;
+using OrthoCite.Helpers;
 
 
 namespace OrthoCite.Entities
 {
     
 
-    class Map : IEntity
+    public class Map : IEntity
     {
         RuntimeData _runtimeData;
-        TiledMap textMap;
+        public TiledMap textMap;
         TiledTileLayer _collisionLayer;
         TiledTileLayer _upLayer;
 
@@ -27,13 +28,8 @@ namespace OrthoCite.Entities
         int _gidStart;
         const int _gidSpawn = 1151;
 
-        const int _fastSpeed = 8;
-        const int _lowSpeed = 13;
-        
-        int _separeFrame;
-        int _actualFrame;
-        int _fastFrame;
-        int _lowFrame;
+        const int _fastSpeedPlayer = 8;
+        const int _lowSpeedPlayer = 13;
         const int _zoom = 3;
         bool _firstUpdate;
        
@@ -43,14 +39,14 @@ namespace OrthoCite.Entities
             _runtimeData = runtimeData;
             _gidStart = _runtimeData.gidLast;
 
-            _separeFrame = 0;
-            _lowFrame = _lowSpeed;
-            _fastFrame = _fastSpeed;
-
             _firstUpdate = true;
 
             _player = new Helpers.Player(Helpers.TypePlayer.WithSpriteSheet, new Vector2(0, 0), _runtimeData, "animations/walking");
+            _runtimeData.Map = this;
 
+            _player.separeFrame = 0;
+            _player.lowFrame = _lowSpeedPlayer;
+            _player.fastFrame = _fastSpeedPlayer;
         }
 
         void IEntity.LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
@@ -100,12 +96,21 @@ namespace OrthoCite.Entities
         {
             var deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            checkMove(keyboardState, camera);
+            if (_firstUpdate)
+            {
+                camera.Zoom = _zoom;
+                _player.position = new Vector2(_player.positionVirt.X * textMap.TileWidth, _player.positionVirt.Y * textMap.TileHeight);
+                _firstUpdate = !_firstUpdate;
+            }
+
+            _player.checkMove(keyboardState, camera);
             
             _player.heroAnimations.Update(deltaSeconds);
             _player.heroSprite.Position = new Vector2(_player.position.X + textMap.TileWidth / 2, _player.position.Y + textMap.TileHeight / 2);
 
             checkCamera(camera);
+
+            if (keyboardState.IsKeyDown(Keys.F9)) _collisionLayer.IsVisible = !_collisionLayer.IsVisible;
 
             //Console.WriteLine($"X : {_positionVirt.X} Y : {_positionVirt.Y} ");
         }
@@ -143,112 +148,7 @@ namespace OrthoCite.Entities
             }
         }
 
-        private void checkMove(KeyboardState keyboardState, Camera2D camera)
-        {
-            if (_firstUpdate)
-            {
-                camera.Zoom = _zoom;
-                _player.position = new Vector2(_player.positionVirt.X * textMap.TileWidth, _player.positionVirt.Y * textMap.TileHeight);
-                _firstUpdate = !_firstUpdate;
-            }
 
-            if (_separeFrame == 0 && keyboardState.GetPressedKeys().Length != 0 && _player.actualDir == Helpers.Direction.NONE)
-            {
-                if (keyboardState.IsKeyDown(Keys.LeftShift)) _actualFrame = _fastFrame;
-                else _actualFrame = _lowFrame;
-
-                if (keyboardState.IsKeyDown(Keys.Down))
-                {
-                    if (!ColDown()) _player.actualDir = Helpers.Direction.DOWN;
-                    _player.lastDir = Helpers.Direction.DOWN;
-                    _player.heroAnimations.Play(Helpers.Direction.DOWN.ToString());
-
-                }
-                else if (keyboardState.IsKeyDown(Keys.Up))
-                {
-                    if (!ColUp()) _player.actualDir = Helpers.Direction.UP;
-                    _player.lastDir = Helpers.Direction.UP;
-                    _player.heroAnimations.Play(Helpers.Direction.UP.ToString());
-                }
-                else if (keyboardState.IsKeyDown(Keys.Left))
-                {
-                    if (!ColLeft()) _player.actualDir = Helpers.Direction.LEFT;
-                    _player.lastDir = Helpers.Direction.LEFT;
-                    _player.heroAnimations.Play(Helpers.Direction.LEFT.ToString());
-                }
-                else if (keyboardState.IsKeyDown(Keys.Right))
-                {
-                    if (!ColRight()) _player.actualDir = Helpers.Direction.RIGHT;
-                    _player.lastDir = Helpers.Direction.RIGHT;
-                    _player.heroAnimations.Play(Helpers.Direction.RIGHT.ToString());
-                }
-
-
-                if (keyboardState.IsKeyDown(Keys.F9)) _collisionLayer.IsVisible = !_collisionLayer.IsVisible;
-
-                _separeFrame++;
-            }
-            else if (_separeFrame != 0)
-            {
-
-                if (_separeFrame >= _actualFrame)
-                {
-                    if (_player.actualDir == Helpers.Direction.DOWN)
-                    {
-                        _player.heroAnimations.Play(Helpers.Direction.DOWN.ToString());
-                        _player.MoveDownChamp();
-
-                    }
-                    if (_player.actualDir == Helpers.Direction.UP)
-                    {
-                        _player.MoveUpChamp();
-                        _player.heroAnimations.Play(Helpers.Direction.UP.ToString());
-                    }
-                    if (_player.actualDir == Helpers.Direction.LEFT)
-                    {
-                        _player.MoveLeftChamp();
-                        _player.heroAnimations.Play(Helpers.Direction.LEFT.ToString());
-                    }
-                    if (_player.actualDir == Helpers.Direction.RIGHT)
-                    {
-                        _player.MoveRightChamp();
-                        _player.heroAnimations.Play(Helpers.Direction.RIGHT.ToString());
-                    }
-
-                    _player.position = new Vector2(_player.positionVirt.X * textMap.TileWidth, _player.positionVirt.Y * textMap.TileHeight);
-
-
-                    _player.actualDir = Helpers.Direction.NONE;
-                    _separeFrame = 0;
-                }
-                else
-                {
-                    if (_player.actualDir == Helpers.Direction.DOWN)
-                    {
-                        _player.position += new Vector2(0, textMap.TileHeight / _actualFrame);
-                        _player.heroAnimations.Play(Helpers.Direction.DOWN.ToString());
-                    }
-                    if (_player.actualDir == Helpers.Direction.UP)
-                    {
-                        _player.position += new Vector2(0,-(textMap.TileHeight / _actualFrame));
-                        _player.heroAnimations.Play(Helpers.Direction.UP.ToString());
-                    }
-                    if (_player.actualDir == Helpers.Direction.LEFT)
-                    {
-                        _player.position += new Vector2(-(textMap.TileWidth / _actualFrame),0);
-                        _player.heroAnimations.Play(Helpers.Direction.LEFT.ToString());
-                    }
-                    if (_player.actualDir == Helpers.Direction.RIGHT)
-                    {
-                       
-                        _player.position += new Vector2(textMap.TileWidth / _actualFrame, 0);
-                        _player.heroAnimations.Play(Helpers.Direction.RIGHT.ToString());
-                    }
-                    _separeFrame++;
-                }
-
-            }
-        }
 
         private void checkCamera(Camera2D camera)
         {
@@ -288,12 +188,12 @@ namespace OrthoCite.Entities
         }
 
 
-        private void MoveTo(Vector2 vec)
+        public void MoveTo(Vector2 vec)
         {
             _player.positionVirt = vec;
         }
 
-        private bool ColUp()
+        public bool ColUp()
         {
             if (_player.positionVirt.Y <= 0) return true;
             foreach (TiledTile i in _collisionLayer.Tiles)
@@ -305,7 +205,7 @@ namespace OrthoCite.Entities
             return false;
         }
 
-        private bool ColDown()
+        public bool ColDown()
         {
 
             if (_player.positionVirt.Y >= textMap.Height - 1) return true;
@@ -316,7 +216,7 @@ namespace OrthoCite.Entities
             return false;
         }
 
-        private bool ColLeft()
+        public bool ColLeft()
         {
             if (_player.positionVirt.X <= 0) return true;
             foreach (TiledTile i in _collisionLayer.Tiles)
@@ -326,7 +226,7 @@ namespace OrthoCite.Entities
             return false;
         }
 
-        private bool ColRight()
+        public bool ColRight()
         {
             if (_player.positionVirt.X >= textMap.Width - 1) return true;
             foreach (TiledTile i in _collisionLayer.Tiles)

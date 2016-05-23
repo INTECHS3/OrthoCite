@@ -7,6 +7,7 @@ using MonoGame.Extended;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended.ViewportAdapters;
+using OrthoCite.Entities;
 
 namespace OrthoCite
 {
@@ -19,6 +20,7 @@ namespace OrthoCite
 
         public GameTime GameTime { set; get; }
         public int gidLast { set; get; }
+        Map map;
 
         public int _lives;
 
@@ -52,5 +54,12 @@ namespace OrthoCite
             get { return _lives; }
             set { _lives = value; }
         }
+
+        public Map Map
+        {
+            get { return map; }
+            set { map = value; }
+        }
+        
     }
 }
