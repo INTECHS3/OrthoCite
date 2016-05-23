@@ -64,7 +64,7 @@ namespace OrthoCite.Entities.MiniGames
         int _framesSincePreviousSpeed = FRAMES_TO_NEXT_SPEED - 1;
         bool _isLanded = true;
         bool _onPlatform = false;
-        bool _faceRight;
+        bool _faceLeft;
         List<Platform> _platforms;
         bool _lost = false;
         bool _won = false;
@@ -152,12 +152,12 @@ namespace OrthoCite.Entities.MiniGames
             if (keyboardState.IsKeyDown(Keys.Left))
             {
                 _playerPosition.X -= LATERAL_SPEED;
-                _faceRight = false;
+                _faceLeft = true;
             }
             else if (keyboardState.IsKeyDown(Keys.Right))
             {
                 _playerPosition.X += LATERAL_SPEED;
-                _faceRight = true;
+                _faceLeft = false;
             }
 
             /* Handle collisions */
@@ -230,7 +230,7 @@ namespace OrthoCite.Entities.MiniGames
                 spriteBatch.DrawString(_font, platform.Word.Value, new Vector2(platform.Coords.X + 20, platform.Coords.Y + 20), Color.White);
             }
 
-            spriteBatch.Draw(_isLanded ? _playerStraight : _playerJump, _playerPosition, null, null, null, 0, null, null, _faceRight ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
+            spriteBatch.Draw(_isLanded ? _playerStraight : _playerJump, _playerPosition, null, null, null, 0, null, null, _faceLeft ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
 
             if (_lost) spriteBatch.DrawString(_fontResult, "Perdu", _playerPosition, Color.Red);
             if (_won) spriteBatch.DrawString(_fontResult, "Bravo", _playerPosition, Color.Green);

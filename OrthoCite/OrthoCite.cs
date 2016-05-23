@@ -25,6 +25,7 @@ namespace OrthoCite
     /// </summary>
     public class OrthoCite : Game
     {
+        const GameContext STARTING_ENTITY = GameContext.MAP;
 
         BoxingViewportAdapter _viewportAdapter;
         Camera2D _camera;
@@ -56,7 +57,7 @@ namespace OrthoCite
 
             _entities = new List<IEntity>();
 
-            ChangeGameContext(GameContext.MENU);
+            ChangeGameContext(STARTING_ENTITY);
 
 #if DEBUG
             _graphics.PreferredBackBufferWidth = 928;
@@ -87,6 +88,7 @@ namespace OrthoCite
             _viewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, SCENE_WIDTH, SCENE_HEIGHT);
             _runtimeData.ViewAdapter = _viewportAdapter;
             _runtimeData.Scene = new Rectangle(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
+            _runtimeData.Lives = 3;
             _camera = new Camera2D(_viewportAdapter);
 
             base.Initialize();
@@ -192,6 +194,8 @@ namespace OrthoCite
                     _entities.Add(new BossGame(_runtimeData));
                     break;
             }
+
+            _entities.Add(new Lives(_runtimeData));
 
             _gameContextChanged = false;
 

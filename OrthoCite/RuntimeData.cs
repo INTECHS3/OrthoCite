@@ -20,6 +20,7 @@ namespace OrthoCite
         public GameTime GameTime { set; get; }
         public int gidLast { set; get; }
 
+        public int _lives;
 
         public RuntimeData(OrthoCite orthoCite)
         {
@@ -44,6 +45,12 @@ namespace OrthoCite
         public OrthoCite OrthoCite
         {
             get { return _orthoCite; }
+        }
+
+        public int Lives
+        {
+            get { return _lives; }
+            set { _lives = value; }
         }
     }
 }
