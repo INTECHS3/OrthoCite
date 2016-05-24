@@ -28,10 +28,12 @@ namespace OrthoCite.Entities.MiniGames
         Texture2D _playerTexture;
         Texture2D _enemyTexture;
         Texture2D _pixelTexture;
+        Texture2D _attackBoxTexture;
 
         Sprite _player;
         Sprite _enemy;
         Sprite _fireball;
+        Sprite _attackBox;
 
         SpriteFont _fontWord;
 
@@ -58,6 +60,7 @@ namespace OrthoCite.Entities.MiniGames
             _enemyTexture = content.Load<Texture2D>("minigames/boss/enemy");
             _pixelTexture = new Texture2D(graphicsDevice, 1, 1);
             _pixelTexture.SetData(new Color[] { Color.White });
+            _attackBoxTexture = content.Load<Texture2D>("minigames/boss/attackbox");
 
             _player = new Sprite(_playerTexture);
             _player.Origin = new Vector2(0, 0);
@@ -74,6 +77,9 @@ namespace OrthoCite.Entities.MiniGames
             };
             
             _fireball = new Sprite(_animation.CurrentFrame) {Origin = _player.Origin };
+
+            _attackBox = new Sprite(_attackBoxTexture);
+            _attackBox.Position = new Vector2(_runtimeData.Scene.Width / 2, _runtimeData.Scene.Height / 2);
 
             _fontWord = content.Load<SpriteFont>("minigames/platformer/font-result");
 
@@ -121,6 +127,8 @@ namespace OrthoCite.Entities.MiniGames
 
             int currentIndex = _currentSpellWordTyped.Length - 1;
             if (currentIndex < 0) return;
+            if (currentIndex > _currentSpellWord.Length - 1) return;
+
             if (_currentSpellWord[currentIndex] != _currentSpellWordTyped[currentIndex])
             {
                 Mistyped();
@@ -183,13 +191,15 @@ namespace OrthoCite.Entities.MiniGames
             spriteBatch.Draw(_fireball);
             spriteBatch.Draw(_enemy);
 
-            int barWidth = 300;
-            int barHeight = 50;
-            Vector2 barPosition = new Vector2(_runtimeData.Scene.Width - barWidth - 20, 500);
+            int barWidth = 200;
+            int barHeight = 20;
+            Vector2 barPosition = new Vector2(_runtimeData.Scene.Width - barWidth - 40, 650);
             int actualBarWidth = (_bossLifePercentage * barWidth) / 100;
             spriteBatch.Draw(_pixelTexture, new Rectangle((int)barPosition.X, (int)barPosition.Y, actualBarWidth, barHeight), Color.Red);
-            spriteBatch.DrawString(_fontWord, _currentSpellWord, new Vector2(400, 200), Color.Gray);
-            spriteBatch.DrawString(_fontWord, _currentSpellWordTyped, new Vector2(400, 250), Color.White);
+
+            spriteBatch.Draw(_attackBox);
+            spriteBatch.DrawString(_fontWord, _currentSpellWord, new Vector2(650, 310), Color.Red);
+            spriteBatch.DrawString(_fontWord, _currentSpellWordTyped, new Vector2(450, 440), Color.Black);
 
             spriteBatch.End();
         }
