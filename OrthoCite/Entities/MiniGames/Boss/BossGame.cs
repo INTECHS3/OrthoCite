@@ -77,7 +77,7 @@ namespace OrthoCite.Entities.MiniGames
                 FrameDuration = 0.2f
             };
             
-            _fireball = new Sprite(_animation.CurrentFrame) {Origin = _player.Origin };
+            _fireball = new Sprite(_animation.CurrentFrame) { Origin = _player.Origin, IsVisible = false };
 
             _attackBox = new Sprite(_attackBoxTexture);
             _attackBox.Position = new Vector2(_runtimeData.Scene.Width / 2, _runtimeData.Scene.Height / 2);
