@@ -73,7 +73,7 @@ namespace OrthoCite.Entities.MiniGames
                 FrameDuration = 0.2f
             };
             
-            _fireball = new Sprite(_animation.CurrentFrame) {Origin = _player.Origin, Effect = SpriteEffects.FlipHorizontally };
+            _fireball = new Sprite(_animation.CurrentFrame) {Origin = _player.Origin };
 
             _fontWord = content.Load<SpriteFont>("minigames/platformer/font-result");
 
@@ -132,14 +132,15 @@ namespace OrthoCite.Entities.MiniGames
             }
         }
 
-        public void FireSpell()
+        public void FireSpellOnEnemy()
         {
             _fireball.IsVisible = true;
             _fireball.Position = new Vector2(_player.Position.X + _playerTexture.Width, _player.Position.Y);
-            _fireball.CreateTweenGroup(OnFireSpellEnd).MoveTo(new Vector2(_enemy.Position.X - _fireball.TextureRegion.Width + 27, _enemy.Position.Y), 1.0f, EasingFunctions.SineEaseIn);
+            _fireball.Effect = SpriteEffects.FlipHorizontally;
+            _fireball.CreateTweenGroup(OnFireSpellOnEnemyEnd).MoveTo(new Vector2(_enemy.Position.X - _fireball.TextureRegion.Width + 27, _enemy.Position.Y), 1.0f, EasingFunctions.SineEaseIn);
         }
 
-        void OnFireSpellEnd()
+        void OnFireSpellOnEnemyEnd()
         {
             _fireball.IsVisible = false;
             _bossLifePercentage -= 20;
@@ -147,16 +148,30 @@ namespace OrthoCite.Entities.MiniGames
             _runtimeData.DialogBox.AddDialog("Aaaarrggh !", 2).Show();
         }
 
-        public void Mistyped()
+        public void FireSpellOnPlayer()
         {
+            _fireball.IsVisible = true;
+            _fireball.Position = new Vector2(_enemy.Position.X - _fireball.TextureRegion.Width + 27, _enemy.Position.Y);
+            _fireball.Effect = SpriteEffects.None;
+            _fireball.CreateTweenGroup(OnFireSpellOnPlayerEnd).MoveTo(new Vector2(_player.Position.X + _playerTexture.Width - 27, _player.Position.Y), 1.0f, EasingFunctions.SineEaseIn);
+        }
+
+        void OnFireSpellOnPlayerEnd()
+        {
+            _fireball.IsVisible = false;
             _runtimeData.Lives -= 1;
             GenerateWord();
             _runtimeData.DialogBox.AddDialog("Raté !", 2).Show();
         }
 
+        public void Mistyped()
+        {
+            FireSpellOnPlayer();
+        }
+
         public void Welltyped()
         {
-            FireSpell();
+            FireSpellOnEnemy();
         }
 
         public override void Draw(SpriteBatch spriteBatch, Matrix frozenMatrix, Matrix cameraMatrix)
