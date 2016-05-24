@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended.ViewportAdapters;
 using OrthoCite.Entities;
+using OrthoCite.Helpers;
 
 namespace OrthoCite
 {
@@ -67,5 +68,7 @@ namespace OrthoCite
             get { return _dialogBox; }
             set { _dialogBox = value; }
         }
+
+        public Player Player { get; set; }
     }
 }

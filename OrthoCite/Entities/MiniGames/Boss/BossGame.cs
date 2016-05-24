@@ -3,7 +3,10 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
+using MonoGame.Extended.Animations.SpriteSheets;
+using MonoGame.Extended.Animations.Tweens;
 using MonoGame.Extended.Sprites;
+using MonoGame.Extended.TextureAtlases;
 using System;
 using System.Collections.Generic;
 
@@ -28,8 +31,11 @@ namespace OrthoCite.Entities.MiniGames
 
         Sprite _player;
         Sprite _enemy;
+        Sprite _fireball;
 
         SpriteFont _fontWord;
+
+        SpriteSheetAnimation _animation;
 
         // Game state
         string _currentSpellWord;
@@ -60,6 +66,15 @@ namespace OrthoCite.Entities.MiniGames
             _enemy.Origin = new Vector2(0, 0);
             _enemy.Position = new Vector2(_runtimeData.Scene.Width - _enemyTexture.Width - 100, _runtimeData.Scene.Height - _enemyTexture.Height);
 
+            var fireballTexture = content.Load<Texture2D>("minigames/boss/fireball");
+            var fireballAtlas = TextureAtlas.Create(fireballTexture, 130, 50);
+            _animation = new SpriteSheetAnimation("fireballAnimation", fireballAtlas)
+            {
+                FrameDuration = 0.2f
+            };
+            
+            _fireball = new Sprite(_animation.CurrentFrame) {Origin = _player.Origin, Effect = SpriteEffects.FlipHorizontally };
+
             _fontWord = content.Load<SpriteFont>("minigames/platformer/font-result");
 
             Start();
@@ -74,15 +89,18 @@ namespace OrthoCite.Entities.MiniGames
         {
             if (_gameState != GameState.NONE) return;
 
+            _animation.Update(gameTime);
+            _fireball.TextureRegion = _animation.CurrentFrame;
+
             if (_runtimeData.Lives == 0)
             {
                 _gameState = GameState.LOST;
-                _runtimeData.DialogBox.SetText("Gagné !").Show();
+                _runtimeData.DialogBox.SetText("Perdu !").Show(2);
             }
             else if (_bossLifePercentage == 0)
             {
                 _gameState = GameState.WON;
-                _runtimeData.DialogBox.SetText("Gagné !").Show();
+                _runtimeData.DialogBox.SetText("Gagné !").Show(2);
             }
 
             if (_gameState != GameState.NONE) _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
@@ -114,6 +132,21 @@ namespace OrthoCite.Entities.MiniGames
             }
         }
 
+        public void FireSpell()
+        {
+            _fireball.IsVisible = true;
+            _fireball.Position = new Vector2(_player.Position.X + _playerTexture.Width, _player.Position.Y);
+            _fireball.CreateTweenGroup(onFireSpellEnd).MoveTo(new Vector2(_enemy.Position.X - _fireball.TextureRegion.Width + 27, _enemy.Position.Y), 1.0f, EasingFunctions.SineEaseIn);
+        }
+
+        void onFireSpellEnd()
+        {
+            _fireball.IsVisible = false;
+            _bossLifePercentage -= 20;
+            GenerateWord();
+            _runtimeData.DialogBox.SetText("Aaaarrggh !").Show(2);
+        }
+
         public void Mistyped()
         {
             _runtimeData.Lives -= 1;
@@ -123,9 +156,7 @@ namespace OrthoCite.Entities.MiniGames
 
         public void Welltyped()
         {
-            _bossLifePercentage -= 20;
-            GenerateWord();
-            _runtimeData.DialogBox.SetText("Aaaarrggh !").Show(2);
+            FireSpell();
         }
 
         public override void Draw(SpriteBatch spriteBatch, Matrix frozenMatrix, Matrix cameraMatrix)
@@ -134,6 +165,7 @@ namespace OrthoCite.Entities.MiniGames
             spriteBatch.Draw(_backgroundTexture, new Vector2(0, 0), Color.White);
 
             spriteBatch.Draw(_player);
+            spriteBatch.Draw(_fireball);
             spriteBatch.Draw(_enemy);
 
             int barWidth = 300;

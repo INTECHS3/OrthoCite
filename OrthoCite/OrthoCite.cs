@@ -9,6 +9,7 @@ using MonoGame.Extended;
 using MonoGame.Extended.ViewportAdapters;
 using System.Runtime.InteropServices;
 using System;
+using MonoGame.Extended.Animations;
 
 namespace OrthoCite
 {
@@ -26,7 +27,7 @@ namespace OrthoCite
     /// </summary>
     public class OrthoCite : Game
     {
-        const GameContext STARTING_ENTITY = GameContext.MINIGAME_DOORGAME;
+        const GameContext STARTING_ENTITY = GameContext.MAP;
 
         BoxingViewportAdapter _viewportAdapter;
         Camera2D _camera;
@@ -85,6 +86,7 @@ namespace OrthoCite
         protected override void Initialize()
         {
             EventInput.Initialize(Window);
+            Components.Add(new AnimationComponent(this));
 
             _viewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, SCENE_WIDTH, SCENE_HEIGHT);
             _runtimeData.ViewAdapter = _viewportAdapter;
@@ -185,7 +187,7 @@ namespace OrthoCite
                 case GameContext.MAP:
                     Console.WriteLine("map");
                     _entities.Add(new Map(_runtimeData));
-                    //_entities.Add(new DialogBox(_runtimeData));
+                    _entities.Add(new DialogBox(_runtimeData));
                     break;
                 case GameContext.MINIGAME_PLATFORMER:
                     Console.WriteLine("platformer minigame");
