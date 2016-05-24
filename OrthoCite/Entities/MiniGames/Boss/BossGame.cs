@@ -95,12 +95,12 @@ namespace OrthoCite.Entities.MiniGames
             if (_runtimeData.Lives == 0)
             {
                 _gameState = GameState.LOST;
-                _runtimeData.DialogBox.SetText("Perdu !").Show(2);
+                _runtimeData.DialogBox.AddDialog("Perdu !", 2).Show();
             }
             else if (_bossLifePercentage == 0)
             {
                 _gameState = GameState.WON;
-                _runtimeData.DialogBox.SetText("Gagné !").Show(2);
+                _runtimeData.DialogBox.AddDialog("Gagné !", 2).Show();
             }
 
             if (_gameState != GameState.NONE) _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
@@ -144,14 +144,14 @@ namespace OrthoCite.Entities.MiniGames
             _fireball.IsVisible = false;
             _bossLifePercentage -= 20;
             GenerateWord();
-            _runtimeData.DialogBox.SetText("Aaaarrggh !").Show(2);
+            _runtimeData.DialogBox.AddDialog("Aaaarrggh !", 2).Show();
         }
 
         public void Mistyped()
         {
             _runtimeData.Lives -= 1;
             GenerateWord();
-            _runtimeData.DialogBox.SetText("Raté !").Show(2);
+            _runtimeData.DialogBox.AddDialog("Raté !", 2).Show();
         }
 
         public void Welltyped()
