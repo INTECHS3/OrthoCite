@@ -18,6 +18,7 @@ namespace OrthoCite.Entities.MiniGames
         RuntimeData _runtimeData;
         public TiledMap textMap;
         Helpers.Player _player;
+        SpriteFont _font;
 
         int _gidStart;
         const int _gidSpawn = 46;
@@ -71,7 +72,7 @@ namespace OrthoCite.Entities.MiniGames
         public override void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
         {
             textMap = content.Load<TiledMap>("minigames/DoorGame/sallePorte");
-
+            _font = content.Load<SpriteFont>("minigames/platformer/font");
             foreach (TiledTileLayer e in textMap.TileLayers)
             {
                 if (e.Name == "collision") _player.collisionLayer = e;
@@ -95,9 +96,9 @@ namespace OrthoCite.Entities.MiniGames
             }
             _runtimeData.gidLast = 0;
 
-            
+            _player.gidCol = 633;
             _player.spriteFactory.Add(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 0 }));
-            _player.spriteFactory.Add(Helpers.Direction.DOWN, new SpriteSheetAnimationData(new[] { 5, 0, 10, 0 }, isLooping: false));
+            _player.spriteFactory.Add(Helpers.Direction.DOWN, new SpriteSheetAnimationData(new[] { 5,10 }, isLooping: false));
             _player.spriteFactory.Add(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 32, 26, 37, 26 }, isLooping: false));
             _player.spriteFactory.Add(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 32, 26, 37, 26 }, isLooping: false));
             _player.spriteFactory.Add(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 19, 13, 24, 13 }, isLooping: false));
@@ -164,8 +165,6 @@ namespace OrthoCite.Entities.MiniGames
             WordCollection words = new WordCollection("orthographe");
             words.AddInvalid("ortographe");
             words.AddInvalid("ortograf");
-            words.AddInvalid("aurtographe");
-            words.AddInvalid("orthaugraphe");
         }
 
         private void checkCamera(Camera2D camera)
