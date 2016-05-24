@@ -37,7 +37,7 @@ namespace OrthoCite.Helpers
 
         public List<string> _talk { get; set; }
         int i;
-        const int timeTalk = 50;
+        const int timeTalk = 100;
         int a;
 
         Player _pnj;
@@ -103,14 +103,21 @@ namespace OrthoCite.Helpers
 
             if (i == 0 && a < _talk.Count)
             {
-                _runtimeData.DialogBox.SetText(_talk[a]);
-                _runtimeData.DialogBox.Show();
+                _runtimeData.DialogBox.SetText(_talk[a]).Show();
                 a++;
                 i++;
             }
-            else if (a >= _talk.Count) talkAndStop = false;
+            else if (i==0 && a >= _talk.Count)
+            {
+                talkAndStop = false;
+                _runtimeData.DialogBox.Hide();
+            }
             else if (i != 0 && i < timeTalk) i++;
-            else if (i == timeTalk) i = 0;
+            else if (i == timeTalk)
+            {
+                _runtimeData.DialogBox.Hide();
+                i = 0;
+            }
             
         }
 

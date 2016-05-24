@@ -69,7 +69,7 @@ namespace OrthoCite.Entities
 
         public void Draw(SpriteBatch spriteBatch, Matrix frozenMatrix, Matrix cameraMatrix)
         {
-           //²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²                                                                                                                                                                                                                                     ²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²²² if (!_visible) return;
+           if (!_visible) return;
 
             spriteBatch.Begin(transformMatrix: frozenMatrix);
             int xOffset = (_runtimeData.Scene.Width - (int)_wrappedText.Bounds.X - (PADDING * 2)) / 2;
