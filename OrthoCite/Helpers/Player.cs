@@ -259,7 +259,7 @@ namespace OrthoCite.Helpers
             foreach (TiledTile i in collisionLayer.Tiles)
             {
                 if (i.X == positionVirt.X && i.Y == positionVirt.Y - 1 && i.Id == 889) return true;
-                _runtimeData.Map.checkIfWeLaunchInstance(i);
+               // _runtimeData.Map.checkIfWeLaunchInstance(i); can't be used for the doorGame.
             }
 
             return false;
@@ -295,5 +295,7 @@ namespace OrthoCite.Helpers
             }
             return false;
         }
+
+
     }
 }
