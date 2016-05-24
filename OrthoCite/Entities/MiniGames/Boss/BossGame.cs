@@ -44,6 +44,7 @@ namespace OrthoCite.Entities.MiniGames
         string _currentSpellWordTyped;
         GameState _gameState;
         int _bossLifePercentage = 100;
+        bool _waitingForInput = true;
 
         public BossGame(RuntimeData runtimeData)
         {
@@ -115,6 +116,7 @@ namespace OrthoCite.Entities.MiniGames
         private void EventInput_CharEntered(object sender, CharacterEventArgs e)
         {
             if (_gameState != GameState.NONE) return;
+            if (!_waitingForInput) return;
 
             if (e.Character == '\b')
             {
@@ -142,6 +144,7 @@ namespace OrthoCite.Entities.MiniGames
 
         public void FireSpellOnEnemy()
         {
+            _waitingForInput = false;
             _fireball.IsVisible = true;
             _fireball.Position = new Vector2(_player.Position.X + _playerTexture.Width, _player.Position.Y);
             _fireball.Effect = SpriteEffects.FlipHorizontally;
@@ -150,6 +153,7 @@ namespace OrthoCite.Entities.MiniGames
 
         void OnFireSpellOnEnemyEnd()
         {
+            _waitingForInput = true;
             _fireball.IsVisible = false;
             _bossLifePercentage -= 20;
             GenerateWord();
@@ -158,6 +162,7 @@ namespace OrthoCite.Entities.MiniGames
 
         public void FireSpellOnPlayer()
         {
+            _waitingForInput = false;
             _fireball.IsVisible = true;
             _fireball.Position = new Vector2(_enemy.Position.X - _fireball.TextureRegion.Width + 27, _enemy.Position.Y);
             _fireball.Effect = SpriteEffects.None;
@@ -166,6 +171,7 @@ namespace OrthoCite.Entities.MiniGames
 
         void OnFireSpellOnPlayerEnd()
         {
+            _waitingForInput = true;
             _fireball.IsVisible = false;
             _runtimeData.Lives -= 1;
             GenerateWord();
