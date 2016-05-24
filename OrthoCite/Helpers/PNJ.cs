@@ -35,65 +35,100 @@ namespace OrthoCite.Helpers
         TypePNJ _type;
         List<ItemList> _item;
 
+        public List<string> _talk { get; set; }
+        int i;
+        const int timeTalk = 50;
+        int a;
+
         Player _pnj;
-        Vector2 _positionSpawn;
+
 
         RuntimeData _runtimeData;
         string _texture;
 
-        
+        public bool talkAndStop { get; set; }
+
+
         //TALKABLE, TEXT, NEDD LESS PARAMS CONTRUCTOR
-        
+
         public PNJ(TypePNJ type, Vector2 positionSpawn, List<ItemList> item, RuntimeData runtimeData, string texture)
         {
             _type = type;
-            _positionSpawn = positionSpawn;
             _item = item;
             _runtimeData = runtimeData;
             _texture = texture;
+            _talk = new List<string>();
+            _pnj = new Player(TypePlayer.WithSpriteSheet, positionSpawn ,_runtimeData, texture);
         }
         
         public void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
         {
-            _pnj.heroTexture = content.Load<Texture2D>(_texture);
-            var HeroAtlas = TextureAtlas.Create(_pnj.heroTexture, 32, 32);
-            var HeroWalkingFactory = new SpriteSheetAnimationFactory(HeroAtlas);
 
-            HeroWalkingFactory.Add(Direction.NONE.ToString(), new SpriteSheetAnimationData(new[] { 0 }));
-            HeroWalkingFactory.Add(Direction.DOWN.ToString(), new SpriteSheetAnimationData(new[] { 5, 0, 10, 0 }, isLooping: false));
-            HeroWalkingFactory.Add(Direction.LEFT.ToString(), new SpriteSheetAnimationData(new[] { 32, 26, 37, 26 }, isLooping: false));
-            HeroWalkingFactory.Add(Direction.RIGHT.ToString(), new SpriteSheetAnimationData(new[] { 32, 26, 37, 26 }, isLooping: false));
-            HeroWalkingFactory.Add(Direction.UP.ToString(), new SpriteSheetAnimationData(new[] { 19, 13, 24, 13 }, isLooping: false));
+            _pnj.collisionLayer = _runtimeData.Player.collisionLayer;
 
-            _pnj.heroAnimations = new SpriteSheetAnimator(HeroWalkingFactory);
-            _pnj.heroSprite = _pnj.heroAnimations.CreateSprite(_pnj.position);
-        }   
-        
+            _pnj.separeFrame = _runtimeData.Player.separeFrame;
+            _pnj.lowFrame = _runtimeData.Player.lowFrame;
+            _pnj.fastFrame = _runtimeData.Player.fastFrame;
+
+            _pnj.typeDeplacement = TypeDeplacement.WithDirection;
+
+            
+
+            _pnj.LoadContent(content);
+        }
+
         public void UnloadContent()
         {
 
         }
         
-        public void Update(GameTime gameTime, KeyboardState keyboardState, Camera2D camera)
+        public void Update(GameTime gameTime, KeyboardState keyboardState, Camera2D camera, float deltaSeconds)
         {
-            if(_type == TypePNJ.Static) { _pnj.position = _positionSpawn; }
-            else if (_type == TypePNJ.Dynamique)
+            if (talkAndStop) talk();
+            else
             {
+                if (_type != TypePNJ.Static)
+                {
 
+                    _pnj.checkMove(keyboardState, camera);
+                }
             }
-        }   
-        
-        public void Draw(SpriteBatch spriteBatch, Matrix frozenMatrix, Matrix cameraMatrix)
-        {
-            spriteBatch.Begin(transformMatrix: cameraMatrix);
             
+            _pnj.heroAnimations.Update(deltaSeconds);
+            _pnj.heroSprite.Position = new Vector2(_pnj.position.X + _pnj.tileWidth / 2, _pnj.position.Y + _pnj.tileHeight / 2);
+        }
 
-            spriteBatch.End();
+        private void talk()
+        {
+
+            if (i == 0 && a < _talk.Count)
+            {
+                _runtimeData.DialogBox.SetText(_talk[a]);
+                _runtimeData.DialogBox.Show();
+                a++;
+                i++;
+            }
+            else if (a >= _talk.Count) talkAndStop = false;
+            else if (i != 0 && i < timeTalk) i++;
+            else if (i == timeTalk) i = 0;
+            
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            _pnj.Draw(spriteBatch);
         }  
 
         public void Execute(params string[] param)
         {
 
         }
+
+        public void spriteFactory(Direction dir, SpriteSheetAnimationData spriteData)
+        {
+            _pnj.spriteFactory.Add(dir, spriteData);
+        }
+
+        
     }
 }
