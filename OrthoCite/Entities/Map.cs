@@ -92,7 +92,7 @@ namespace OrthoCite.Entities
                 }
             }
             _runtimeData.gidLast = 0;
-
+            _player.gidCol = 189;
 
             _player.spriteFactory.Add(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 0 }));
             _player.spriteFactory.Add(Helpers.Direction.DOWN, new SpriteSheetAnimationData(new[] { 5, 0, 10, 0 }, isLooping: false));

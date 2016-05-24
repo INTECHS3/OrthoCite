@@ -61,6 +61,8 @@ namespace OrthoCite.Helpers
         public int mapHeight;
         public int mapWidth; 
 
+        public int gidCol { get; set; }
+
         string _texture;
 
         public Player(TypePlayer TypePlaYer, RuntimeData runtimeData, string texture)
@@ -262,8 +264,8 @@ namespace OrthoCite.Helpers
             if (positionVirt.Y <= 0) return true;
             foreach (TiledTile i in collisionLayer.Tiles)
             {
-                if (i.X == positionVirt.X && i.Y == positionVirt.Y - 1 && i.Id == 889) return true;
-               // _runtimeData.Map.checkIfWeLaunchInstance(i); can't be used for the doorGame.
+                if (i.X == positionVirt.X && i.Y == positionVirt.Y - 1 && i.Id == gidCol) return true;
+                if(_runtimeData.Map != null) _runtimeData.Map.checkIfWeLaunchInstance(i); 
             }
 
             return false;
@@ -275,7 +277,7 @@ namespace OrthoCite.Helpers
             if (positionVirt.Y >= mapHeight - 1) return true;
             foreach (TiledTile i in collisionLayer.Tiles)
             {
-                if (i.X == positionVirt.X && i.Y == positionVirt.Y + 1 && i.Id == 889) return true;
+                if (i.X == positionVirt.X && i.Y == positionVirt.Y + 1 && i.Id == gidCol) return true;
             }
             return false;
         }
@@ -285,7 +287,7 @@ namespace OrthoCite.Helpers
             if (positionVirt.X <= 0) return true;
             foreach (TiledTile i in collisionLayer.Tiles)
             {
-                if (i.X == positionVirt.X - 1 && i.Y == positionVirt.Y && i.Id == 889) return true;
+                if (i.X == positionVirt.X - 1 && i.Y == positionVirt.Y && i.Id == gidCol) return true;
             }
             return false;
         }
@@ -295,7 +297,7 @@ namespace OrthoCite.Helpers
             if (positionVirt.X >= mapWidth - 1) return true;
             foreach (TiledTile i in collisionLayer.Tiles)
             {
-                if (i.X == positionVirt.X + 1 && i.Y == positionVirt.Y && i.Id == 889) return true;
+                if (i.X == positionVirt.X + 1 && i.Y == positionVirt.Y && i.Id == gidCol) return true;
             }
             return false;
         }
