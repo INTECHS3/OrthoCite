@@ -136,10 +136,10 @@ namespace OrthoCite.Entities.MiniGames
         {
             _fireball.IsVisible = true;
             _fireball.Position = new Vector2(_player.Position.X + _playerTexture.Width, _player.Position.Y);
-            _fireball.CreateTweenGroup(onFireSpellEnd).MoveTo(new Vector2(_enemy.Position.X - _fireball.TextureRegion.Width + 27, _enemy.Position.Y), 1.0f, EasingFunctions.SineEaseIn);
+            _fireball.CreateTweenGroup(OnFireSpellEnd).MoveTo(new Vector2(_enemy.Position.X - _fireball.TextureRegion.Width + 27, _enemy.Position.Y), 1.0f, EasingFunctions.SineEaseIn);
         }
 
-        void onFireSpellEnd()
+        void OnFireSpellEnd()
         {
             _fireball.IsVisible = false;
             _bossLifePercentage -= 20;
