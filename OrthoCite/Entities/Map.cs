@@ -121,8 +121,7 @@ namespace OrthoCite.Entities
         void IEntity.Update(GameTime gameTime, KeyboardState keyboardState, Camera2D camera)
         {
             var deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            _pnj.talkAndStop = true;
-            _pnj.Update(gameTime, keyboardState, camera, deltaSeconds);
+            
 
             if (_firstUpdate)
             {
@@ -135,7 +134,8 @@ namespace OrthoCite.Entities
             _player.checkMove(keyboardState, camera);
             _player.heroAnimations.Update(deltaSeconds);
             _player.heroSprite.Position = new Vector2(_player.position.X + textMap.TileWidth / 2, _player.position.Y + textMap.TileHeight / 2);
-
+            _pnj.talkAndStop = true;
+            _pnj.Update(gameTime, keyboardState, camera, deltaSeconds);
             checkCamera(camera);
 
             if (keyboardState.IsKeyDown(Keys.F9)) _player.collisionLayer.IsVisible = !_player.collisionLayer.IsVisible;
