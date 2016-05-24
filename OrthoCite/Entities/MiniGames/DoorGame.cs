@@ -9,6 +9,7 @@ using MonoGame.Extended.Sprites;
 using MonoGame.Extended.TextureAtlases;
 using System;
 using OrthoCite.Helpers;
+using System.Collections.Generic;
 
 namespace OrthoCite.Entities.MiniGames
 {
@@ -16,17 +17,40 @@ namespace OrthoCite.Entities.MiniGames
     {
         RuntimeData _runtimeData;
         public TiledMap textMap;
-        TiledTileLayer _upLayer;
-
         Helpers.Player _player;
 
         int _gidStart;
-        const int _gidSpawn = 45;
+        const int _gidSpawn = 46;
 
         const int _fastSpeedPlayer = 8;
         const int _lowSpeedPlayer = 13;
         const int _zoom = 3;
         bool _firstUpdate;
+
+        struct Word
+        {
+            public string Value;
+            public bool IsValid;
+        }
+
+        struct WordCollection
+        {
+            public Word Valid;
+            public List<Word> Invalid;
+
+            public WordCollection(string valid)
+            {
+                Valid = new Word { IsValid = true, Value = valid };
+                Invalid = new List<Word>();
+            }
+
+            public void AddInvalid(string invalid)
+            {
+                Invalid.Add(new Word { Value = invalid });
+            }
+        }
+
+        
 
 
         public DoorGame(RuntimeData runtimeData)
@@ -41,6 +65,7 @@ namespace OrthoCite.Entities.MiniGames
             _player.separeFrame = 0;
             _player.lowFrame = _lowSpeedPlayer;
             _player.fastFrame = _fastSpeedPlayer;
+            _player.typeDeplacement = TypeDeplacement.WithKey;
         }
 
         public override void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
@@ -70,7 +95,7 @@ namespace OrthoCite.Entities.MiniGames
             }
             _runtimeData.gidLast = 0;
 
-
+            
             _player.spriteFactory.Add(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 0 }));
             _player.spriteFactory.Add(Helpers.Direction.DOWN, new SpriteSheetAnimationData(new[] { 5, 0, 10, 0 }, isLooping: false));
             _player.spriteFactory.Add(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 32, 26, 37, 26 }, isLooping: false));
@@ -78,6 +103,7 @@ namespace OrthoCite.Entities.MiniGames
             _player.spriteFactory.Add(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 19, 13, 24, 13 }, isLooping: false));
 
             _player.LoadContent(content);
+            
         }
 
         public override void UnloadContent()
@@ -135,7 +161,11 @@ namespace OrthoCite.Entities.MiniGames
 
         internal override void Start()
         {
-
+            WordCollection words = new WordCollection("orthographe");
+            words.AddInvalid("ortographe");
+            words.AddInvalid("ortograf");
+            words.AddInvalid("aurtographe");
+            words.AddInvalid("orthaugraphe");
         }
 
         private void checkCamera(Camera2D camera)
@@ -180,5 +210,7 @@ namespace OrthoCite.Entities.MiniGames
         {
             _player.positionVirt = vec;
         }
+
+
     }
 }

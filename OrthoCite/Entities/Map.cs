@@ -9,6 +9,7 @@ using MonoGame.Extended.Sprites;
 using MonoGame.Extended.TextureAtlases;
 using System;
 using OrthoCite.Helpers;
+using System.Collections.Generic;
 
 
 namespace OrthoCite.Entities
@@ -17,11 +18,17 @@ namespace OrthoCite.Entities
 
     public class Map : IEntity
     {
+        enum ListPnj
+        {
+            QUARTIER_1,
+            QUARTIER_2,
+            QUARTIER_3,
+            QUARTIER_4
+        }
+
         RuntimeData _runtimeData;
         public TiledMap textMap;
         TiledTileLayer _upLayer;
-
-
         Helpers.Player _player;
   
         int _gidStart;
@@ -31,7 +38,8 @@ namespace OrthoCite.Entities
         const int _lowSpeedPlayer = 13;
         const int _zoom = 3;
         bool _firstUpdate;
-       
+
+        PNJ _pnj;
         
         public Map(RuntimeData runtimeData)
         {
@@ -41,21 +49,25 @@ namespace OrthoCite.Entities
             _firstUpdate = true;
 
             _player = new Helpers.Player(Helpers.TypePlayer.WithSpriteSheet, new Vector2(0, 0), _runtimeData, "animations/walking");
-            _runtimeData.Map = this;
+            _pnj = new PNJ(TypePNJ.Static, new Vector2(120, 59), new List<ItemList>(), _runtimeData, "animations/walking");
 
             _player.separeFrame = 0;
             _player.lowFrame = _lowSpeedPlayer;
             _player.fastFrame = _fastSpeedPlayer;
             _player.typeDeplacement = TypeDeplacement.WithKey;
+
+            _runtimeData.Map = this;
+            _runtimeData.Player = _player;
+
+            
         }
 
         void IEntity.LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
         {
             textMap = content.Load<TiledMap>("map/Map");
-            _player.tileHeight = textMap.TileHeight;
-            _player.tileWidth = textMap.TileWidth;
-            _player.mapHeight = textMap.Height;
-            _player.mapWidth = textMap.Width;
+
+            
+
 
             foreach (TiledTileLayer e in textMap.TileLayers)
             {
@@ -80,7 +92,7 @@ namespace OrthoCite.Entities
                 }
             }
             _runtimeData.gidLast = 0;
-
+            _player.gidCol = 189;
 
             _player.spriteFactory.Add(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 0 }));
             _player.spriteFactory.Add(Helpers.Direction.DOWN, new SpriteSheetAnimationData(new[] { 5, 0, 10, 0 }, isLooping: false));
@@ -89,6 +101,16 @@ namespace OrthoCite.Entities
             _player.spriteFactory.Add(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 19, 13, 24, 13 }, isLooping: false));
 
             _player.LoadContent(content);
+
+
+            _pnj.spriteFactory(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 0 }));
+            _pnj.spriteFactory(Helpers.Direction.DOWN, new SpriteSheetAnimationData(new[] { 5, 0, 10, 0 }, isLooping: false));
+            _pnj.spriteFactory(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 32, 26, 37, 26 }, isLooping: false));
+            _pnj.spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 32, 26, 37, 26 }, isLooping: false));
+            _pnj.spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 19, 13, 24, 13 }, isLooping: false));
+            _pnj._talk.Add("Hello Boy, how are u today ? ");
+            
+            _pnj.LoadContent(content, graphicsDevice);
         }
 
         void IEntity.UnloadContent()
@@ -99,16 +121,18 @@ namespace OrthoCite.Entities
         void IEntity.Update(GameTime gameTime, KeyboardState keyboardState, Camera2D camera)
         {
             var deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            _pnj.talkAndStop = true;
+            _pnj.Update(gameTime, keyboardState, camera, deltaSeconds);
 
             if (_firstUpdate)
             {
+                _runtimeData.DialogBox.Hide();
                 camera.Zoom = _zoom;
                 _player.position = new Vector2(_player.positionVirt.X * textMap.TileWidth, _player.positionVirt.Y * textMap.TileHeight);
                 _firstUpdate = !_firstUpdate;
             }
 
             _player.checkMove(keyboardState, camera);
-            
             _player.heroAnimations.Update(deltaSeconds);
             _player.heroSprite.Position = new Vector2(_player.position.X + textMap.TileWidth / 2, _player.position.Y + textMap.TileHeight / 2);
 
@@ -127,6 +151,7 @@ namespace OrthoCite.Entities
             spriteBatch.Draw(textMap, gameTime: _runtimeData.GameTime);
 
             _player.Draw(spriteBatch);
+            _pnj.Draw(spriteBatch);
 
             _upLayer.IsVisible = true;
             _upLayer.Draw(spriteBatch);

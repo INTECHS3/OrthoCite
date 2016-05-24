@@ -34,7 +34,7 @@ namespace OrthoCite.Entities
             _bgRectangle.SetData(new Color[] { Color.Black });
 
             _rectangleBg = new Rectangle(5, 10, 250, 20);
-            _rectangleBgPosition = new Rectangle(5, 30, 430, 50);
+            _rectangleBgPosition = new Rectangle(5, 30, 430, 70);
             _font = content.Load<SpriteFont>("debug");
         }
 
@@ -74,6 +74,9 @@ namespace OrthoCite.Entities
                 spriteBatch.DrawString(_font, $"Debug mode - FPS: {_fpsCounter.CurrentFramesPerSecond:0}", new Vector2(10, 10), Color.White);
                 spriteBatch.DrawString(_font, $"Debug mode - Camera Position: X: {_camera.Position.X} Y: {_camera.Position.Y}", new Vector2(10, 30), Color.White);
                 spriteBatch.DrawString(_font, $"Debug mode - Mouse Position: X: {_mousePosition.X} Y: {_mousePosition.Y}", new Vector2(10, 50), Color.White);
+                try { spriteBatch.DrawString(_font, $"Debug mode - Player Position: X: {_runtimeData.Player.positionVirt.X} Y: {_runtimeData.Player.positionVirt.Y}", new Vector2(10, 70), Color.White); }
+                catch { Console.WriteLine("Unknow Now Player Position"); }
+                
                 spriteBatch.End();
             }
             

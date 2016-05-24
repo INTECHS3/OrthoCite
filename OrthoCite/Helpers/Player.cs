@@ -55,11 +55,13 @@ namespace OrthoCite.Helpers
         public int actualFrame { set; get; }
         public int fastFrame { set; get; }
         public int lowFrame { set; get; }
+        
+        public int tileWidth;
+        public int tileHeight;
+        public int mapHeight;
+        public int mapWidth; 
 
-        public int tileWidth { set; get; }
-        public int tileHeight { set; get; }
-        public int mapHeight { set; get; }
-        public int mapWidth { set; get; }
+        public int gidCol { get; set; }
 
         string _texture;
 
@@ -68,8 +70,8 @@ namespace OrthoCite.Helpers
 
         public Player(TypePlayer TypePlaYer, Vector2 PositionVirt, RuntimeData runtimeData, string texture)
         {
+            
             positionVirt = PositionVirt;
-            position = new Vector2(0,0);
             typePlayer = TypePlaYer;
             _runtimeData = runtimeData;
             _texture = texture;
@@ -79,10 +81,15 @@ namespace OrthoCite.Helpers
 
         public void LoadContent(ContentManager content)
         {
+            tileHeight = collisionLayer.TileHeight;
+            tileWidth = collisionLayer.TileWidth;
+            mapHeight = collisionLayer.Height;
+            mapWidth = collisionLayer.Width;
+
             if (typePlayer == TypePlayer.WithSpriteSheet)
             {
-                var HeroWalking = content.Load<Texture2D>(_texture);
-                var HeroAtlas = TextureAtlas.Create(HeroWalking, 32, 32);
+                heroTexture = content.Load<Texture2D>(_texture);
+                var HeroAtlas = TextureAtlas.Create(heroTexture, 32, 32);
                 var HeroWalkingFactory = new SpriteSheetAnimationFactory(HeroAtlas);
 
                 HeroWalkingFactory.Add(Direction.NONE.ToString(), spriteFactory[Direction.NONE]);
@@ -101,6 +108,8 @@ namespace OrthoCite.Helpers
             {
                 heroTexture = content.Load<Texture2D>(_texture);
             }
+
+            position = new Vector2(positionVirt.X * tileWidth, positionVirt.Y * tileHeight);
         }
 
 
@@ -183,10 +192,26 @@ namespace OrthoCite.Helpers
                 {
                     if (actualDir == Direction.RIGHT && ColRight())
                     {
-
+                        actualDir = Direction.NONE;
                         return;
                     }
-                    if (actualDir == Direction.LEFT && ColLeft()) return;
+                    else if (actualDir == Direction.LEFT && ColLeft())
+                    {
+                        actualDir = Direction.NONE;
+                        return;
+                    }
+                    else if(actualDir == Direction.UP && ColUp())
+                    {
+                        actualDir = Direction.NONE;
+                        return;
+                    }
+                    else if(actualDir == Direction.DOWN && ColDown())
+                    {
+                        actualDir = Direction.NONE;
+                        return;
+                    }
+                    lastDir = actualDir;
+                    heroAnimations.Play(actualDir.ToString());
                     separeFrame++;
                 }                
                 
@@ -196,27 +221,11 @@ namespace OrthoCite.Helpers
 
                 if (separeFrame >= actualFrame)
                 {
-                    if (actualDir == Helpers.Direction.DOWN)
-                    {
-                        heroAnimations.Play(Helpers.Direction.DOWN.ToString());
-                        MoveDownChamp();
-
-                    }
-                    if (actualDir == Helpers.Direction.UP)
-                    {
-                        MoveUpChamp();
-                        heroAnimations.Play(Helpers.Direction.UP.ToString());
-                    }
-                    if (actualDir == Helpers.Direction.LEFT)
-                    {
-                        MoveLeftChamp();
-                        heroAnimations.Play(Helpers.Direction.LEFT.ToString());
-                    }
-                    if (actualDir == Helpers.Direction.RIGHT)
-                    {
-                        MoveRightChamp();
-                        heroAnimations.Play(Helpers.Direction.RIGHT.ToString());
-                    }
+                    if (actualDir == Helpers.Direction.DOWN) MoveDownChamp();
+                    if (actualDir == Helpers.Direction.UP)MoveUpChamp();
+                    if (actualDir == Helpers.Direction.LEFT)MoveLeftChamp();
+                    if (actualDir == Helpers.Direction.RIGHT)MoveRightChamp();
+                    
 
                     position = new Vector2(positionVirt.X * tileWidth, positionVirt.Y * tileHeight);
 
@@ -229,23 +238,20 @@ namespace OrthoCite.Helpers
                     if (actualDir == Helpers.Direction.DOWN)
                     {
                         position += new Vector2(0, tileHeight / actualFrame);
-                        heroAnimations.Play(Helpers.Direction.DOWN.ToString());
-                    }
+                       }
                     if (actualDir == Helpers.Direction.UP)
                     {
                         position += new Vector2(0, -(tileHeight / actualFrame));
-                        heroAnimations.Play(Helpers.Direction.UP.ToString());
-                    }
+                        }
                     if (actualDir == Helpers.Direction.LEFT)
                     {
                         position += new Vector2(-(tileWidth / actualFrame), 0);
-                        heroAnimations.Play(Helpers.Direction.LEFT.ToString());
-                    }
+                        }
                     if (actualDir == Helpers.Direction.RIGHT)
                     {
 
                         position += new Vector2(tileWidth / actualFrame, 0);
-                        heroAnimations.Play(Helpers.Direction.RIGHT.ToString());
+                        
                     }
                     separeFrame++;
                 }
@@ -258,8 +264,8 @@ namespace OrthoCite.Helpers
             if (positionVirt.Y <= 0) return true;
             foreach (TiledTile i in collisionLayer.Tiles)
             {
-                if (i.X == positionVirt.X && i.Y == positionVirt.Y - 1 && i.Id == 889) return true;
-                _runtimeData.Map.checkIfWeLaunchInstance(i);
+                if (i.X == positionVirt.X && i.Y == positionVirt.Y - 1 && i.Id == gidCol) return true;
+                if(_runtimeData.Map != null) _runtimeData.Map.checkIfWeLaunchInstance(i); 
             }
 
             return false;
@@ -271,7 +277,7 @@ namespace OrthoCite.Helpers
             if (positionVirt.Y >= mapHeight - 1) return true;
             foreach (TiledTile i in collisionLayer.Tiles)
             {
-                if (i.X == positionVirt.X && i.Y == positionVirt.Y + 1 && i.Id == 889) return true;
+                if (i.X == positionVirt.X && i.Y == positionVirt.Y + 1 && i.Id == gidCol) return true;
             }
             return false;
         }
@@ -281,7 +287,7 @@ namespace OrthoCite.Helpers
             if (positionVirt.X <= 0) return true;
             foreach (TiledTile i in collisionLayer.Tiles)
             {
-                if (i.X == positionVirt.X - 1 && i.Y == positionVirt.Y && i.Id == 889) return true;
+                if (i.X == positionVirt.X - 1 && i.Y == positionVirt.Y && i.Id == gidCol) return true;
             }
             return false;
         }
@@ -291,9 +297,11 @@ namespace OrthoCite.Helpers
             if (positionVirt.X >= mapWidth - 1) return true;
             foreach (TiledTile i in collisionLayer.Tiles)
             {
-                if (i.X == positionVirt.X + 1 && i.Y == positionVirt.Y && i.Id == 889) return true;
+                if (i.X == positionVirt.X + 1 && i.Y == positionVirt.Y && i.Id == gidCol) return true;
             }
             return false;
         }
+
+
     }
 }
