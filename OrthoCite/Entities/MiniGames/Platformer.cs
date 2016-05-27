@@ -38,7 +38,7 @@ namespace OrthoCite.Entities.MiniGames
         Sprite _hammer;
 
         int _district = 0;
-        int _rounds = 5;
+        int _rounds = 10;
 
         struct Word
         {
@@ -80,6 +80,7 @@ namespace OrthoCite.Entities.MiniGames
         bool _onPlatform = false;
         bool _faceLeft;
         int _currentRound = 1;
+        bool _hammerFree = true;
         List<Platform> _platforms;
 
         enum Direction
@@ -208,7 +209,7 @@ namespace OrthoCite.Entities.MiniGames
 
                         if (keyboardState.IsKeyDown(Keys.E))
                         {
-                            HitWithHammer(platform);
+                            if (_hammerFree) HitWithHammer(platform);
                         }
                     }
                 }
@@ -238,6 +239,7 @@ namespace OrthoCite.Entities.MiniGames
 
         void HitWithHammer(Platform platform)
         {
+            _hammerFree = false;
             _hammer.IsVisible = true;
             _hammer.Position = new Vector2(platform.Coords.X - 10, platform.Coords.Y - 20);
             _hammer.CreateTweenGroup(() => OnHitWithHammerEnd(platform)).RotateTo(1.57f, 0.5f, EasingFunctions.SineEaseIn);
@@ -245,6 +247,7 @@ namespace OrthoCite.Entities.MiniGames
 
         void OnHitWithHammerEnd(Platform platform)
         {
+            _hammerFree = true;
             _hammer.Rotation = 0;
             _hammer.IsVisible = false;
 
