@@ -113,6 +113,7 @@ namespace OrthoCite.Entities.MiniGames
             _fontResult = content.Load<SpriteFont>("minigames/platformer/font-result");
 
             _hammer = new Sprite(_hammerTexture);
+            _hammer.IsVisible = false;
 
             _playerPosition = new Vector2((_runtimeData.Scene.Width / 2) - (_playerStraight.Width / 2), _runtimeData.Scene.Height - _playerStraight.Height);
 
@@ -254,10 +255,11 @@ namespace OrthoCite.Entities.MiniGames
             if (platform.Word.IsValid)
             {
                 _runtimeData.Lives -= 1;
+                _runtimeData.DialogBox.AddDialog($"Raté, « {platform.Word.Value} » est bien écrit ! 1 vie en moins.", 2).Show();
 
                 if (_runtimeData.Lives == 0)
                 {
-                    _runtimeData.DialogBox.AddDialog("Perdu !", 2).Show();
+                    _runtimeData.DialogBox.AddDialog("Tu n'as plus de vie !", 2).Show();
                     _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
                 }
             }
@@ -268,13 +270,15 @@ namespace OrthoCite.Entities.MiniGames
                 {
                     if (_currentRound == _rounds)
                     {
-                        _runtimeData.DialogBox.AddDialog("Gagné !", 2).Show();
+                        _runtimeData.DialogBox.AddDialog("Tu as gagné ce mini-jeu !", 2).Show();
                         _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
                     }
                     else
                     {
                         _currentRound++;
-                        _runtimeData.DialogBox.AddDialog($"Round suivant ({_currentRound}/{_rounds})", 2).Show();
+                        string[] greetings = { "Waouh", "Super", "Bravo", "Bien joué", "Trop fort" };
+                        string greeting = greetings[_random.Next(0, greetings.Length)];
+                        _runtimeData.DialogBox.AddDialog($"{greeting} ! Passons au round {_currentRound} sur {_rounds}", 2).Show();
                         GeneratePlatforms();
                     }
                 }
