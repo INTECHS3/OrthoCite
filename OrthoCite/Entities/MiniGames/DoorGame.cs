@@ -19,6 +19,7 @@ namespace OrthoCite.Entities.MiniGames
         public TiledMap textMap;
         Helpers.Player _player;
         SpriteFont _font;
+        DialogBox _box;
 
         int _gidStart;
         const int _gidSpawn = 46;
@@ -62,7 +63,7 @@ namespace OrthoCite.Entities.MiniGames
             _firstUpdate = true;
 
             _player = new Helpers.Player(Helpers.TypePlayer.WithSpriteSheet, new Vector2(0, 0), _runtimeData, "animations/walking");
-
+            _box = new DialogBox(_runtimeData);
             _player.separeFrame = 0;
             _player.lowFrame = _lowSpeedPlayer;
             _player.fastFrame = _fastSpeedPlayer;
@@ -104,7 +105,10 @@ namespace OrthoCite.Entities.MiniGames
             _player.spriteFactory.Add(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 19, 13, 24, 13 }, isLooping: false));
 
             _player.LoadContent(content);
+            _box.SetText("Totografe");
+            _box.Show();
             
+
         }
 
         public override void UnloadContent()

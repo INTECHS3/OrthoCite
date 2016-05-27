@@ -27,7 +27,7 @@ namespace OrthoCite
     /// </summary>
     public class OrthoCite : Game
     {
-        const GameContext STARTING_ENTITY = GameContext.MENU;
+        const GameContext STARTING_ENTITY = GameContext.MINIGAME_DOORGAME;
 
         BoxingViewportAdapter _viewportAdapter;
         Camera2D _camera;
