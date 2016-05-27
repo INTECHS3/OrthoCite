@@ -190,6 +190,7 @@ namespace OrthoCite.Entities
 
         private void addAllPnj(ContentManager content, GraphicsDevice graphicsDevice)
         {
+            _runtimeData.PNJ = new Dictionary<ListPnj, PNJ>();
             _runtimeData.PNJ.Add(ListPnj.QUARTIER_1, new PNJ(TypePNJ.Static, new Vector2(120, 59), new List<ItemList>(), _runtimeData, "animations/walking"));
 
             foreach(KeyValuePair<ListPnj, PNJ> i in _runtimeData.PNJ)
