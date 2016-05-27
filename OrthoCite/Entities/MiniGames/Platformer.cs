@@ -3,6 +3,9 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
+using MonoGame.Extended.Animations.SpriteSheets;
+using MonoGame.Extended.Animations.Tweens;
+using MonoGame.Extended.Sprites;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -27,11 +30,15 @@ namespace OrthoCite.Entities.MiniGames
         Texture2D _platform;
         Texture2D _playerJump;
         Texture2D _playerStraight;
+        Texture2D _hammerTexture;
 
         SpriteFont _font;
         SpriteFont _fontResult;
 
-        int _district;
+        Sprite _hammer;
+
+        int _district = 0;
+        int _rounds = 5;
 
         struct Word
         {
@@ -72,6 +79,7 @@ namespace OrthoCite.Entities.MiniGames
         bool _isLanded = true;
         bool _onPlatform = false;
         bool _faceLeft;
+        int _currentRound = 1;
         List<Platform> _platforms;
 
         enum Direction
@@ -98,9 +106,12 @@ namespace OrthoCite.Entities.MiniGames
             _platform = content.Load<Texture2D>("minigames/platformer/platform");
             _playerJump = content.Load<Texture2D>("minigames/platformer/player-jump");
             _playerStraight = content.Load<Texture2D>("minigames/platformer/player-straight");
+            _hammerTexture= content.Load<Texture2D>("minigames/platformer/hammer");
 
             _font = content.Load<SpriteFont>("minigames/platformer/font");
             _fontResult = content.Load<SpriteFont>("minigames/platformer/font-result");
+
+            _hammer = new Sprite(_hammerTexture);
 
             _playerPosition = new Vector2((_runtimeData.Scene.Width / 2) - (_playerStraight.Width / 2), _runtimeData.Scene.Height - _playerStraight.Height);
 
@@ -113,10 +124,6 @@ namespace OrthoCite.Entities.MiniGames
 
         public override void Update(GameTime gameTime, KeyboardState keyboardState, Camera2D camera)
         {
-            
-            //camera.Position = new Vector2(0, 0);
-            //camera.Zoom = 1;
-
             if(keyboardState.IsKeyDown(Keys.F12))
             {
                 _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
@@ -201,27 +208,7 @@ namespace OrthoCite.Entities.MiniGames
 
                         if (keyboardState.IsKeyDown(Keys.E))
                         {
-                            if (platform.Word.IsValid)
-                            {
-                                _runtimeData.Lives -= 1;
-
-                                if (_runtimeData.Lives == 0)
-                                {
-                                    _runtimeData.DialogBox.AddDialog("Perdu !", 2).Show();
-                                    _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
-                                }
-                            }
-                            else
-                            {
-                                _platforms.Remove(platform);
-                                if (_platforms.Count == 1)
-                                {
-                                    _runtimeData.DialogBox.AddDialog("Gagné !", 2).Show();
-                                    _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
-                                }
-                                break;
-                            }
-
+                            HitWithHammer(platform);
                         }
                     }
                 }
@@ -245,10 +232,51 @@ namespace OrthoCite.Entities.MiniGames
             }
 
             spriteBatch.Draw(_isLanded ? _playerStraight : _playerJump, _playerPosition, null, null, null, 0, null, null, _faceLeft ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
+            spriteBatch.Draw(_hammer);
             spriteBatch.End();
         }
 
-       
+        void HitWithHammer(Platform platform)
+        {
+            _hammer.IsVisible = true;
+            _hammer.Position = new Vector2(platform.Coords.X - 10, platform.Coords.Y - 20);
+            _hammer.CreateTweenGroup(() => OnHitWithHammerEnd(platform)).RotateTo(1.57f, 0.5f, EasingFunctions.SineEaseIn);
+        }
+
+        void OnHitWithHammerEnd(Platform platform)
+        {
+            _hammer.Rotation = 0;
+            _hammer.IsVisible = false;
+
+            if (platform.Word.IsValid)
+            {
+                _runtimeData.Lives -= 1;
+
+                if (_runtimeData.Lives == 0)
+                {
+                    _runtimeData.DialogBox.AddDialog("Perdu !", 2).Show();
+                    _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
+                }
+            }
+            else
+            {
+                _platforms.Remove(platform);
+                if (_platforms.Count == 1)
+                {
+                    if (_currentRound == _rounds)
+                    {
+                        _runtimeData.DialogBox.AddDialog("Gagné !", 2).Show();
+                        _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
+                    }
+                    else
+                    {
+                        _currentRound++;
+                        _runtimeData.DialogBox.AddDialog($"Round suivant ({_currentRound}/{_rounds})", 2).Show();
+                        GeneratePlatforms();
+                    }
+                }
+            }
+        }
 
         public override void Execute(params string[] param)
         {
@@ -258,7 +286,13 @@ namespace OrthoCite.Entities.MiniGames
         internal override void Start()
         {
             LoadWords();
+            GeneratePlatforms();
+        }
 
+        void GeneratePlatforms()
+        {
+            _grid.Clear();
+            _platforms.Clear();
             /* Generate grid */
             int columns = _runtimeData.Scene.Width / (_platform.Width + _playerStraight.Width + PLATFORM_MIN_TOP_BOTTOM_OFFSET * 2);
             int lines = _runtimeData.Scene.Height / (_platform.Height + _playerStraight.Height);
