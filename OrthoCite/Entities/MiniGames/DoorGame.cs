@@ -62,7 +62,7 @@ namespace OrthoCite.Entities.MiniGames
             _firstUpdate = true;
 
             _player = new Helpers.Player(Helpers.TypePlayer.WithSpriteSheet, new Vector2(0, 0), _runtimeData, "animations/walking");
-
+            _runtimeData.Player = _player;
             _player.separeFrame = 0;
             _player.lowFrame = _lowSpeedPlayer;
             _player.fastFrame = _fastSpeedPlayer;
@@ -105,6 +105,8 @@ namespace OrthoCite.Entities.MiniGames
 
             _player.LoadContent(content);
             
+            
+
         }
 
         public override void UnloadContent()
@@ -120,6 +122,8 @@ namespace OrthoCite.Entities.MiniGames
                 camera.Zoom = _zoom;
                 _player.position = new Vector2(_player.positionVirt.X * textMap.TileWidth, _player.positionVirt.Y * textMap.TileHeight);
                 _firstUpdate = !_firstUpdate;
+                _runtimeData.DialogBox.SetText("Totografe");
+                _runtimeData.DialogBox.Show();
             }
 
             _player.checkMove(keyboardState, camera);
@@ -179,13 +183,13 @@ namespace OrthoCite.Entities.MiniGames
             if (OutOfScreenLeft(camera) && OutOfScreenTop(camera)) camera.LookAt(new Vector2(-_runtimeData.Scene.Width / _zoom + _runtimeData.Scene.Width / 2, -_runtimeData.Scene.Height / _zoom + _runtimeData.Scene.Height / 2));
 
             if (OutOfScreenRight(camera) && OutOfScreenTop(camera)) camera.LookAt(new Vector2(textMap.WidthInPixels - (_runtimeData.Scene.Width / _zoom) * 2 + _runtimeData.Scene.Width / 2, textMap.HeightInPixels - (_runtimeData.Scene.Height / _zoom) * 2 + _runtimeData.Scene.Height / 2));
-            if (OutOfScreenRight(camera) && OutOfScreenBottom(camera)) camera.LookAt(new Vector2(textMap.WidthInPixels - (_runtimeData.Scene.Width / _zoom) * 2 + _runtimeData.Scene.Width / 2, -_runtimeData.Scene.Height / _zoom + _runtimeData.Scene.Height / 2));
+            if (OutOfScreenRight(camera) && OutOfScreenBottom(camera)) camera.LookAt(new Vector2(textMap.WidthInPixels - (_runtimeData.Scene.Width / _zoom) * 2 + _runtimeData.Scene.Width / 2, textMap.HeightInPixels - (_runtimeData.Scene.Height / _zoom) * 2 + _runtimeData.Scene.Height / 2));
 
         }
 
         private bool OutOfScreenTop(Camera2D camera)
         {
-            if (camera.Position.Y < -_runtimeData.Scene.Height / _zoom) return true;
+            if (camera.Position.Y <= -_runtimeData.Scene.Height / _zoom) return true;
             return false;
         }
         private bool OutOfScreenLeft(Camera2D camera)
