@@ -5,6 +5,9 @@ using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using System.Xml;
 
 namespace OrthoCite.Entities.MiniGames
 {
@@ -28,6 +31,8 @@ namespace OrthoCite.Entities.MiniGames
         SpriteFont _font;
         SpriteFont _fontResult;
 
+        int _district;
+
         struct Word
         {
             public string Value;
@@ -50,6 +55,8 @@ namespace OrthoCite.Entities.MiniGames
                 Invalid.Add(new Word { Value = invalid });
             }
         }
+
+        List<WordCollection> _wordCollections;
 
         struct Platform
         {
@@ -82,6 +89,7 @@ namespace OrthoCite.Entities.MiniGames
             _platforms = new List<Platform>();
             _random = new Random();
             _grid = new List<Vector2>();
+            _wordCollections = new List<WordCollection>();
         }
 
         public override void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
@@ -249,6 +257,8 @@ namespace OrthoCite.Entities.MiniGames
 
         internal override void Start()
         {
+            LoadWords();
+
             /* Generate grid */
             int columns = _runtimeData.Scene.Width / (_platform.Width + _playerStraight.Width + PLATFORM_MIN_TOP_BOTTOM_OFFSET * 2);
             int lines = _runtimeData.Scene.Height / (_platform.Height + _playerStraight.Height);
@@ -266,12 +276,8 @@ namespace OrthoCite.Entities.MiniGames
             }
 
             /* Generate platforms */
-
-            WordCollection words = new WordCollection("orthographe");
-            words.AddInvalid("ortographe");
-            words.AddInvalid("ortograf");
-            words.AddInvalid("aurtographe");
-            words.AddInvalid("orthaugraphe");
+            WordCollection words = _wordCollections[_random.Next(0, _wordCollections.Count)];
+            _wordCollections.Remove(words);
 
             int count = 5;
             for (int i = 0; i < count; i++)
@@ -291,6 +297,31 @@ namespace OrthoCite.Entities.MiniGames
                 }
 
                 _platforms.Add(platform);
+            }
+        }
+
+        public void SetDistrict(int district)
+        {
+            _district = district;
+        }
+
+        public void LoadWords()
+        {
+            _wordCollections.Clear();
+            XmlDocument document = new XmlDocument();
+            document.Load(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\Content\dictionaries\platformer.xml");
+            XmlNode root = document.DocumentElement;
+            XmlNode district = root.SelectSingleNode("district[@id='" + _district + "']");
+
+            foreach (XmlNode sentence in district.SelectNodes("sentence"))
+            {
+                WordCollection collection = new WordCollection(sentence.SelectSingleNode("valid").InnerText);
+                foreach(XmlNode invalid in sentence.SelectNodes("invalid"))
+                {
+                    collection.AddInvalid(invalid.InnerText);
+                }
+
+                _wordCollections.Add(collection);
             }
         }
     }
