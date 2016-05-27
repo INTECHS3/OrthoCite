@@ -10,3 +10,8 @@ before_build:
 
 build:
   verbosity: minimal
+
+notifications:
+  - provider: Slack
+    incoming_webhook:
+      secure: ooAjhsNiQrWMazPqdoAqmXDMe4URwXGgowZMbE/a6l8UHSP1loz1ymVAUppt00KtSViGCO+mwWLvcmVx5KTxVxP1fZVU/ZnbvIKpXcIBxok=
