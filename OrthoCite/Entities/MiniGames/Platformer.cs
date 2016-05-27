@@ -38,6 +38,7 @@ namespace OrthoCite.Entities.MiniGames
         Sprite _hammer;
 
         int _district = 0;
+        int _platformsPerWord = 5;
         int _rounds = 10;
 
         struct Word
@@ -320,8 +321,7 @@ namespace OrthoCite.Entities.MiniGames
             WordCollection words = _wordCollections[_random.Next(0, _wordCollections.Count)];
             _wordCollections.Remove(words);
 
-            int count = 5;
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < _platformsPerWord; i++)
             {
                 Vector2 position = _grid[_random.Next(0, _grid.Count)];
                 _grid.Remove(position);
@@ -344,6 +344,22 @@ namespace OrthoCite.Entities.MiniGames
         public void SetDistrict(int district)
         {
             _district = district;
+
+            switch(district)
+            {
+                case 0:
+                    _platformsPerWord = 5;
+                    break;
+                case 1:
+                    _platformsPerWord = 8;
+                    break;
+                case 2:
+                    _platformsPerWord = 10;
+                    break;
+                case 3:
+                    _platformsPerWord = 12;
+                    break;
+            }
         }
 
         public void LoadWords()
