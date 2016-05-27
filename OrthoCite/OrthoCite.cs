@@ -29,6 +29,7 @@ namespace OrthoCite
     {
         const GameContext STARTING_ENTITY = GameContext.MINIGAME_DOORGAME;
 
+
         BoxingViewportAdapter _viewportAdapter;
         Camera2D _camera;
         RuntimeData _runtimeData;

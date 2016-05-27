@@ -66,8 +66,6 @@ namespace OrthoCite.Entities.MiniGames
         bool _onPlatform = false;
         bool _faceLeft;
         List<Platform> _platforms;
-        bool _lost = false;
-        bool _won = false;
 
         enum Direction
         {
@@ -115,8 +113,6 @@ namespace OrthoCite.Entities.MiniGames
             {
                 _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
             }
-
-            if (_won || _lost) return;
 
             /* Handle move */
             if (keyboardState.IsKeyDown(Keys.Space))
@@ -199,12 +195,22 @@ namespace OrthoCite.Entities.MiniGames
                         {
                             if (platform.Word.IsValid)
                             {
-                                _lost = true;
+                                _runtimeData.Lives -= 1;
+
+                                if (_runtimeData.Lives == 0)
+                                {
+                                    _runtimeData.DialogBox.AddDialog("Perdu !", 2).Show();
+                                    _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
+                                }
                             }
                             else
                             {
                                 _platforms.Remove(platform);
-                                if (_platforms.Count == 1) _won = true;
+                                if (_platforms.Count == 1)
+                                {
+                                    _runtimeData.DialogBox.AddDialog("Gagné !", 2).Show();
+                                    _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
+                                }
                                 break;
                             }
 
@@ -231,9 +237,6 @@ namespace OrthoCite.Entities.MiniGames
             }
 
             spriteBatch.Draw(_isLanded ? _playerStraight : _playerJump, _playerPosition, null, null, null, 0, null, null, _faceLeft ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
-
-            if (_lost) spriteBatch.DrawString(_fontResult, "Perdu", _playerPosition, Color.Red);
-            if (_won) spriteBatch.DrawString(_fontResult, "Bravo", _playerPosition, Color.Green);
             spriteBatch.End();
         }
 

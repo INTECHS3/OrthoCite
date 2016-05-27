@@ -39,14 +39,16 @@ namespace OrthoCite.Helpers
         int i;
         const int timeTalk = 100;
         int a;
+        int z;
 
         Player _pnj;
-
+        
 
         RuntimeData _runtimeData;
         string _texture;
 
-        public bool talkAndStop { get; set; }
+        public bool talking { get; set; }
+        public bool stop { get; set; }
 
 
         //TALKABLE, TEXT, NEDD LESS PARAMS CONTRUCTOR
@@ -63,18 +65,9 @@ namespace OrthoCite.Helpers
         
         public void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
         {
-
-            _pnj.collisionLayer = _runtimeData.Player.collisionLayer;
-
-            _pnj.separeFrame = _runtimeData.Player.separeFrame;
-            _pnj.lowFrame = _runtimeData.Player.lowFrame;
-            _pnj.fastFrame = _runtimeData.Player.fastFrame;
-
-            _pnj.typeDeplacement = TypeDeplacement.WithDirection;
-
-            
-
             _pnj.LoadContent(content);
+
+            z = 0;
         }
 
         public void UnloadContent()
@@ -84,18 +77,49 @@ namespace OrthoCite.Helpers
         
         public void Update(GameTime gameTime, KeyboardState keyboardState, Camera2D camera, float deltaSeconds)
         {
-            if (talkAndStop) talk();
+
+            
+
+            if(z == 0 && _runtimeData.Player != null) collisionWithPlayer();
+
+            if (talking)
+            {
+               stop = true;
+               talk();
+            }
             else
             {
+                stop = false;
                 if (_type != TypePNJ.Static)
                 {
-
+                    iaMovePnj();
                     _pnj.checkMove(keyboardState, camera);
                 }
             }
             
             _pnj.heroAnimations.Update(deltaSeconds);
             _pnj.heroSprite.Position = new Vector2(_pnj.position.X + _pnj.tileWidth / 2, _pnj.position.Y + _pnj.tileHeight / 2);
+
+            if (z != 0 && z < 100) z++;
+            else if (z >= 100) z = 0;
+        }
+
+        private void iaMovePnj()
+        {
+           
+        }
+
+        private void collisionWithPlayer()
+        {
+            if (_runtimeData.Player.positionVirt.X == _pnj.positionVirt.X && _runtimeData.Player.positionVirt.Y + 1 == _pnj.positionVirt.Y) talking = true;
+            
+            if (_runtimeData.Player.positionVirt.X == _pnj.positionVirt.X && _runtimeData.Player.positionVirt.Y - 1 == _pnj.positionVirt.Y) talking = true;
+
+            if (_runtimeData.Player.positionVirt.X + 1 == _pnj.positionVirt.X && _runtimeData.Player.positionVirt.Y == _pnj.positionVirt.Y) talking = true;
+
+            if (_runtimeData.Player.positionVirt.X - 1 == _pnj.positionVirt.X && _runtimeData.Player.positionVirt.Y == _pnj.positionVirt.Y) talking = true;
+
+            z++;
         }
 
         private void talk()
@@ -104,13 +128,15 @@ namespace OrthoCite.Helpers
             if (i == 0 && a < _talk.Count)
             {
                 _runtimeData.DialogBox.SetText(_talk[a]).Show();
+                z = 1;
                 a++;
                 i++;
             }
             else if (i==0 && a >= _talk.Count)
             {
-                talkAndStop = false;
+                a = 0;
                 _runtimeData.DialogBox.Hide();
+                talking = false;
             }
             else if (i != 0 && i < timeTalk) i++;
             else if (i == timeTalk)
@@ -136,6 +162,10 @@ namespace OrthoCite.Helpers
             _pnj.spriteFactory.Add(dir, spriteData);
         }
 
+        public Player PNJPlayer
+        {
+            get { return _pnj; }
+        }
         
     }
 }
