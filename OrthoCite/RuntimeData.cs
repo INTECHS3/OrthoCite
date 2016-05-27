@@ -8,7 +8,9 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended.ViewportAdapters;
 using OrthoCite.Entities;
+using OrthoCite.Entities.MiniGames;
 using OrthoCite.Helpers;
+using MonoGame.Extended.Maps.Tiled;
 
 namespace OrthoCite
 {
@@ -79,5 +81,7 @@ namespace OrthoCite
             set { pnj = value; }
         }
         
+        public DoorGame DoorGame { get; set; }
+
     }
 }

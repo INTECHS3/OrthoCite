@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 namespace OrthoCite.Entities.MiniGames
 {
-    class DoorGame : MiniGame
+    public class DoorGame : MiniGame
     {
         RuntimeData _runtimeData;
         public TiledMap textMap;
@@ -27,6 +27,8 @@ namespace OrthoCite.Entities.MiniGames
         const int _lowSpeedPlayer = 13;
         const int _zoom = 3;
         bool _firstUpdate;
+
+        Dictionary<int, List<object>> _world;
 
         struct Word
         {
@@ -67,6 +69,17 @@ namespace OrthoCite.Entities.MiniGames
             _player.lowFrame = _lowSpeedPlayer;
             _player.fastFrame = _fastSpeedPlayer;
             _player.typeDeplacement = TypeDeplacement.WithKey;
+            
+            _runtimeData.DoorGame = this;
+
+            _world = new Dictionary<int, List<object>>();
+
+            _world.Add(563, new List<object>());
+            _world.Add(564, new List<object>());
+            _world.Add(573, new List<object>());
+            _world.Add(565, new List<object>());
+            _world.Add(566, new List<object>());
+            _world.Add(574, new List<object>());
         }
 
         public override void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
@@ -189,7 +202,7 @@ namespace OrthoCite.Entities.MiniGames
 
         private bool OutOfScreenTop(Camera2D camera)
         {
-            if (camera.Position.Y <= -_runtimeData.Scene.Height / _zoom) return true;
+            if (camera.Position.Y < -_runtimeData.Scene.Height / _zoom) return true;
             return false;
         }
         private bool OutOfScreenLeft(Camera2D camera)
@@ -214,6 +227,48 @@ namespace OrthoCite.Entities.MiniGames
             _player.positionVirt = vec;
         }
 
+        internal bool CheckColUp(TiledTile i)
+        {
+            foreach(KeyValuePair<int, List<object>> e in _world)
+            {
+                if (i.Y == _player.positionVirt.Y - 1 && i.X == _player.positionVirt.X && i.Id == e.Key)
+                {
+                    _runtimeData.DialogBox.SetText(e.Key.ToString());
+                    _runtimeData.DialogBox.Show();
+                    return true;
+                }
+            }
+            
+            
+            return false;
+        }
 
+        internal bool CheckColRight(TiledTile i)
+        {
+            foreach (KeyValuePair<int, List<object>> e in _world)
+            {
+                if (i.Y == _player.positionVirt.Y && i.X == _player.positionVirt.X  + 1 && i.Id == e.Key)
+                {
+                    _runtimeData.DialogBox.SetText(e.Key.ToString());
+                    _runtimeData.DialogBox.Show();
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        internal bool CheckColLeft(TiledTile i)
+        {
+            foreach (KeyValuePair<int, List<object>> e in _world)
+            {
+                if (i.Y == _player.positionVirt.Y && i.X == _player.positionVirt.X - 1 && i.Id == e.Key)
+                {
+                    _runtimeData.DialogBox.SetText(e.Key.ToString());
+                    _runtimeData.DialogBox.Show();
+                    return true;
+                }
+            }
+            return false;   
+        }
     }
 }

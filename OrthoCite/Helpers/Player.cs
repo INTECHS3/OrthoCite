@@ -265,7 +265,8 @@ namespace OrthoCite.Helpers
             foreach (TiledTile i in collisionLayer.Tiles)
             {
                 if (i.X == positionVirt.X && i.Y == positionVirt.Y - 1 && i.Id == gidCol) return true;
-                if(_runtimeData.Map != null) _runtimeData.Map.checkIfWeLaunchInstance(i); 
+                if(_runtimeData.Map != null) _runtimeData.Map.checkIfWeLaunchInstance(i);
+                if (_runtimeData.DoorGame != null && _runtimeData.DoorGame.CheckColUp(i)) return true;
             }
 
             foreach(KeyValuePair<Entities.ListPnj,PNJ> i in _runtimeData.PNJ)
@@ -297,6 +298,7 @@ namespace OrthoCite.Helpers
             foreach (TiledTile i in collisionLayer.Tiles)
             {
                 if (i.X == positionVirt.X - 1 && i.Y == positionVirt.Y && i.Id == gidCol) return true;
+                if (_runtimeData.DoorGame != null && _runtimeData.DoorGame.CheckColLeft(i)) return true;
             }
             foreach (KeyValuePair<Entities.ListPnj, PNJ> i in _runtimeData.PNJ)
             {
@@ -311,6 +313,8 @@ namespace OrthoCite.Helpers
             foreach (TiledTile i in collisionLayer.Tiles)
             {
                 if (i.X == positionVirt.X + 1 && i.Y == positionVirt.Y && i.Id == gidCol) return true;
+                if (_runtimeData.DoorGame != null && _runtimeData.DoorGame.CheckColRight(i)) return true;
+
             }
             foreach (KeyValuePair<Entities.ListPnj, PNJ> i in _runtimeData.PNJ)
             {

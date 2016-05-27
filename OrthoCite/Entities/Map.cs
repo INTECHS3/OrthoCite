@@ -233,7 +233,7 @@ namespace OrthoCite.Entities
 
         private bool OutOfScreenTop(Camera2D camera)
         {
-            if(camera.Position.Y <= -_runtimeData.Scene.Height / _zoom) return true;
+            if(camera.Position.Y < -_runtimeData.Scene.Height / _zoom) return true;
             return false;
         }
         private bool OutOfScreenLeft(Camera2D camera)

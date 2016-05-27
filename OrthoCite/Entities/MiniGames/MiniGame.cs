@@ -6,7 +6,7 @@ using MonoGame.Extended;
 
 namespace OrthoCite.Entities.MiniGames
 {
-    abstract class MiniGame : IEntity
+    public abstract class MiniGame : IEntity
     {
         abstract public void LoadContent(ContentManager content, GraphicsDevice graphicsDevice);
         abstract public void UnloadContent();
