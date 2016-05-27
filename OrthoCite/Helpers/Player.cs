@@ -268,6 +268,11 @@ namespace OrthoCite.Helpers
                 if(_runtimeData.Map != null) _runtimeData.Map.checkIfWeLaunchInstance(i); 
             }
 
+            foreach(KeyValuePair<Entities.ListPnj,PNJ> i in _runtimeData.PNJ)
+            {
+                if (positionVirt.X == i.Value.PNJPlayer.positionVirt.X && positionVirt.Y - 1 == i.Value.PNJPlayer.positionVirt.Y) return true;
+            }
+
             return false;
         }
 
@@ -279,6 +284,10 @@ namespace OrthoCite.Helpers
             {
                 if (i.X == positionVirt.X && i.Y == positionVirt.Y + 1 && i.Id == gidCol) return true;
             }
+            foreach (KeyValuePair<Entities.ListPnj, PNJ> i in _runtimeData.PNJ)
+            {
+                if (positionVirt.X == i.Value.PNJPlayer.positionVirt.X && positionVirt.Y + 1 == i.Value.PNJPlayer.positionVirt.Y) return true;
+            }
             return false;
         }
 
@@ -289,6 +298,10 @@ namespace OrthoCite.Helpers
             {
                 if (i.X == positionVirt.X - 1 && i.Y == positionVirt.Y && i.Id == gidCol) return true;
             }
+            foreach (KeyValuePair<Entities.ListPnj, PNJ> i in _runtimeData.PNJ)
+            {
+                if (positionVirt.X - 1 == i.Value.PNJPlayer.positionVirt.X && _runtimeData.Player.positionVirt.Y == i.Value.PNJPlayer.positionVirt.Y) return true;
+            }
             return false;
         }
 
@@ -298,6 +311,10 @@ namespace OrthoCite.Helpers
             foreach (TiledTile i in collisionLayer.Tiles)
             {
                 if (i.X == positionVirt.X + 1 && i.Y == positionVirt.Y && i.Id == gidCol) return true;
+            }
+            foreach (KeyValuePair<Entities.ListPnj, PNJ> i in _runtimeData.PNJ)
+            {
+                if (positionVirt.X + 1 == i.Value.PNJPlayer.positionVirt.X && _runtimeData.Player.positionVirt.Y == i.Value.PNJPlayer.positionVirt.Y) return true;
             }
             return false;
         }

@@ -24,6 +24,8 @@ namespace OrthoCite
         public int gidLast { set; get; }
         Map map;
 
+        public Dictionary<ListPnj, PNJ> pnj = new Dictionary<ListPnj, Helpers.PNJ>();
+
         public int _lives;
 
         public RuntimeData(OrthoCite orthoCite)
@@ -70,5 +72,12 @@ namespace OrthoCite
         }
 
         public Player Player { get; set; }
+
+        public Dictionary<ListPnj, PNJ> PNJ
+        {
+            get { return pnj; }
+            set { pnj = value; }
+        }
+        
     }
 }
