@@ -59,6 +59,7 @@
     <Compile Include="Entities\Lives.cs" />
     <Compile Include="Entities\DialogBox.cs" />
     <Compile Include="Entities\DebugLayer.cs" />
+    <Compile Include="Entities\Introduction.cs" />
     <Compile Include="Entities\Map.cs" />
     <Compile Include="Entities\MiniGames\Boss\BossGame.cs" />
     <Compile Include="Entities\MiniGames\DoorGame.cs" />

@@ -15,6 +15,7 @@ namespace OrthoCite
 {
     public enum GameContext
     {
+        INTRO,
         MENU,
         MAP,
         MINIGAME_PLATFORMER,
@@ -27,8 +28,7 @@ namespace OrthoCite
     /// </summary>
     public class OrthoCite : Game
     {
-        const GameContext STARTING_ENTITY = GameContext.MINIGAME_PLATFORMER;
-
+        const GameContext STARTING_ENTITY = GameContext.INTRO;
 
         BoxingViewportAdapter _viewportAdapter;
         Camera2D _camera;
@@ -181,6 +181,10 @@ namespace OrthoCite
 
             switch (_gameContext)
             {
+                case GameContext.INTRO:
+                    Console.WriteLine("Introduction");
+                    _entities.Add(new Introduction(_runtimeData));
+                    break;
                 case GameContext.MENU:
                     Console.WriteLine("Menu");
                     _entities.Add(new Mainmenu(_runtimeData));
@@ -203,7 +207,7 @@ namespace OrthoCite
                     break;
             }
 
-            if (_gameContext != GameContext.MENU)
+            if (_gameContext != GameContext.MENU && _gameContext != GameContext.INTRO)
             {
                 _entities.Add(_runtimeData.DialogBox);
                 _entities.Add(new Lives(_runtimeData));
