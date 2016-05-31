@@ -18,6 +18,7 @@ namespace OrthoCite
     {
         INTRO,
         MENU,
+        LOST_SCREEN,
         MAP,
         MINIGAME_PLATFORMER,
         MINIGAME_BOSS,
@@ -185,12 +186,16 @@ namespace OrthoCite
             switch (_gameContext)
             {
                 case GameContext.INTRO:
-                    Console.WriteLine("Introduction");
+                    Console.WriteLine("introduction");
                     _entities.Add(new Introduction(_runtimeData));
                     break;
                 case GameContext.MENU:
-                    Console.WriteLine("Menu");
+                    Console.WriteLine("menu");
                     _entities.Add(new Mainmenu(_runtimeData));
+                    break;
+                case GameContext.LOST_SCREEN:
+                    Console.WriteLine("lost screen");
+                    _entities.Add(new LostScreen(_runtimeData));
                     break;
                 case GameContext.MAP:
                     Console.WriteLine("map");

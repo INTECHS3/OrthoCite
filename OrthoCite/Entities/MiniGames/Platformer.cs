@@ -283,7 +283,7 @@ namespace OrthoCite.Entities.MiniGames
                 if (_runtimeData.Lives == 0)
                 {
                     _runtimeData.DialogBox.AddDialog("Tu n'as plus de vie !", 2).Show();
-                    _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
+                    _runtimeData.OrthoCite.ChangeGameContext(GameContext.LOST_SCREEN);
                 }
             }
             else

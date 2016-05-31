@@ -30,7 +30,8 @@ namespace OrthoCite
 
         public Dictionary<ListPnj, PNJ> pnj = new Dictionary<ListPnj, Helpers.PNJ>();
 
-        public int _lives;
+        int _lives;
+        int _credits;
 
         public RuntimeData()
         {
@@ -65,7 +66,13 @@ namespace OrthoCite
             get { return _lives; }
             set { _lives = value; }
         }
-        
+
+        public int Credits
+        {
+            get { return _credits; }
+            set { _credits = value; }
+        }
+
         public Map Map
         {
             get { return map; }
