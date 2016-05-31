@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -39,6 +40,11 @@ namespace OrthoCite.Entities.MiniGames
 
         SpriteSheetAnimation _animation;
 
+        SoundEffect _arghPlayer;
+        SoundEffect _arghEnemy;
+        SoundEffect _spell;
+        SoundEffectInstance _spellInstance;
+
         // Game state
         string _currentSpellWord;
         string _currentSpellWordTyped;
@@ -69,6 +75,11 @@ namespace OrthoCite.Entities.MiniGames
             _enemy = new Sprite(_enemyTexture);
             _enemy.Origin = new Vector2(0, 0);
             _enemy.Position = new Vector2(_runtimeData.Scene.Width - _enemyTexture.Width - 100, _runtimeData.Scene.Height - _enemyTexture.Height);
+
+            _spell = content.Load<SoundEffect>("minigames/boss/spell");
+            _spellInstance = _spell.CreateInstance();
+            _arghPlayer = content.Load<SoundEffect>("minigames/platformer/argh");
+            _arghEnemy = content.Load<SoundEffect>("minigames/boss/arghEnemy");
 
             var fireballTexture = content.Load<Texture2D>("minigames/boss/fireball");
             var fireballAtlas = TextureAtlas.Create(fireballTexture, 130, 50);
@@ -144,6 +155,7 @@ namespace OrthoCite.Entities.MiniGames
 
         public void FireSpellOnEnemy()
         {
+            _spellInstance.Play();
             _waitingForInput = false;
             _fireball.IsVisible = true;
             _fireball.Position = new Vector2(_player.Position.X + _playerTexture.Width, _player.Position.Y);
@@ -153,6 +165,8 @@ namespace OrthoCite.Entities.MiniGames
 
         void OnFireSpellOnEnemyEnd()
         {
+            _spellInstance.Stop();
+            _arghEnemy.Play();
             _waitingForInput = true;
             _fireball.IsVisible = false;
             _bossLifePercentage -= 20;
@@ -162,6 +176,7 @@ namespace OrthoCite.Entities.MiniGames
 
         public void FireSpellOnPlayer()
         {
+            _spellInstance.Play();
             _waitingForInput = false;
             _fireball.IsVisible = true;
             _fireball.Position = new Vector2(_enemy.Position.X - _fireball.TextureRegion.Width + 27, _enemy.Position.Y);
@@ -171,6 +186,8 @@ namespace OrthoCite.Entities.MiniGames
 
         void OnFireSpellOnPlayerEnd()
         {
+            _spellInstance.Stop();
+            _arghPlayer.Play();
             _waitingForInput = true;
             _fireball.IsVisible = false;
             _runtimeData.Lives -= 1;

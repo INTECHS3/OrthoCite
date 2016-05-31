@@ -564,3 +564,15 @@
 /processorParam:Quality=Best
 /build:intro/music.ogg
 
+#begin minigames/boss/spell.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:minigames/boss/spell.ogg
+
+#begin minigames/boss/arghEnemy.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:minigames/boss/arghEnemy.ogg
+
