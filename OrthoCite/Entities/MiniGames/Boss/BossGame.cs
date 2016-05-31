@@ -9,7 +9,6 @@ using MonoGame.Extended.Animations.Tweens;
 using MonoGame.Extended.Sprites;
 using MonoGame.Extended.TextureAtlases;
 using System;
-using System.Collections.Generic;
 
 namespace OrthoCite.Entities.MiniGames
 {

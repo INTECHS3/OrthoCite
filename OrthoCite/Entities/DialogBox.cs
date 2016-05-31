@@ -31,6 +31,8 @@ namespace OrthoCite.Entities
 
         List<Dialog> _dialogs;
 
+        public bool Visible => _visible;
+
         public DialogBox(RuntimeData runtimeData)
         {
             _runtimeData = runtimeData;
@@ -42,7 +44,7 @@ namespace OrthoCite.Entities
         /// Adds a dialog to the dialog box.
         /// </summary>
         /// <param name="text">The text to show.</param>
-        /// <param name="delay">For how long to show it.</param>
+        /// <param name="delay">For how long to show it, in seconds.</param>
         /// <returns>The same instance of DialogBox, for chaining.</returns>
         public DialogBox AddDialog(string text, int delay)
         {
