@@ -124,14 +124,7 @@ namespace OrthoCite.Entities
                 _firstUpdate = !_firstUpdate;
             }
 
-            bool _stop = false;
-
-            foreach (KeyValuePair<ListPnj, PNJ> i in _runtimeData.PNJ)
-            {
-                if (i.Value.stop) _stop = true;
-            }
-
-            if(!_stop)_player.checkMove(keyboardState, camera);
+            _player.checkMove(keyboardState, camera);
 
             _player.heroAnimations.Update(deltaSeconds);
             _player.heroSprite.Position = new Vector2(_player.position.X + textMap.TileWidth / 2, _player.position.Y + textMap.TileHeight / 2);

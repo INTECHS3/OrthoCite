@@ -219,7 +219,7 @@ namespace OrthoCite.Helpers
                 }                
                 
             }
-            else if (separeFrame != 0 && actualDir != Direction.NONE)
+            else if (separeFrame != 0)
             {
 
                 if (separeFrame >= actualFrame)
