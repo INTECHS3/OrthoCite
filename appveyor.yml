@@ -8,8 +8,18 @@ before_build:
   - monogame.exe /S
   - nuget restore
 
+configuration:
+  - Debug
+  - Release
+
 build:
   verbosity: minimal
+  
+artifacts:
+  - path: OrthoCite\bin\Windows\x86\Debug
+    name: Debug
+  - path: OrthoCite\bin\Windows\x86\Release
+    name: Release
 
 notifications:
   - provider: Slack
