@@ -74,7 +74,7 @@ namespace OrthoCite.Entities
 
         void OnLogoFaded()
         {
-            _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
+            _runtimeData.OrthoCite.ChangeGameContext(GameContext.MENU);
         }
 
         public void Draw(SpriteBatch spriteBatch, Matrix frozenMatrix, Matrix cameraMatrix)

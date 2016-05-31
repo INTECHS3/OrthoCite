@@ -92,7 +92,9 @@ namespace OrthoCite.Helpers
                 stop = false;
                 if (_type != TypePNJ.Static)
                 {
+                    
                     iaMovePnj();
+                    
                     _pnj.checkMove(keyboardState, camera);
                 }
             }
@@ -106,7 +108,19 @@ namespace OrthoCite.Helpers
 
         private void iaMovePnj()
         {
-           
+            Random t = new Random();
+            int r = t.Next(1, 4);
+            if(_pnj.actualDir == Direction.NONE && _pnj.separeFrame == 0)
+            {
+                if (r == 1) _pnj.actualDir = Direction.UP;
+                if (r == 2) _pnj.actualDir = Direction.DOWN;
+                if (r == 3) _pnj.actualDir = Direction.LEFT;
+                if (r == 4) _pnj.actualDir = Direction.RIGHT;
+                if (r == 0) _pnj.actualDir = Direction.NONE;
+                Console.WriteLine(_pnj.positionVirt.X + " " + _pnj.positionVirt.Y + " " + _pnj.actualDir);
+            }
+            
+            
         }
 
         private void collisionWithPlayer()
