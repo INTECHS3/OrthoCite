@@ -576,3 +576,9 @@
 /processorParam:Quality=Best
 /build:minigames/boss/arghEnemy.ogg
 
+#begin minigames/boss/font.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:minigames/boss/font.spritefont
+

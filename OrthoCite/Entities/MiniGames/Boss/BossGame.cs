@@ -92,7 +92,7 @@ namespace OrthoCite.Entities.MiniGames
             _attackBox = new Sprite(_attackBoxTexture);
             _attackBox.Position = new Vector2(_runtimeData.Scene.Width / 2, _runtimeData.Scene.Height / 2);
 
-            _fontWord = content.Load<SpriteFont>("minigames/platformer/font-result");
+            _fontWord = content.Load<SpriteFont>("minigames/boss/font");
 
             Start();
         }
