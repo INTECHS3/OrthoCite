@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -27,7 +26,7 @@ namespace OrthoCite
     public class DataSave
     {
         DataSaveStruct _dataSave;
-        string _path;
+        readonly string _path;
 
         public string Name
         {
@@ -79,10 +78,10 @@ namespace OrthoCite
             _dataSave.TrapsNpcTalkedTo |= (byte)mask;
         }
 
-        public DataSave()
+        public DataSave(string path)
         {
             _dataSave = new DataSaveStruct { Name = "", District = 1, ValidatedMiniGames = 0, NumberOfLives = 2, TrapsNpcTalkedTo = 0 };
-            _path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\datasaves";
+            _path = path;
 
             Directory.CreateDirectory(_path);
         }

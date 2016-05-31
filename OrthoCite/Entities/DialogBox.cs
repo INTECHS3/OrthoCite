@@ -73,6 +73,8 @@ namespace OrthoCite.Entities
         /// <returns>The same instance of DialogBox, for chaining.</returns>
         public DialogBox SetText(string text)
         {
+            if (string.IsNullOrEmpty(text)) throw new ArgumentException("The text cannot be empty.", nameof(text));
+
             _currentDelay = 0;
             _dialogs.Clear();
             _currentWrappedText = TextHelper.WrapString(_font, text, _runtimeData.Scene.Width - (MAX_MARGIN_BORDERS * 2), INTERLINE);

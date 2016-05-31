@@ -9,6 +9,8 @@ using MonoGame.Extended.ViewportAdapters;
 using System.Runtime.InteropServices;
 using System;
 using MonoGame.Extended.Animations;
+using System.IO;
+using System.Reflection;
 
 namespace OrthoCite
 {
@@ -54,7 +56,9 @@ namespace OrthoCite
         {
             
             
-            _runtimeData = new RuntimeData(this);
+            _runtimeData = new RuntimeData();
+            _runtimeData.OrthoCite = this;
+            _runtimeData.DataSave = new DataSave(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\datasaves");
             _graphics = new GraphicsDeviceManager(this);
 
             _entities = new List<IEntity>();
