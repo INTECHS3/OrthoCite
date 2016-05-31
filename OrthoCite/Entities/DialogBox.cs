@@ -31,6 +31,8 @@ namespace OrthoCite.Entities
 
         List<Dialog> _dialogs;
 
+        public bool Visible => _visible;
+
         public DialogBox(RuntimeData runtimeData)
         {
             _runtimeData = runtimeData;
@@ -42,7 +44,7 @@ namespace OrthoCite.Entities
         /// Adds a dialog to the dialog box.
         /// </summary>
         /// <param name="text">The text to show.</param>
-        /// <param name="delay">For how long to show it.</param>
+        /// <param name="delay">For how long to show it, in seconds.</param>
         /// <returns>The same instance of DialogBox, for chaining.</returns>
         public DialogBox AddDialog(string text, int delay)
         {
@@ -71,6 +73,8 @@ namespace OrthoCite.Entities
         /// <returns>The same instance of DialogBox, for chaining.</returns>
         public DialogBox SetText(string text)
         {
+            if (string.IsNullOrEmpty(text)) throw new ArgumentException("The text cannot be empty.", nameof(text));
+
             _currentDelay = 0;
             _dialogs.Clear();
             _currentWrappedText = TextHelper.WrapString(_font, text, _runtimeData.Scene.Width - (MAX_MARGIN_BORDERS * 2), INTERLINE);

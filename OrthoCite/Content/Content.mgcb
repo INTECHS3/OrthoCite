@@ -10,7 +10,7 @@
 
 #-------------------------------- References --------------------------------#
 
-/reference:..\..\packages\MonoGame.Extended.0.5.269-beta\lib\MonoGame.Extended.Content.Pipeline.dll
+/reference:..\..\packages\MonoGame.Extended.0.5.276-beta\lib\MonoGame.Extended.Content.Pipeline.dll
 
 #---------------------------------- Content ---------------------------------#
 
@@ -156,12 +156,6 @@
 /processor:FontDescriptionProcessor
 /processorParam:TextureFormat=Compressed
 /build:minigames/platformer/font.spritefont
-
-#begin minigames/platformer/font-result.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:TextureFormat=Compressed
-/build:minigames/platformer/font-result.spritefont
 
 #begin menu/done.png
 /importer:TextureImporter
@@ -534,9 +528,57 @@
 /processorParam:TextureFormat=Color
 /build:intro/logo.png
 
-#begin intro/music.mp3
-/importer:Mp3Importer
+#begin minigames/platformer/punch.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:minigames/platformer/punch.ogg
+
+#begin minigames/platformer/flying.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:minigames/platformer/flying.ogg
+
+#begin minigames/platformer/music.ogg
+/importer:OggImporter
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:intro/music.mp3
+/build:minigames/platformer/music.ogg
+
+#begin minigames/platformer/argh.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:minigames/platformer/argh.ogg
+
+#begin minigames/platformer/break.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:minigames/platformer/break.ogg
+
+#begin intro/music.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:intro/music.ogg
+
+#begin minigames/boss/spell.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:minigames/boss/spell.ogg
+
+#begin minigames/boss/arghEnemy.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:minigames/boss/arghEnemy.ogg
+
+#begin minigames/boss/font.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:minigames/boss/font.spritefont
 
