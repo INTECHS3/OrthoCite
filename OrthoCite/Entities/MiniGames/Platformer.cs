@@ -1,9 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using MonoGame.Extended;
-using MonoGame.Extended.Animations.SpriteSheets;
 using MonoGame.Extended.Animations.Tweens;
 using MonoGame.Extended.Sprites;
 using System;
@@ -33,9 +34,16 @@ namespace OrthoCite.Entities.MiniGames
         Texture2D _hammerTexture;
 
         SpriteFont _font;
-        SpriteFont _fontResult;
 
         Sprite _hammer;
+
+        SoundEffect _punch;
+        SoundEffect _break;
+        SoundEffect _argh;
+        SoundEffect _flying;
+        SoundEffectInstance _flyingInstance;
+
+        Song _music;
 
         int _district = 0;
         int _platformsPerWord = 5;
@@ -111,7 +119,15 @@ namespace OrthoCite.Entities.MiniGames
             _hammerTexture= content.Load<Texture2D>("minigames/platformer/hammer");
 
             _font = content.Load<SpriteFont>("minigames/platformer/font");
-            _fontResult = content.Load<SpriteFont>("minigames/platformer/font-result");
+
+            _punch = content.Load<SoundEffect>("minigames/platformer/punch");
+            _break = content.Load<SoundEffect>("minigames/platformer/break");
+            _argh = content.Load<SoundEffect>("minigames/platformer/argh");
+            _flying = content.Load<SoundEffect>("minigames/platformer/flying");
+            _flyingInstance = _flying.CreateInstance();
+            _flyingInstance.IsLooped = true;
+
+            _music = content.Load<Song>("minigames/platformer/music");
 
             _hammer = new Sprite(_hammerTexture);
             _hammer.IsVisible = false;
@@ -131,6 +147,10 @@ namespace OrthoCite.Entities.MiniGames
             {
                 _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
             }
+
+            /* Handle jetpack sound */
+            if (keyboardState.IsKeyDown(Keys.Space)) _flyingInstance.Play();
+            else _flyingInstance.Stop();
 
             /* Handle move */
             if (keyboardState.IsKeyDown(Keys.Space))
@@ -241,10 +261,11 @@ namespace OrthoCite.Entities.MiniGames
 
         void HitWithHammer(Platform platform)
         {
+            _punch.Play();
             _hammerFree = false;
             _hammer.IsVisible = true;
             _hammer.Position = new Vector2(platform.Coords.X - 10, platform.Coords.Y - 20);
-            _hammer.CreateTweenGroup(() => OnHitWithHammerEnd(platform)).RotateTo(1.57f, 0.5f, EasingFunctions.SineEaseIn);
+            _hammer.CreateTweenGroup(() => OnHitWithHammerEnd(platform)).RotateTo(1.57f, 0.25f, EasingFunctions.SineEaseIn);
         }
 
         void OnHitWithHammerEnd(Platform platform)
@@ -255,6 +276,7 @@ namespace OrthoCite.Entities.MiniGames
 
             if (platform.Word.IsValid)
             {
+                _argh.Play();
                 _runtimeData.Lives -= 1;
                 _runtimeData.DialogBox.AddDialog($"Raté, « {platform.Word.Value} » est bien écrit ! 1 vie en moins.", 2).Show();
 
@@ -266,6 +288,7 @@ namespace OrthoCite.Entities.MiniGames
             }
             else
             {
+                _break.Play();
                 _platforms.Remove(platform);
                 if (_platforms.Count == 1)
                 {
@@ -279,7 +302,7 @@ namespace OrthoCite.Entities.MiniGames
                         _currentRound++;
                         string[] greetings = { "Waouh", "Super", "Bravo", "Bien joué", "Trop fort" };
                         string greeting = greetings[_random.Next(0, greetings.Length)];
-                        _runtimeData.DialogBox.AddDialog($"{greeting} ! Passons au round {_currentRound} sur {_rounds}", 2).Show();
+                        _runtimeData.DialogBox.AddDialog($"{greeting} ! Passons au round {_currentRound} sur {_rounds}.", 2).Show();
                         GeneratePlatforms();
                     }
                 }
@@ -293,6 +316,8 @@ namespace OrthoCite.Entities.MiniGames
 
         internal override void Start()
         {
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Play(_music);
             LoadWords();
             GeneratePlatforms();
         }
