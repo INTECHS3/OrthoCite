@@ -188,31 +188,34 @@ namespace OrthoCite.Helpers
 
                     separeFrame++;
                 }
-                else if(typeDeplacement == TypeDeplacement.WithDirection && actualDir != Direction.NONE)
+                else if(typeDeplacement == TypeDeplacement.WithDirection)
                 {
                     if (actualDir == Direction.RIGHT && ColRight())
                     {
                         actualDir = Direction.NONE;
-                        return;
+             
                     }
                     else if (actualDir == Direction.LEFT && ColLeft())
                     {
                         actualDir = Direction.NONE;
-                        return;
+                        
                     }
                     else if(actualDir == Direction.UP && ColUp())
                     {
                         actualDir = Direction.NONE;
-                        return;
+                        
                     }
                     else if(actualDir == Direction.DOWN && ColDown())
                     {
                         actualDir = Direction.NONE;
-                        return;
+                        
                     }
+
                     lastDir = actualDir;
                     heroAnimations.Play(actualDir.ToString());
                     separeFrame++;
+                    
+                    
                 }                
                 
             }

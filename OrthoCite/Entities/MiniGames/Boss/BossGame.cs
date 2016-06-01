@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -8,7 +9,6 @@ using MonoGame.Extended.Animations.Tweens;
 using MonoGame.Extended.Sprites;
 using MonoGame.Extended.TextureAtlases;
 using System;
-using System.Collections.Generic;
 
 namespace OrthoCite.Entities.MiniGames
 {
@@ -38,6 +38,11 @@ namespace OrthoCite.Entities.MiniGames
         SpriteFont _fontWord;
 
         SpriteSheetAnimation _animation;
+
+        SoundEffect _arghPlayer;
+        SoundEffect _arghEnemy;
+        SoundEffect _spell;
+        SoundEffectInstance _spellInstance;
 
         // Game state
         string _currentSpellWord;
@@ -70,6 +75,11 @@ namespace OrthoCite.Entities.MiniGames
             _enemy.Origin = new Vector2(0, 0);
             _enemy.Position = new Vector2(_runtimeData.Scene.Width - _enemyTexture.Width - 100, _runtimeData.Scene.Height - _enemyTexture.Height);
 
+            _spell = content.Load<SoundEffect>("minigames/boss/spell");
+            _spellInstance = _spell.CreateInstance();
+            _arghPlayer = content.Load<SoundEffect>("minigames/platformer/argh");
+            _arghEnemy = content.Load<SoundEffect>("minigames/boss/arghEnemy");
+
             var fireballTexture = content.Load<Texture2D>("minigames/boss/fireball");
             var fireballAtlas = TextureAtlas.Create(fireballTexture, 130, 50);
             _animation = new SpriteSheetAnimation("fireballAnimation", fireballAtlas)
@@ -82,7 +92,7 @@ namespace OrthoCite.Entities.MiniGames
             _attackBox = new Sprite(_attackBoxTexture);
             _attackBox.Position = new Vector2(_runtimeData.Scene.Width / 2, _runtimeData.Scene.Height / 2);
 
-            _fontWord = content.Load<SpriteFont>("minigames/platformer/font-result");
+            _fontWord = content.Load<SpriteFont>("minigames/boss/font");
 
             Start();
         }
@@ -110,7 +120,8 @@ namespace OrthoCite.Entities.MiniGames
                 _runtimeData.DialogBox.AddDialog("Gagné !", 2).Show();
             }
 
-            if (_gameState != GameState.NONE) _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
+            if (_gameState == GameState.LOST) _runtimeData.OrthoCite.ChangeGameContext(GameContext.LOST_SCREEN);
+            else if (_gameState == GameState.WON) if (_gameState == GameState.LOST) _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
         }
 
         private void EventInput_CharEntered(object sender, CharacterEventArgs e)
@@ -144,6 +155,7 @@ namespace OrthoCite.Entities.MiniGames
 
         public void FireSpellOnEnemy()
         {
+            _spellInstance.Play();
             _waitingForInput = false;
             _fireball.IsVisible = true;
             _fireball.Position = new Vector2(_player.Position.X + _playerTexture.Width, _player.Position.Y);
@@ -153,6 +165,8 @@ namespace OrthoCite.Entities.MiniGames
 
         void OnFireSpellOnEnemyEnd()
         {
+            _spellInstance.Stop();
+            _arghEnemy.Play();
             _waitingForInput = true;
             _fireball.IsVisible = false;
             _bossLifePercentage -= 20;
@@ -162,6 +176,7 @@ namespace OrthoCite.Entities.MiniGames
 
         public void FireSpellOnPlayer()
         {
+            _spellInstance.Play();
             _waitingForInput = false;
             _fireball.IsVisible = true;
             _fireball.Position = new Vector2(_enemy.Position.X - _fireball.TextureRegion.Width + 27, _enemy.Position.Y);
@@ -171,6 +186,8 @@ namespace OrthoCite.Entities.MiniGames
 
         void OnFireSpellOnPlayerEnd()
         {
+            _spellInstance.Stop();
+            _arghPlayer.Play();
             _waitingForInput = true;
             _fireball.IsVisible = false;
             _runtimeData.Lives -= 1;

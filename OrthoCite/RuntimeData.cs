@@ -11,6 +11,8 @@ using OrthoCite.Entities;
 using OrthoCite.Entities.MiniGames;
 using OrthoCite.Helpers;
 using MonoGame.Extended.Maps.Tiled;
+using System.IO;
+using System.Reflection;
 
 namespace OrthoCite
 {
@@ -20,7 +22,7 @@ namespace OrthoCite
         DataSave _dataSave;
         ViewportAdapter _viewAdapter;
         DialogBox _dialogBox;
-        readonly OrthoCite _orthoCite;
+        OrthoCite _orthoCite;
 
         public GameTime GameTime { set; get; }
         public int gidLast { set; get; }
@@ -28,12 +30,17 @@ namespace OrthoCite
 
         public Dictionary<ListPnj, PNJ> pnj = new Dictionary<ListPnj, Helpers.PNJ>();
 
-        public int _lives;
+        int _lives;
+        int _credits;
 
-        public RuntimeData(OrthoCite orthoCite)
+        public RuntimeData()
         {
-            _orthoCite = orthoCite;
-            _dataSave = new DataSave();
+        }
+
+        public DataSave DataSave
+        {
+            get { return _dataSave; }
+            set { _dataSave = value; }
         }
 
         public Rectangle Scene
@@ -48,11 +55,10 @@ namespace OrthoCite
             set { _viewAdapter = value; }
         }
 
-        public DataSave DataSave => _dataSave;
-
         public OrthoCite OrthoCite
         {
             get { return _orthoCite; }
+            set { _orthoCite = value; }
         }
 
         public int Lives
@@ -60,7 +66,13 @@ namespace OrthoCite
             get { return _lives; }
             set { _lives = value; }
         }
-        
+
+        public int Credits
+        {
+            get { return _credits; }
+            set { _credits = value; }
+        }
+
         public Map Map
         {
             get { return map; }

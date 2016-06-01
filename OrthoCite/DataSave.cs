@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -27,7 +26,7 @@ namespace OrthoCite
     public class DataSave
     {
         DataSaveStruct _dataSave;
-        string _path;
+        readonly string _path;
 
         public string Name
         {
@@ -55,8 +54,10 @@ namespace OrthoCite
 
         public bool MiniGameIsValidated(byte miniGameId)
         {
+     
             if (miniGameId <= 0 || miniGameId > 8) throw new ArgumentException("Mini-game ID must be between 1 and 8", nameof(miniGameId));
-            return ((_dataSave.ValidatedMiniGames << (miniGameId - 1)) >> 7) == 1;
+            int mask = 1 << 8 - miniGameId;
+            return (_dataSave.ValidatedMiniGames & mask) != 0;
         }
 
         public void ValidateMiniGame(byte miniGameId)
@@ -69,7 +70,8 @@ namespace OrthoCite
         public bool TrapsNpcWereTalkedTo(byte NpcId)
         {
             if (NpcId <= 0 || NpcId > 8) throw new ArgumentException("NPC ID must be between 1 and 8", nameof(NpcId));
-            return ((_dataSave.TrapsNpcTalkedTo << (NpcId - 1)) >> 7) == 1;
+            int mask = 1 << 8 - NpcId;
+            return (_dataSave.TrapsNpcTalkedTo & mask) != 0;
         }
 
         public void TrapsNpcTalkTo(byte NpcId)
@@ -79,10 +81,10 @@ namespace OrthoCite
             _dataSave.TrapsNpcTalkedTo |= (byte)mask;
         }
 
-        public DataSave()
+        public DataSave(string path)
         {
             _dataSave = new DataSaveStruct { Name = "", District = 1, ValidatedMiniGames = 0, NumberOfLives = 2, TrapsNpcTalkedTo = 0 };
-            _path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\datasaves";
+            _path = path;
 
             Directory.CreateDirectory(_path);
         }
@@ -117,6 +119,7 @@ namespace OrthoCite
                 if (!filePath.EndsWith(".oct")) continue;
 
                 string slug = filePath.Split(new char[] { '\\' }).Last();
+                slug = slug.Substring(0, slug.Length - 4);
                 Load(slug);
                 datasaves.Add(slug, _dataSave.Name);
             }

@@ -99,7 +99,7 @@
     </sentence>
     <sentence>
       <valid>poisson</valid>
-      <invalid>poison</invalid>
+      <invalid>poidson</invalid>
       <invalid>pouasson</invalid>
       <invalid>pouason</invalid>
       <invalid>pouahson</invalid>

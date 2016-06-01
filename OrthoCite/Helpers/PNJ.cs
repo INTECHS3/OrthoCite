@@ -36,9 +36,8 @@ namespace OrthoCite.Helpers
         List<ItemList> _item;
 
         public List<string> _talk { get; set; }
-        int i;
         const int timeTalk = 100;
-        int a;
+        
         int z;
 
         Player _pnj;
@@ -47,7 +46,7 @@ namespace OrthoCite.Helpers
         RuntimeData _runtimeData;
         string _texture;
 
-        public bool talking { get; set; }
+       
         public bool stop { get; set; }
 
 
@@ -82,20 +81,15 @@ namespace OrthoCite.Helpers
 
             if(z == 0 && _runtimeData.Player != null) collisionWithPlayer();
 
-            if (talking)
-            {
-               stop = true;
-               talk();
-            }
-            else
-            {
-                stop = false;
+           
                 if (_type != TypePNJ.Static)
                 {
-                    iaMovePnj();
+                    
+                   // iaMovePnj();
+                    
                     _pnj.checkMove(keyboardState, camera);
                 }
-            }
+            
             
             _pnj.heroAnimations.Update(deltaSeconds);
             _pnj.heroSprite.Position = new Vector2(_pnj.position.X + _pnj.tileWidth / 2, _pnj.position.Y + _pnj.tileHeight / 2);
@@ -106,45 +100,41 @@ namespace OrthoCite.Helpers
 
         private void iaMovePnj()
         {
-           
+            Random t = new Random();
+            int r = t.Next(1, 4);
+            if(_pnj.actualDir == Direction.NONE && _pnj.separeFrame == 0)
+            {
+                if (r == 1) _pnj.actualDir = Direction.UP;
+                if (r == 2) _pnj.actualDir = Direction.DOWN;
+                if (r == 3) _pnj.actualDir = Direction.LEFT;
+                if (r == 4) _pnj.actualDir = Direction.RIGHT;
+                if (r == 0) _pnj.actualDir = Direction.NONE;
+                Console.WriteLine(_pnj.positionVirt.X + " " + _pnj.positionVirt.Y + " " + _pnj.actualDir);
+            }
+            
+            
         }
 
         private void collisionWithPlayer()
         {
-            if (_runtimeData.Player.positionVirt.X == _pnj.positionVirt.X && _runtimeData.Player.positionVirt.Y + 1 == _pnj.positionVirt.Y) talking = true;
+            if (_runtimeData.Player.positionVirt.X == _pnj.positionVirt.X && _runtimeData.Player.positionVirt.Y + 1 == _pnj.positionVirt.Y) talk();
             
-            if (_runtimeData.Player.positionVirt.X == _pnj.positionVirt.X && _runtimeData.Player.positionVirt.Y - 1 == _pnj.positionVirt.Y) talking = true;
+            else if (_runtimeData.Player.positionVirt.X == _pnj.positionVirt.X && _runtimeData.Player.positionVirt.Y - 1 == _pnj.positionVirt.Y) talk();
 
-            if (_runtimeData.Player.positionVirt.X + 1 == _pnj.positionVirt.X && _runtimeData.Player.positionVirt.Y == _pnj.positionVirt.Y) talking = true;
+            else if (_runtimeData.Player.positionVirt.X + 1 == _pnj.positionVirt.X && _runtimeData.Player.positionVirt.Y == _pnj.positionVirt.Y) talk();
 
-            if (_runtimeData.Player.positionVirt.X - 1 == _pnj.positionVirt.X && _runtimeData.Player.positionVirt.Y == _pnj.positionVirt.Y) talking = true;
+            else if (_runtimeData.Player.positionVirt.X - 1 == _pnj.positionVirt.X && _runtimeData.Player.positionVirt.Y == _pnj.positionVirt.Y) talk();
 
             z++;
         }
 
         private void talk()
         {
-
-            if (i == 0 && a < _talk.Count)
+            foreach(string a in _talk)
             {
-                _runtimeData.DialogBox.SetText(_talk[a]).Show();
-                z = 1;
-                a++;
-                i++;
+                _runtimeData.DialogBox.AddDialog(a, 2);
             }
-            else if (i==0 && a >= _talk.Count)
-            {
-                a = 0;
-                _runtimeData.DialogBox.Hide();
-                talking = false;
-            }
-            else if (i != 0 && i < timeTalk) i++;
-            else if (i == timeTalk)
-            {
-                _runtimeData.DialogBox.Hide();
-                i = 0;
-            }
-            
+            _runtimeData.DialogBox.Show();
         }
 
         public void Draw(SpriteBatch spriteBatch)

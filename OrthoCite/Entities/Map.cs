@@ -118,20 +118,12 @@ namespace OrthoCite.Entities
 
             if (_firstUpdate)
             {
-                _runtimeData.DialogBox.Hide();
                 camera.Zoom = _zoom;
                 _player.position = new Vector2(_player.positionVirt.X * textMap.TileWidth, _player.positionVirt.Y * textMap.TileHeight);
                 _firstUpdate = !_firstUpdate;
             }
 
-            bool _stop = false;
-
-            foreach (KeyValuePair<ListPnj, PNJ> i in _runtimeData.PNJ)
-            {
-                if (i.Value.stop) _stop = true;
-            }
-
-            if(!_stop)_player.checkMove(keyboardState, camera);
+            _player.checkMove(keyboardState, camera);
 
             _player.heroAnimations.Update(deltaSeconds);
             _player.heroSprite.Position = new Vector2(_player.position.X + textMap.TileWidth / 2, _player.position.Y + textMap.TileHeight / 2);
@@ -190,7 +182,8 @@ namespace OrthoCite.Entities
 
         private void addAllPnj(ContentManager content, GraphicsDevice graphicsDevice)
         {
-            _runtimeData.PNJ.Add(ListPnj.QUARTIER_1, new PNJ(TypePNJ.Static, new Vector2(120, 59), new List<ItemList>(), _runtimeData, "animations/walking"));
+            _runtimeData.PNJ = new Dictionary<ListPnj, PNJ>();
+            _runtimeData.PNJ.Add(ListPnj.QUARTIER_1, new PNJ(TypePNJ.Dynamique, new Vector2(120, 59), new List<ItemList>(), _runtimeData, "animations/walking"));
 
             foreach(KeyValuePair<ListPnj, PNJ> i in _runtimeData.PNJ)
             {

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -10,12 +9,16 @@ using MonoGame.Extended.ViewportAdapters;
 using System.Runtime.InteropServices;
 using System;
 using MonoGame.Extended.Animations;
+using System.IO;
+using System.Reflection;
 
 namespace OrthoCite
 {
     public enum GameContext
     {
+        INTRO,
         MENU,
+        LOST_SCREEN,
         MAP,
         MINIGAME_PLATFORMER,
         MINIGAME_BOSS,
@@ -27,8 +30,7 @@ namespace OrthoCite
     /// </summary>
     public class OrthoCite : Game
     {
-        const GameContext STARTING_ENTITY = GameContext.MINIGAME_DOORGAME;
-
+        const GameContext STARTING_ENTITY = GameContext.MAP;
 
         BoxingViewportAdapter _viewportAdapter;
         Camera2D _camera;
@@ -55,7 +57,9 @@ namespace OrthoCite
         {
             
             
-            _runtimeData = new RuntimeData(this);
+            _runtimeData = new RuntimeData();
+            _runtimeData.OrthoCite = this;
+            _runtimeData.DataSave = new DataSave(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\datasaves");
             _graphics = new GraphicsDeviceManager(this);
 
             _entities = new List<IEntity>();
@@ -181,9 +185,17 @@ namespace OrthoCite
 
             switch (_gameContext)
             {
+                case GameContext.INTRO:
+                    Console.WriteLine("introduction");
+                    _entities.Add(new Introduction(_runtimeData));
+                    break;
                 case GameContext.MENU:
-                    Console.WriteLine("Menu");
+                    Console.WriteLine("menu");
                     _entities.Add(new Mainmenu(_runtimeData));
+                    break;
+                case GameContext.LOST_SCREEN:
+                    Console.WriteLine("lost screen");
+                    _entities.Add(new LostScreen(_runtimeData));
                     break;
                 case GameContext.MAP:
                     Console.WriteLine("map");
@@ -203,7 +215,7 @@ namespace OrthoCite
                     break;
             }
 
-            if (_gameContext != GameContext.MENU)
+            if (_gameContext != GameContext.MENU && _gameContext != GameContext.INTRO)
             {
                 _entities.Add(_runtimeData.DialogBox);
                 _entities.Add(new Lives(_runtimeData));
