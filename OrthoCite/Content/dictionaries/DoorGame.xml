@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<dictionary>
+  <district id="0"> <!-- 5 rounds, 5 words per round -->
+    <!-- class -->
+    <sentence>
+      <valid>angle</valid>
+      <invalid>engle</invalid>
+      <invalid>angl</invalid>
+    </sentence>
+    <sentence>
+      <valid>armoire</valid>
+      <invalid>armoir</invalid>
+      <invalid>armouar</invalid>
+    </sentence>
+    <sentence>
+      <valid>classe</valid>
+      <invalid>clase</invalid>
+      <invalid>klase</invalid>
+    </sentence>
+    <sentence>
+      <valid>chaise</valid>
+      <invalid>chaize</invalid>
+      <invalid>chaisse</invalid>
+    </sentence>
+    <sentence>
+      <valid>porte</valid>
+      <invalid>porthe</invalid>
+      <invalid>paurte</invalid>
+    </sentence>
+
+    <!-- work -->
+    <sentence>
+      <valid>stylo</valid>
+      <invalid>styleau</invalid>
+      <invalid>sthylo</invalid>
+    </sentence>
+    <sentence>
+      <valid>page</valid>
+      <invalid>paj</invalid>
+      <invalid>pag</invalid>
+    </sentence>
+    <sentence>
+      <valid>ligne</valid>
+      <invalid>lign</invalid>
+      <invalid>line</invalid>
+    </sentence>
+    <sentence>
+      <valid>affiche</valid>
+      <invalid>afiche</invalid>
+      <invalid>afich</invalid>
+    </sentence>
+    <sentence>
+      <valid>musique</valid>
+      <invalid>musik</invalid>
+      <invalid>musyk</invalid>
+    </sentence>
+
+    <!-- games -->
+    <sentence>
+      <valid>balle</valid>
+      <invalid>bale</invalid>
+      <invalid>ball</invalid>
+    </sentence>
+    <sentence>
+      <valid>bateau</valid>
+      <invalid>bato</invalid>
+      <invalid>batteau</invalid>
+    </sentence>
+    <sentence>
+      <valid>douche</valid>
+      <invalid>douch</invalid>
+      <invalid>doush</invalid>
+    </sentence>
+    <sentence>
+      <valid>poisson</valid>
+      <invalid>poison</invalid>
+      <invalid>pouasson</invalid>
+    </sentence>
+    <sentence>
+      <valid>saladier</valid>
+      <invalid>salladier</invalid>
+      <invalid>saladié</invalid>
+    </sentence>
+
+    <!-- DIY -->
+    <sentence>
+      <valid>ampoule</valid>
+      <invalid>ampoul</invalid>
+      <invalid>anpoule</invalid>
+    </sentence>
+    <sentence>
+      <valid>cabane</valid>
+      <invalid>caban</invalid>
+      <invalid>cabanne</invalid>
+    </sentence>
+    <sentence>
+      <valid>marteau</valid>
+      <invalid>marto</invalid>
+      <invalid>martho</invalid>
+    </sentence>
+    <sentence>
+      <valid>pinceau</valid>
+      <invalid>pinso</invalid>
+      <invalid>pinseau</invalid>
+    </sentence>
+    <sentence>
+      <valid>voiture</valid>
+      <invalid>voitur</invalid>
+      <invalid>vouature</invalid>
+    </sentence>
+
+    <!-- market -->
+    <sentence>
+      <valid>abricot</valid>
+      <invalid>abrico</invalid>
+      <invalid>abriceau</invalid>
+    </sentence>
+    <sentence>
+      <valid>ananas</valid>
+      <invalid>ananasse</invalid>
+      <invalid>annannas</invalid>
+    </sentence>
+    <sentence>
+      <valid>crevette</valid>
+      <invalid>crevete</invalid>
+      <invalid>crevet</invalid>
+    </sentence>
+    <sentence>
+      <valid>noisette</valid>
+      <invalid>noisete</invalid>
+      <invalid>nouasete</invalid>
+    </sentence>
+    <sentence>
+      <valid>raisin</valid>
+      <invalid>raizin</invalid>
+      <invalid>résin</invalid>
+    </sentence>
+  </district>
+
+  <district id="1">
+    <sentence>
+      <valid></valid>
+      <invalid></invalid>
+    </sentence>
+  </district>
+
+  <district id="2">
+    <sentence>
+      <valid></valid>
+      <invalid></invalid>
+    </sentence>
+  </district>
+
+  <district id="3">
+    <sentence>
+      <valid>orthographe</valid>
+      <invalid>ortographe</invalid>
+      <invalid>orthografe</invalid>
+    </sentence>
+  </district>
+</dictionary>
