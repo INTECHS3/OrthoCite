@@ -11,6 +11,8 @@ using MonoGame.Extended;
 using System.Xml;
 using System.ComponentModel;
 using System;
+using System.IO;
+using System.Reflection;
 
 namespace OrthoCite.Helpers
 {
@@ -166,42 +168,15 @@ namespace OrthoCite.Helpers
 
         public string[] tabXml()
         {
-            string[] tabXml;
-            tabXml = new string[5];
-            using (XmlReader reader = XmlReader.Create("test.xml"))
-            {
-                while (reader.Read())
-                {
-                    // Only detect start elements.
-                    if (reader.IsStartElement())
-                    {
-                        // Get element name and switch on it.
-                        switch (reader.Name)
-                        {
-                            case "binds":
-                                break;
+            string[] tabXml = new string[4];
+            XmlDocument document = new XmlDocument();
+            document.Load(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\Content\binds.xml");
+            XmlNode root = document.DocumentElement;
+            tabXml[0] = root.SelectSingleNode("bind[@key='up']").InnerText;
+            tabXml[1] = root.SelectSingleNode("bind[@key='right']").InnerText;
+            tabXml[2] = root.SelectSingleNode("bind[@key='left']").InnerText;
+            tabXml[3] = root.SelectSingleNode("bind[@key='down']").InnerText;
 
-                            case "bindup":
-                                string attributeUp = reader["touche"];
-                                tabXml[0] = attributeUp;
-                                break;
-                            case "bindright":
-                                string attributeRight = reader["touche"];
-                                tabXml[1] = attributeRight;
-                                break;
-                            case "bindleft":
-                                string attributeLeft = reader["touche"];
-                                tabXml[2] = attributeLeft;
-                                break;
-                            case "binddown":
-
-                                string attributeDown = reader["touche"];
-                                tabXml[3] = attributeDown;
-                                break;
-                        }
-                    }
-                }
-            }
             return tabXml;
         }
 

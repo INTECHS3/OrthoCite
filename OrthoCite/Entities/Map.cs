@@ -64,9 +64,6 @@ namespace OrthoCite.Entities
         {
             textMap = content.Load<TiledMap>("map/Map");
 
-            
-
-
             foreach (TiledTileLayer e in textMap.TileLayers)
             {
                 if (e.Name == "Collision") _player.collisionLayer = e;

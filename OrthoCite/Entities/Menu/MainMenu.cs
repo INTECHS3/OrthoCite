@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using MonoGame.Extended;
 using System.Xml;
 using System.IO;
+using System.Reflection;
 
 namespace OrthoCite.Entities
 {
@@ -152,66 +153,13 @@ namespace OrthoCite.Entities
 
         void IEntity.Draw(SpriteBatch spriteBatch, Matrix frozenMatrix, Matrix cameraMatrix)
         {
-            if (File.Exists("test.xml"))
-            {
-
-                using (XmlReader reader = XmlReader.Create("test.xml"))
-                {
-                    while (reader.Read())
-                    {
-                        // Only detect start elements.
-                        if (reader.IsStartElement())
-                        {
-                            // Get element name and switch on it.
-                            switch (reader.Name)
-                            {
-                                case "binds":
-
-                                    break;
-                                case "bindup":
-
-                                    string attributeUp = reader["touche"];
-                                    //tabXml[0] = attributeUp;
-                                    if (attributeUp != null)
-                                    {
-                                        myBindUp = attributeUp;
-                                    }
-
-                                    break;
-                                case "bindright":
-
-                                    string attributeRight = reader["touche"];
-                                    //tabXml[1] = attributeRight;
-                                    if (attributeRight != null)
-                                    {
-                                        myBindRight = attributeRight;
-                                    }
-
-                                    break;
-                                case "bindleft":
-
-                                    string attributeLeft = reader["touche"];
-                                    //tabXml[2] = attributeLeft;
-                                    if (attributeLeft != null)
-                                    {
-                                        myBindLeft = attributeLeft;
-                                    }
-                                    break;
-
-                                case "binddown":
-                                    string attributeDown = reader["touche"];
-                                    //tabXml[3] = attributeDown;
-                                    if (attributeDown != null)
-                                    {
-                                        myBindDown = attributeDown;
-                                    }
-
-                                    break;
-                            }
-                        }
-                    }
-                }
-            }
+            XmlDocument document = new XmlDocument();
+            document.Load(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\Content\binds.xml");
+            XmlNode root = document.DocumentElement;
+            myBindUp = root.SelectSingleNode("bind[@key='up']").InnerText;
+            myBindRight = root.SelectSingleNode("bind[@key='right']").InnerText;
+            myBindLeft = root.SelectSingleNode("bind[@key='left']").InnerText;
+            myBindDown = root.SelectSingleNode("bind[@key='down']").InnerText;
 
             spriteBatch.Begin();
             switch (gameState)
@@ -438,127 +386,43 @@ namespace OrthoCite.Entities
 
         public void OnKeyDown(Keys key, string whereToWrite)
         {
-            if (File.Exists("test.xml"))
-            {
-
-                using (XmlReader reader = XmlReader.Create("test.xml"))
-                {
-                    while (reader.Read())
-                    {
-                        // Only detect start elements.
-                        if (reader.IsStartElement())
-                        {
-                            // Get element name and switch on it.
-                            switch (reader.Name)
-                            {
-                                case "binds":
-
-                                    break;
-                                case "bindup":
-
-                                    string attributeUp = reader["touche"];
-                                    break;
-                                case "bindright":
-
-                                    string attributeRight = reader["touche"];
-                                    break;
-                                case "bindleft":
-
-                                    string attributeLeft = reader["touche"];
-                                    break;
-
-                                case "binddown":
-                                    string attributeDown = reader["touche"];
-                                    break;
-                            }
-                        }
-                    }
-                }
-            }
             if (whereToWrite == "myBindUp")
             {
-                if (key == Keys.Back && myBindUp.Length > 0)
-                {
-                    myBindUp = myBindUp.Remove(myBindUp.Length - 1);
-                }
-                else if (key.ToString() != myBindRight && key.ToString() != myBindLeft && key.ToString() != myBindDown)
+                if (key.ToString() != myBindRight && key.ToString() != myBindLeft && key.ToString() != myBindDown)
                 {
                     myBindUp = key.ToString();
                 }
             }
             else if (whereToWrite == "myBindRight")
             {
-                if (key == Keys.Back && myBindRight.Length > 0)
-                {
-                    myBindRight = myBindRight.Remove(myBindRight.Length - 1);
-                }
-                else if (key.ToString() != myBindUp && key.ToString() != myBindLeft && key.ToString() != myBindDown)
+                if (key.ToString() != myBindUp && key.ToString() != myBindLeft && key.ToString() != myBindDown)
                 {
                     myBindRight = key.ToString();
-                }
-                else
-                {
-
                 }
             }
             else if (whereToWrite == "myBindDown")
             {
-                if (key == Keys.Back && myBindDown.Length > 0)
-                {
-                    myBindDown = myName.Remove(myBindDown.Length - 1);
-                }
-                else if (key.ToString() != myBindUp && key.ToString() != myBindLeft && key.ToString() != myBindRight)
+                if (key.ToString() != myBindUp && key.ToString() != myBindLeft && key.ToString() != myBindRight)
                 {
                     myBindDown = key.ToString();
                 }
-                else
-                {
-
-                }
             }
             else if (whereToWrite == "myBindLeft")
-                if (key == Keys.Back && myBindLeft.Length > 0)
-                {
-                    myBindLeft = myName.Remove(myBindLeft.Length - 1);
-                }
-                else if (key.ToString() != myBindUp && key.ToString() != myBindRight && key.ToString() != myBindDown)
+            {
+                if (key.ToString() != myBindUp && key.ToString() != myBindRight && key.ToString() != myBindDown)
                 {
                     myBindLeft = key.ToString();
                 }
-                else
-                {
+            }
 
-                }
-
-
-
-            XmlWriter xmlWriter = XmlWriter.Create("test.xml");
-
-            xmlWriter.WriteStartDocument();
-            xmlWriter.WriteStartElement("binds");
-
-            xmlWriter.WriteStartElement("bindup");
-            xmlWriter.WriteAttributeString("touche", myBindUp);
-            xmlWriter.WriteString("Bind Up");
-            xmlWriter.WriteEndElement();
-
-            xmlWriter.WriteStartElement("bindright");
-            xmlWriter.WriteAttributeString("touche", myBindRight);
-            xmlWriter.WriteString("Bind Right");
-            xmlWriter.WriteEndElement();
-
-            xmlWriter.WriteStartElement("bindleft");
-            xmlWriter.WriteAttributeString("touche", myBindLeft);
-            xmlWriter.WriteString("Bind Left");
-            xmlWriter.WriteEndElement();
-
-            xmlWriter.WriteStartElement("binddown");
-            xmlWriter.WriteAttributeString("touche", myBindDown);
-            xmlWriter.WriteString("Bind Down");
-
-
-            xmlWriter.WriteEndDocument();
-            xmlWriter.Close();
+            XmlDocument document = new XmlDocument();
+            document.Load(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\Content\binds.xml");
+            XmlNode root = document.DocumentElement;
+            root.SelectSingleNode("bind[@key='up']").InnerText = myBindUp;
+            root.SelectSingleNode("bind[@key='right']").InnerText = myBindRight;
+            root.SelectSingleNode("bind[@key='left']").InnerText = myBindLeft;
+            root.SelectSingleNode("bind[@key='down']").InnerText = myBindDown;
+            document.Save(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\Content\binds.xml");
         }
 
 
