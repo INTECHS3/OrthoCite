@@ -14,6 +14,7 @@ namespace OrthoCite.Entities
         enum State
         {
             BEGINNING,
+            LOST,
             CREDIT,
             LIVE1,
             LIVE2,
@@ -68,13 +69,18 @@ namespace OrthoCite.Entities
             if (_state == State.BEGINNING)
             {
                 _timeStarted = DateTime.Now;
-                _state = State.CREDIT;
+                _state = State.LOST;
             }
 
             TimeSpan interval = DateTime.Now - _timeStarted;
 
             switch(_state)
             {
+                case State.LOST:
+                    if (interval < TimeSpan.FromSeconds(2)) return;
+                    _timeStarted = DateTime.Now;
+                    _state = State.CREDIT;
+                    break;
                 case State.CREDIT:
                     if (interval < TimeSpan.FromSeconds(1)) return;
                     _runtimeData.Credits++;
@@ -114,8 +120,17 @@ namespace OrthoCite.Entities
         {
             spriteBatch.Begin(transformMatrix: frozenMatrix);
             spriteBatch.Draw(_pixelTexture, new Rectangle(0, 0, _runtimeData.Scene.Width, _runtimeData.Scene.Height), Color.White);
-            spriteBatch.Draw(_coin);
-            spriteBatch.DrawString(_font, "x " + _runtimeData.Credits.ToString(), new Vector2(630, 450), Color.White);
+
+            if (_state == State.LOST)
+            {
+                spriteBatch.DrawString(_font, "PERDU !", new Vector2(570, 350), Color.White);
+            }
+            else
+            {
+                spriteBatch.Draw(_coin);
+                spriteBatch.DrawString(_font, "x " + _runtimeData.Credits.ToString(), new Vector2(630, 450), Color.White);
+            }
+
             spriteBatch.End();
         }
 
