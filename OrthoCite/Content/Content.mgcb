@@ -654,3 +654,21 @@
 /processorParam:TextureFormat=Color
 /build:menu/bindUp.png
 
+#begin lostscreen/font.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:lostscreen/font.spritefont
+
+#begin lostscreen/ding.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:lostscreen/ding.ogg
+
+#begin lostscreen/newlive.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:lostscreen/newlive.ogg
+
