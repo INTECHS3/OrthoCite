@@ -594,3 +594,20 @@
 /processorParam:TextureFormat=Color
 /build:lostscreen/coin.png
 
+#begin minigames/DoorGame/sallePorte2.tmx
+/importer:TiledMapImporter
+/processor:TiledMapProcessor
+/build:minigames/DoorGame/sallePorte2.tmx
+
+#begin minigames/DoorGame/music.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:minigames/DoorGame/music.ogg
+
+#begin minigames/DoorGame/open.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:minigames/DoorGame/open.ogg
+
