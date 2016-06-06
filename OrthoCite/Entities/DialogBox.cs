@@ -60,6 +60,7 @@ namespace OrthoCite.Entities
             }
             else
             {
+                if (_currentDelay == 0) _currentDelay = 1;
                 _dialogs.Add(dialog);
             }
 
