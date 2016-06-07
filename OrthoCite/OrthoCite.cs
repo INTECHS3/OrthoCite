@@ -31,7 +31,8 @@ namespace OrthoCite
     /// </summary>
     public class OrthoCite : Game
     {
-        const GameContext STARTING_ENTITY = GameContext.MINIGAME_DOORGAME;
+
+        const GameContext STARTING_ENTITY = GameContext.MAP;
 
         BoxingViewportAdapter _viewportAdapter;
         Camera2D _camera;
@@ -140,7 +141,7 @@ namespace OrthoCite
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape)) Exit();
+            
 
 #if DEBUG
             if(Keyboard.GetState().IsKeyDown(Keys.F11)) { recordConsole();  }
@@ -224,6 +225,7 @@ namespace OrthoCite
             {
                 _entities.Add(_runtimeData.DialogBox);
                 _entities.Add(new Lives(_runtimeData));
+                _entities.Add(new MenuInGame(_runtimeData));
             }
 
             _gameContextChanged = false;

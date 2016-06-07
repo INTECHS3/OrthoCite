@@ -62,6 +62,7 @@
     <Compile Include="Entities\DebugLayer.cs" />
     <Compile Include="Entities\Introduction.cs" />
     <Compile Include="Entities\Map.cs" />
+    <Compile Include="Entities\MenuInGame.cs" />
     <Compile Include="Entities\MiniGames\Boss\BossGame.cs" />
     <Compile Include="Entities\MiniGames\Boss\Rearranger.cs" />
     <Compile Include="Entities\MiniGames\DoorGame.cs" />

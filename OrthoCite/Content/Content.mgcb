@@ -582,7 +582,7 @@
 /processorParam:TextureFormat=Compressed
 /build:minigames/boss/font.spritefont
 
-#begin lostscreen/coin.png
+#begin map/pnj.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -592,7 +592,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:lostscreen/coin.png
+/build:map/pnj.png
 
 #begin minigames/DoorGame/sallePorte2.tmx
 /importer:TiledMapImporter
@@ -705,4 +705,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:minigames/Rearranger/zelda.png
+
+#begin lostscreen/coin.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:lostscreen/coin.png
 

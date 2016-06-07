@@ -111,7 +111,7 @@ namespace OrthoCite.Entities
         void IEntity.Update(GameTime gameTime, KeyboardState keyboardState, Camera2D camera)
         {
             var deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
-             
+           
 
             if (_firstUpdate)
             {
@@ -120,7 +120,7 @@ namespace OrthoCite.Entities
                 _firstUpdate = !_firstUpdate;
             }
 
-            _player.checkMove(keyboardState, camera);
+            _player.checkMove(keyboardState);
 
             _player.heroAnimations.Update(deltaSeconds);
             _player.heroSprite.Position = new Vector2(_player.position.X + textMap.TileWidth / 2, _player.position.Y + textMap.TileHeight / 2);
@@ -180,22 +180,25 @@ namespace OrthoCite.Entities
         private void addAllPnj(ContentManager content, GraphicsDevice graphicsDevice)
         {
             _runtimeData.PNJ = new Dictionary<ListPnj, PNJ>();
-            _runtimeData.PNJ.Add(ListPnj.QUARTIER_1, new PNJ(TypePNJ.Dynamique, new Vector2(120, 59), new List<ItemList>(), _runtimeData, "animations/walking"));
+            _runtimeData.PNJ.Add(ListPnj.QUARTIER_1, new PNJ(TypePNJ.Dynamique, new Vector2(120, 59), new List<ItemList>(), _runtimeData, "map/pnj"));
+            
 
             foreach(KeyValuePair<ListPnj, PNJ> i in _runtimeData.PNJ)
             {
                 i.Value.PNJPlayer.collisionLayer = _player.collisionLayer;
-                i.Value.PNJPlayer.separeFrame = _player.separeFrame;
                 i.Value.PNJPlayer.lowFrame = _player.lowFrame;
                 i.Value.PNJPlayer.fastFrame = _player.fastFrame;
                 i.Value.PNJPlayer.typeDeplacement = TypeDeplacement.WithDirection;
+                i.Value.PNJPlayer.gidCol = 889;
             }
 
             _runtimeData.PNJ[ListPnj.QUARTIER_1].spriteFactory(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 0 }));
-            _runtimeData.PNJ[ListPnj.QUARTIER_1].spriteFactory(Helpers.Direction.DOWN, new SpriteSheetAnimationData(new[] { 5, 0, 10, 0 }, isLooping: false));
-            _runtimeData.PNJ[ListPnj.QUARTIER_1].spriteFactory(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 32, 26, 37, 26 }, isLooping: false));
-            _runtimeData.PNJ[ListPnj.QUARTIER_1].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 32, 26, 37, 26 }, isLooping: false));
-            _runtimeData.PNJ[ListPnj.QUARTIER_1].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 19, 13, 24, 13 }, isLooping: false));
+            _runtimeData.PNJ[ListPnj.QUARTIER_1].spriteFactory(Helpers.Direction.DOWN, new SpriteSheetAnimationData(new[] { 0, 1, 2}, isLooping: false));
+            _runtimeData.PNJ[ListPnj.QUARTIER_1].spriteFactory(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 24,25 ,26 }, isLooping: false));
+            _runtimeData.PNJ[ListPnj.QUARTIER_1].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 24, 25, 26 }, isLooping: false));
+            _runtimeData.PNJ[ListPnj.QUARTIER_1].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 36, 37, 38}, isLooping: false));
+
+            _runtimeData.PNJ[ListPnj.QUARTIER_1]._positionSec = new Vector2(126,59);
 
             _runtimeData.PNJ[ListPnj.QUARTIER_1]._talk.Add("Bienvenue sur Orhtocité");
             _runtimeData.PNJ[ListPnj.QUARTIER_1]._talk.Add("Tu es notre sauveur ! ! !");
@@ -203,7 +206,9 @@ namespace OrthoCite.Entities
             foreach(KeyValuePair<ListPnj, PNJ> i in _runtimeData.PNJ)
             {
                 i.Value.LoadContent(content, graphicsDevice);
+                i.Value.PNJPlayer.heroSprite.Scale = new Vector2(0.8f);
             }
+            
         }
 
         private void checkCamera(Camera2D camera)
