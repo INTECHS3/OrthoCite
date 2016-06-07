@@ -139,7 +139,7 @@ namespace OrthoCite.Entities.MiniGames
                 _runtimeData.DialogBox.Show();
             }
 
-            _player.checkMove(keyboardState, camera);
+            _player.checkMove(keyboardState);
 
             _player.heroAnimations.Update(deltaSeconds);
             _player.heroSprite.Position = new Vector2(_player.position.X + textMap.TileWidth / 2, _player.position.Y + textMap.TileHeight / 2);

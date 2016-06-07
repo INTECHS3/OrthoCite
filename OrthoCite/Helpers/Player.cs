@@ -1,14 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Maps.Tiled;
+using MonoGame.Extended;
 using MonoGame.Extended.Animations.SpriteSheets;
 using MonoGame.Extended.Sprites;
 using MonoGame.Extended.TextureAtlases;
+using System;
+using OrthoCite.Helpers;
 using System.Collections.Generic;
-using MonoGame.Extended;
-
 namespace OrthoCite.Helpers
 {
     public enum Direction
@@ -42,7 +43,7 @@ namespace OrthoCite.Helpers
 
         public Vector2 positionVirt { set; get; }
         public Vector2 position { set; get; }
-
+        
         public Direction actualDir { set; get; }
         public Direction lastDir { set; get; }
         public Dictionary<Direction, SpriteSheetAnimationData> spriteFactory { get; set; }
@@ -62,6 +63,7 @@ namespace OrthoCite.Helpers
         public int mapWidth; 
 
         public int gidCol { get; set; }
+
 
         string _texture;
 
@@ -101,14 +103,15 @@ namespace OrthoCite.Helpers
                 heroAnimations = new SpriteSheetAnimator(HeroWalkingFactory);
                 heroSprite = heroAnimations.CreateSprite(positionVirt);
 
-                actualDir = Direction.NONE;
-                lastDir = actualDir;
+                
             }
             else if (typePlayer == TypePlayer.WithTexture2D)
             {
                 heroTexture = content.Load<Texture2D>(_texture);
             }
 
+            actualDir = Direction.NONE;
+            lastDir = actualDir;
             position = new Vector2(positionVirt.X * tileWidth, positionVirt.Y * tileHeight);
         }
 
@@ -149,13 +152,14 @@ namespace OrthoCite.Helpers
             positionVirt += new Vector2(+1, 0);
         }
 
-        public void checkMove(KeyboardState keyboardState, Camera2D camera)
+        public void checkMove(KeyboardState keyboardState)
         {
-            
-         
+
+           
             if (separeFrame == 0)
             {
-                if(typeDeplacement == TypeDeplacement.WithKey && actualDir == Helpers.Direction.NONE && keyboardState.GetPressedKeys().Length != 0)
+                actualFrame = lowFrame;
+                if (typeDeplacement == TypeDeplacement.WithKey && actualDir == Helpers.Direction.NONE && keyboardState.GetPressedKeys().Length != 0)
                 {
                     if (keyboardState.IsKeyDown(Keys.LeftShift)) actualFrame = fastFrame;
                     else actualFrame = lowFrame;
@@ -188,36 +192,8 @@ namespace OrthoCite.Helpers
 
                     separeFrame++;
                 }
-                else if(typeDeplacement == TypeDeplacement.WithDirection)
-                {
-                    if (actualDir == Direction.RIGHT && ColRight())
-                    {
-                        actualDir = Direction.NONE;
-             
-                    }
-                    else if (actualDir == Direction.LEFT && ColLeft())
-                    {
-                        actualDir = Direction.NONE;
-                        
-                    }
-                    else if(actualDir == Direction.UP && ColUp())
-                    {
-                        actualDir = Direction.NONE;
-                        
-                    }
-                    else if(actualDir == Direction.DOWN && ColDown())
-                    {
-                        actualDir = Direction.NONE;
-                        
-                    }
-
-                    lastDir = actualDir;
-                    heroAnimations.Play(actualDir.ToString());
-                    separeFrame++;
-                    
-                    
-                }                
                 
+
             }
             else if (separeFrame != 0)
             {
@@ -262,15 +238,59 @@ namespace OrthoCite.Helpers
             }
         }
 
+        public void MooveChamp(Direction d)
+        {
+            if(separeFrame == 0)
+            {
+                if (typeDeplacement == TypeDeplacement.WithDirection)
+                {
+
+                    if (d == Direction.DOWN)
+                    {
+                        if (!ColDown()) actualDir = Helpers.Direction.DOWN;
+                        lastDir = Helpers.Direction.DOWN;
+                        heroAnimations.Play(Helpers.Direction.DOWN.ToString());
+
+                    }
+                    else if (d == Direction.UP)
+                    {
+                        if (!ColUp()) actualDir = Helpers.Direction.UP;
+                        lastDir = Helpers.Direction.UP;
+                        heroAnimations.Play(Helpers.Direction.UP.ToString());
+                    }
+                    else if (d == Direction.LEFT)
+                    {
+                        if (!ColLeft()) actualDir = Helpers.Direction.LEFT;
+                        lastDir = Helpers.Direction.LEFT;
+                        heroAnimations.Play(Helpers.Direction.LEFT.ToString());
+                    }
+                    else if (d == Direction.RIGHT)
+                    {
+                        if (!ColRight()) actualDir = Helpers.Direction.RIGHT;
+                        lastDir = Helpers.Direction.RIGHT;
+                        heroAnimations.Play(Helpers.Direction.RIGHT.ToString());
+                      
+                    }
+
+                    separeFrame++;
+
+                }
+            }
+
+        }
+
         public bool ColUp()
         {
             if (positionVirt.Y <= 0) return true;
             foreach (TiledTile i in collisionLayer.Tiles)
             {
                 if (i.X == positionVirt.X && i.Y == positionVirt.Y - 1 && i.Id == gidCol) return true;
+                if (_runtimeData.Player != null && _runtimeData.Player != this && _runtimeData.Player.positionVirt.X == positionVirt.X && _runtimeData.Player.positionVirt.Y == positionVirt.Y - 1) return true;
                 if(_runtimeData.Map != null) _runtimeData.Map.checkIfWeLaunchInstance(i);
                 if (_runtimeData.DoorGame != null && _runtimeData.DoorGame.CheckColUp(i)) return true;
+
             }
+
 
             foreach(KeyValuePair<Entities.ListPnj,PNJ> i in _runtimeData.PNJ)
             {
@@ -287,11 +307,13 @@ namespace OrthoCite.Helpers
             foreach (TiledTile i in collisionLayer.Tiles)
             {
                 if (i.X == positionVirt.X && i.Y == positionVirt.Y + 1 && i.Id == gidCol) return true;
+                if (_runtimeData.Player != null && _runtimeData.Player != this && _runtimeData.Player.positionVirt.X == positionVirt.X && _runtimeData.Player.positionVirt.Y == positionVirt.Y + 1) return true;
             }
             foreach (KeyValuePair<Entities.ListPnj, PNJ> i in _runtimeData.PNJ)
             {
                 if (positionVirt.X == i.Value.PNJPlayer.positionVirt.X && positionVirt.Y + 1 == i.Value.PNJPlayer.positionVirt.Y) return true;
             }
+           
             return false;
         }
 
@@ -301,6 +323,7 @@ namespace OrthoCite.Helpers
             foreach (TiledTile i in collisionLayer.Tiles)
             {
                 if (i.X == positionVirt.X - 1 && i.Y == positionVirt.Y && i.Id == gidCol) return true;
+                if (_runtimeData.Player != null && _runtimeData.Player != this && _runtimeData.Player.positionVirt.X == positionVirt.X - 1 && _runtimeData.Player.positionVirt.Y == positionVirt.Y) return true;
                 if (_runtimeData.DoorGame != null && _runtimeData.DoorGame.CheckColLeft(i)) return true;
             }
             foreach (KeyValuePair<Entities.ListPnj, PNJ> i in _runtimeData.PNJ)
@@ -316,6 +339,8 @@ namespace OrthoCite.Helpers
             foreach (TiledTile i in collisionLayer.Tiles)
             {
                 if (i.X == positionVirt.X + 1 && i.Y == positionVirt.Y && i.Id == gidCol) return true;
+                if (_runtimeData.Player != null && _runtimeData.Player != this && _runtimeData.Player.positionVirt.X == positionVirt.X + 1 && _runtimeData.Player.positionVirt.Y == positionVirt.Y) return true;
+
                 if (_runtimeData.DoorGame != null && _runtimeData.DoorGame.CheckColRight(i)) return true;
 
             }
