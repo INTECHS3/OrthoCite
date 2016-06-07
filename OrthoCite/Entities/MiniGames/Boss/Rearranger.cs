@@ -139,10 +139,6 @@ namespace OrthoCite.Entities.MiniGames
             if (_level == 10)
             {
                 _runtimeData.DialogBox.AddDialog("Gagné !", 2).Show();
-<<<<<<< HEAD
-=======
-                //_runtimeData.DialogBox.Clear();
->>>>>>> c19140d6f65db4d6d40007024583c872a5325045
                 _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
             }
             if (keyboardState.IsKeyDown(Keys.F9)) _player.collisionLayer.IsVisible = !_player.collisionLayer.IsVisible;
