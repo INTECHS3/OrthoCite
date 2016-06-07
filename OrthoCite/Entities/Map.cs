@@ -64,9 +64,6 @@ namespace OrthoCite.Entities
         {
             textMap = content.Load<TiledMap>("map/Map");
 
-            
-
-
             foreach (TiledTileLayer e in textMap.TileLayers)
             {
                 if (e.Name == "Collision") _player.collisionLayer = e;
@@ -118,7 +115,6 @@ namespace OrthoCite.Entities
 
             if (_firstUpdate)
             {
-                _runtimeData.DialogBox.Hide();
                 camera.Zoom = _zoom;
                 _player.position = new Vector2(_player.positionVirt.X * textMap.TileWidth, _player.positionVirt.Y * textMap.TileHeight);
                 _firstUpdate = !_firstUpdate;

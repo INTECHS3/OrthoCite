@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<dictionary>
+  <district id="0"> <!-- 5 rounds, 5 words per round -->
+    <!-- class -->
+    <sentence>
+      <valid>C'est sa maison</valid>
+      <invalid>C'est ça maison</invalid>
+    </sentence>
+    <sentence>
+      <valid>ça me fait plaisir</valid>
+      <invalid>sa me fait plaisir</invalid>
+    </sentence>
+    <sentence>
+      <valid>ça devient impossible</valid>
+      <invalid>sa devient impossible</invalid>
+    </sentence>
+    <sentence>
+      <valid>ça suffira pour gagner !</valid>
+      <invalid>sa suffira pour gagner !</invalid>
+    </sentence>
+    <sentence>
+      <valid>c'est ça l'amitié</valid>
+      <invalid>c'est sa l'amitié</invalid>
+    </sentence>
+    <sentence>
+      <valid>ça n'a pas été facile</valid>
+      <invalid>sa n'a pas été facile</invalid>
+    </sentence>
+    <sentence>
+      <valid>ça sent très bon par ici !</valid>
+      <invalid>sa sent très bon par ici !</invalid>
+    </sentence>
+    <sentence>
+      <valid>je crois que sa carte est fausse</valid>
+      <invalid>je crois que ça carte est fausse</invalid>
+    </sentence>
+    <sentence>
+      <valid>sa flèche est cassée</valid>
+      <invalid>ça flèche est cassée</invalid>
+    </sentence>
+    <sentence>
+      <valid>c'est ça l'amitié</valid>
+      <invalid>c'est sa l'amitié</invalid>
+    </sentence>
+  </district>
+    <district id="1">
+    <sentence>
+      <valid></valid>
+      <invalid></invalid>
+    </sentence>
+  </district>
+
+  <district id="2">
+    <sentence>
+      <valid></valid>
+      <invalid></invalid>
+    </sentence>
+  </district>
+
+  <district id="3">
+    <sentence>
+    </sentence>
+  </district>
+</dictionary>

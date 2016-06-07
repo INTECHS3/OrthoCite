@@ -120,7 +120,8 @@ namespace OrthoCite.Entities.MiniGames
                 _runtimeData.DialogBox.AddDialog("Gagné !", 2).Show();
             }
 
-            if (_gameState != GameState.NONE) _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
+            if (_gameState == GameState.LOST) _runtimeData.OrthoCite.ChangeGameContext(GameContext.LOST_SCREEN);
+            else if (_gameState == GameState.WON) if (_gameState == GameState.LOST) _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
         }
 
         private void EventInput_CharEntered(object sender, CharacterEventArgs e)
