@@ -63,6 +63,7 @@
     <Compile Include="Entities\Introduction.cs" />
     <Compile Include="Entities\Map.cs" />
     <Compile Include="Entities\MiniGames\Boss\BossGame.cs" />
+    <Compile Include="Entities\MiniGames\Boss\Rearranger.cs" />
     <Compile Include="Entities\MiniGames\DoorGame.cs" />
     <Compile Include="Entities\MiniGames\MiniGame.cs" />
     <Compile Include="Entities\MiniGames\Platformer.cs" />
@@ -111,6 +112,7 @@
     </Content>
     <Content Include="Content\binds.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Icon.ico" />
   </ItemGroup>
