@@ -689,6 +689,23 @@
 /processorParam:Quality=Best
 /build:lostscreen/newlive.ogg
 
+#begin minigames/Rearranger/Rearranger1.tmx
+/importer:TiledMapImporter
+/processor:TiledMapProcessor
+/build:minigames/Rearranger/Rearranger1.tmx
+
+#begin minigames/Rearranger/zelda.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:minigames/Rearranger/zelda.png
+
 #begin lostscreen/coin.png
 /importer:TextureImporter
 /processor:TextureProcessor
