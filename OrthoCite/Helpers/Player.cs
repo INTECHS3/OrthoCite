@@ -199,12 +199,16 @@ namespace OrthoCite.Helpers
 
         public void checkMove(KeyboardState keyboardState)
         {
+
+            actualFrame = lowFrame;
+
+            if (keyboardState.IsKeyDown(Keys.LeftShift)) actualFrame = fastFrame;
+
             if (separeFrame == 0)
             {
                 if (typeDeplacement == TypeDeplacement.WithKey && actualDir == Helpers.Direction.NONE && keyboardState.GetPressedKeys().Length != 0)
                 {
-                    if (keyboardState.IsKeyDown(Keys.LeftShift)) actualFrame = fastFrame;
-                    else actualFrame = lowFrame;
+                    
 
                     if (keyboardState.IsKeyDown(bindDown))
                     {
