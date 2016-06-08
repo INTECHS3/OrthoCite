@@ -133,7 +133,7 @@ namespace OrthoCite.Entities
 
             checkCamera(camera);
 
-            if (keyboardState.IsKeyDown(Keys.F9)) _player.collisionLayer.IsVisible = !_player.collisionLayer.IsVisible;
+            if (keyboardState.IsKeyDown(Keys.F9) && _player.separeFrame == 0) _player.collisionLayer.IsVisible = !_player.collisionLayer.IsVisible;
 
             //Console.WriteLine($"X : {_positionVirt.X} Y : {_positionVirt.Y} ");
         }
@@ -198,7 +198,7 @@ namespace OrthoCite.Entities
             _runtimeData.PNJ[ListPnj.QUARTIER_1].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 24, 25, 26 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_1].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 36, 37, 38}, isLooping: false));
 
-            _runtimeData.PNJ[ListPnj.QUARTIER_1]._positionSec = new Vector2(126,59);
+            _runtimeData.PNJ[ListPnj.QUARTIER_1]._positionSec = new Vector2(126,64);
 
             _runtimeData.PNJ[ListPnj.QUARTIER_1]._talk.Add("Bienvenue sur Orhtocité");
             _runtimeData.PNJ[ListPnj.QUARTIER_1]._talk.Add("Tu es notre sauveur ! ! !");

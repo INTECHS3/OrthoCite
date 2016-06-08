@@ -17,6 +17,9 @@ namespace OrthoCite.Entities
     {
         RuntimeData _runtimeData;
         bool _isVisible;
+
+        Rectangle _recContourMap;
+        Texture2D _bgRectangleContour;
         TiledMap _tileMap;
         Rectangle _rec;
         TimeSpan _saveTime;
@@ -42,6 +45,10 @@ namespace OrthoCite.Entities
             _bgRectangle = new Texture2D(graphicsDevice, 1, 1);
             _bgRectangle.SetData(new Color[] { Color.Black });
             _rec = new Rectangle(0, 0, _runtimeData.Scene.Width, _runtimeData.Scene.Height);
+            _recContourMap = new Rectangle(0, 0, _tileMap.WidthInPixels + 50, _tileMap.HeightInPixels + 50);
+            _bgRectangleContour = new Texture2D(graphicsDevice, 1, 1);
+            _bgRectangleContour.SetData(new Color[] { Color.Aqua });
+
 
         }
 
@@ -70,11 +77,11 @@ namespace OrthoCite.Entities
 
             frozenMatrix.Scale = new Vector3(0.1f);
            
-            frozenMatrix.M11 = 0.1f;
+           
             spriteBatch.Begin(transformMatrix: frozenMatrix);
             if (_isVisible)
             {
-                
+                spriteBatch.Draw(_bgRectangleContour, _recContourMap, Color.Aqua);
                 _tileMap.Draw(spriteBatch, new Rectangle(500,500, 1, 1), gameTime: _runtimeData.GameTime);
             }
             spriteBatch.End();
