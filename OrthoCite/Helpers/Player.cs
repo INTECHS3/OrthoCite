@@ -210,7 +210,6 @@ namespace OrthoCite.Helpers
                 if (typeDeplacement == TypeDeplacement.WithKey && actualDir == Helpers.Direction.NONE && keyboardState.GetPressedKeys().Length != 0)
                 {
 
-                    
                     if (keyboardState.IsKeyDown(Keys.LeftShift)) actualFrame = fastFrame;
                     else actualFrame = lowFrame;
 

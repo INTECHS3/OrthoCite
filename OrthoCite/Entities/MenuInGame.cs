@@ -24,6 +24,8 @@ namespace OrthoCite.Entities
         Rectangle _rec;
         TimeSpan _saveTime;
         Texture2D _bgRectangle;
+        SpriteFont _font;
+        Button _leaveButton;
 
         public MenuInGame(RuntimeData runtimeData)
         {
@@ -31,6 +33,11 @@ namespace OrthoCite.Entities
         }
         void IEntity.LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
         {
+            _leaveButton = new Button(new Vector2(500, 500), "menuingame/leave", _runtimeData);
+            _leaveButton.LoadContent(content, graphicsDevice);
+            _leaveButton.onClick += _runtimeData.OrthoCite.Leave;
+
+
             _tileMap = content.Load<TiledMap>("map/Map");
             foreach(TiledLayer e in _tileMap.TileLayers)
             {
@@ -38,8 +45,6 @@ namespace OrthoCite.Entities
                 
             }
             _isVisible = false;
-
-            
             
 
             _bgRectangle = new Texture2D(graphicsDevice, 1, 1);
@@ -48,6 +53,8 @@ namespace OrthoCite.Entities
             _recContourMap = new Rectangle(0, 0, _tileMap.WidthInPixels + 50, _tileMap.HeightInPixels + 50);
             _bgRectangleContour = new Texture2D(graphicsDevice, 1, 1);
             _bgRectangleContour.SetData(new Color[] { Color.Aqua });
+
+            _font = content.Load<SpriteFont>("debug");
 
 
         }
@@ -62,6 +69,10 @@ namespace OrthoCite.Entities
             
             if (_saveTime.TotalMilliseconds == 0) { if (keyboardState.IsKeyDown(Keys.Escape)) { _isVisible = !_isVisible; _saveTime = gameTime.TotalGameTime; }  }
             else if (_saveTime.TotalMilliseconds <= gameTime.TotalGameTime.TotalMilliseconds - 400) _saveTime = new TimeSpan(0, 0, 0);
+
+            if (_isVisible)
+            { _leaveButton.Update(gameTime, keyboardState, camera, 0f); }
+            
         }
 
         void IEntity.Draw(SpriteBatch spriteBatch, Matrix frozenMatrix, Matrix cameraMatrix)
@@ -72,6 +83,7 @@ namespace OrthoCite.Entities
             if (_isVisible)
             {
                 spriteBatch.Draw(_bgRectangle, _rec, Color.White * 0.7f);
+                _leaveButton.Draw(spriteBatch);
             }
             spriteBatch.End();
 
@@ -91,5 +103,10 @@ namespace OrthoCite.Entities
         {
             
         }
+
+        
+
+       
+        
     }
 }

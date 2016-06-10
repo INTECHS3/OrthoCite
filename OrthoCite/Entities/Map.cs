@@ -57,7 +57,7 @@ namespace OrthoCite.Entities
 
             _runtimeData.Map = this;
             _runtimeData.Player = _player;
-
+            
         }
 
         void IEntity.LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
@@ -252,7 +252,7 @@ namespace OrthoCite.Entities
         {
             _player.positionVirt = vec;
         }
-
+        
         public void checkIfWeLaunchInstance(TiledTile i)
         {
             if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 1165)
@@ -260,6 +260,23 @@ namespace OrthoCite.Entities
                 _runtimeData.gidLast = 1165;
                 _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_PLATFORMER);
             }
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 105)
+            {
+                _runtimeData.gidLast = 105;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_DOORGAME);
+            }
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 186)
+            {
+                _runtimeData.gidLast = 186;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_REARRANGER);
+            }
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 188)
+            {
+                _runtimeData.gidLast = 188;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_BOSS);
+               
+            }
+
         }
 
     }

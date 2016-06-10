@@ -11,6 +11,7 @@ using System;
 using MonoGame.Extended.Animations;
 using System.IO;
 using System.Reflection;
+using OrthoCite.Helpers;
 
 namespace OrthoCite
 {
@@ -46,6 +47,7 @@ namespace OrthoCite
 
         GameContext _gameContext;
         public bool _gameContextChanged;
+
         
 
         public static void writeSpacerConsole() => System.Console.WriteLine("===========================================");
@@ -245,6 +247,12 @@ namespace OrthoCite
             {
                 entity.Execute(cmd);
             }
+        }
+
+        internal void Leave(Button button)
+        {
+            Console.WriteLine("Exit");
+            Exit();
         }
     }
 }
