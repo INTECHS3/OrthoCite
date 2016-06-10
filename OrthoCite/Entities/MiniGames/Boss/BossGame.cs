@@ -156,6 +156,8 @@ namespace OrthoCite.Entities.MiniGames
             if (_gameState != GameState.NONE) return;
             if (!_waitingForInput) return;
 
+            if (e.Character == '\u001b') return; // Escape
+
             if (e.Character == '\b')
             {
                 if (_currentSpellWordTyped != "") _currentSpellWordTyped = _currentSpellWordTyped.Remove(_currentSpellWordTyped.Length - 1);
