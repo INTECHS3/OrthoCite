@@ -19,6 +19,7 @@ namespace OrthoCite.Entities.MiniGames
     class BossGame : MiniGame
     {
         const int LATERAL_SPEED = 5;
+        const int FIREBALL_INTERVAL = 100;
 
         enum GameState
         {
@@ -53,6 +54,8 @@ namespace OrthoCite.Entities.MiniGames
 
         // Game state
         List<string> _words;
+        List<Sprite> _fireballs;
+        DateTime _lastFireball;
 
         string _currentSpellWord;
         string _currentSpellWordTyped;
@@ -66,6 +69,8 @@ namespace OrthoCite.Entities.MiniGames
             _random = new Random();
 
             _words = new List<string>();
+            _fireballs = new List<Sprite>();
+            _lastFireball = DateTime.MaxValue;
 
             EventInput.CharEntered += EventInput_CharEntered;
         }
@@ -128,11 +133,29 @@ namespace OrthoCite.Entities.MiniGames
                 _faceLeft = false;
             }
 
-            if (_player.Position.X + _playerTexture.Width >= _runtimeData.Scene.Width) _player.Position = new Vector2(_runtimeData.Scene.Width - _playerTexture.Width, _player.Position.Y); // Right
+            if (_player.Position.X + _playerTexture.Width >= _runtimeData.Scene.Width - 300) _player.Position = new Vector2(_runtimeData.Scene.Width - _playerTexture.Width - 300, _player.Position.Y); // Right
             if (_player.Position.X < 0) _player.Position = new Vector2(0, _player.Position.Y); // Left
 
             _animation.Update(gameTime);
             _fireball.TextureRegion = _animation.CurrentFrame;
+
+            if (_lastFireball == DateTime.MaxValue || DateTime.Now - _lastFireball >= TimeSpan.FromMilliseconds(FIREBALL_INTERVAL)) GenerateFireball();
+
+            foreach (Sprite fireball in _fireballs) fireball.TextureRegion = _animation.CurrentFrame;
+
+            // Handle fireball collisions
+            Sprite fireballToRemove = null;
+            foreach (var fireball in _fireballs)
+            {
+                if ((_player.Position.X + _playerTexture.Width > fireball.Position.X && _player.Position.X <= fireball.Position.X + _playerTexture.Width) && (fireball.Position.Y + fireball.TextureRegion.Height - _playerTexture.Height >= _player.Position.Y))
+                {
+                    fireballToRemove = fireball;
+                    _arghPlayer.Play();
+                    _runtimeData.Lives -= 1;
+                }
+            }
+
+            if (fireballToRemove != null) _fireballs.Remove(fireballToRemove);
 
             if (_runtimeData.Lives == 0)
             {
@@ -234,6 +257,18 @@ namespace OrthoCite.Entities.MiniGames
             FireSpellOnEnemy();
         }
 
+        public void GenerateFireball()
+        {
+            int posX = _random.Next(0, _runtimeData.Scene.Width - 300);
+            Sprite fireball = new Sprite(_animation.CurrentFrame) { Origin = _player.Origin, IsVisible = true };
+            fireball.Rotation = -1.57f;
+            fireball.Position = new Vector2(posX, 0);
+            fireball.CreateTweenGroup(() => _fireballs.Remove(fireball)).MoveTo(new Vector2(posX, _runtimeData.Scene.Height + 11), 2.0f, EasingFunctions.SineEaseIn);
+            _fireballs.Add(fireball);
+
+            _lastFireball = DateTime.Now;
+        }
+
         public override void Draw(SpriteBatch spriteBatch, Matrix frozenMatrix, Matrix cameraMatrix)
         {
             spriteBatch.Begin(transformMatrix: frozenMatrix);
@@ -253,6 +288,12 @@ namespace OrthoCite.Entities.MiniGames
             spriteBatch.Draw(_attackBox);
             spriteBatch.DrawString(_fontWord, _currentSpellWord, new Vector2(650, 310), Color.Red);
             spriteBatch.DrawString(_fontWord, _currentSpellWordTyped, new Vector2(450, 440), Color.Black);
+
+            foreach (Sprite fireball in _fireballs)
+            {
+                spriteBatch.Draw(_pixelTexture, new Rectangle((int)fireball.Position.X, (int)fireball.Position.Y - (int)fireball.GetBoundingRectangle().Height, (int)fireball.GetBoundingRectangle().Width, (int)fireball.GetBoundingRectangle().Height), null, Color.Yellow);
+                spriteBatch.Draw(fireball);
+            }
 
             spriteBatch.End();
         }
