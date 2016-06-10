@@ -9,11 +9,17 @@ using MonoGame.Extended.Animations.Tweens;
 using MonoGame.Extended.Sprites;
 using MonoGame.Extended.TextureAtlases;
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using System.Xml;
 
 namespace OrthoCite.Entities.MiniGames
 {
     class BossGame : MiniGame
     {
+        const int LATERAL_SPEED = 5;
+
         enum GameState
         {
             NONE,
@@ -31,6 +37,7 @@ namespace OrthoCite.Entities.MiniGames
         Texture2D _attackBoxTexture;
 
         Sprite _player;
+        bool _faceLeft;
         Sprite _enemy;
         Sprite _fireball;
         Sprite _attackBox;
@@ -45,6 +52,8 @@ namespace OrthoCite.Entities.MiniGames
         SoundEffectInstance _spellInstance;
 
         // Game state
+        List<string> _words;
+
         string _currentSpellWord;
         string _currentSpellWordTyped;
         GameState _gameState;
@@ -55,6 +64,8 @@ namespace OrthoCite.Entities.MiniGames
         {
             _runtimeData = runtimeData;
             _random = new Random();
+
+            _words = new List<string>();
 
             EventInput.CharEntered += EventInput_CharEntered;
         }
@@ -106,6 +117,20 @@ namespace OrthoCite.Entities.MiniGames
         {
             if (_gameState != GameState.NONE) return;
 
+            if (keyboardState.IsKeyDown(Keys.Left))
+            {
+                _player.Position = new Vector2(_player.Position.X - LATERAL_SPEED, _player.Position.Y);
+                _faceLeft = true;
+            }
+            else if (keyboardState.IsKeyDown(Keys.Right))
+            {
+                _player.Position = new Vector2(_player.Position.X + LATERAL_SPEED, _player.Position.Y);
+                _faceLeft = false;
+            }
+
+            if (_player.Position.X + _playerTexture.Width >= _runtimeData.Scene.Width) _player.Position = new Vector2(_runtimeData.Scene.Width - _playerTexture.Width, _player.Position.Y); // Right
+            if (_player.Position.X < 0) _player.Position = new Vector2(0, _player.Position.Y); // Left
+
             _animation.Update(gameTime);
             _fireball.TextureRegion = _animation.CurrentFrame;
 
@@ -113,11 +138,13 @@ namespace OrthoCite.Entities.MiniGames
             {
                 _gameState = GameState.LOST;
                 _runtimeData.DialogBox.AddDialog("Perdu !", 2).Show();
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
             }
             else if (_bossLifePercentage == 0)
             {
                 _gameState = GameState.WON;
                 _runtimeData.DialogBox.AddDialog("Gagné !", 2).Show();
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
             }
 
             if (_gameState == GameState.LOST) _runtimeData.OrthoCite.ChangeGameContext(GameContext.LOST_SCREEN);
@@ -170,7 +197,7 @@ namespace OrthoCite.Entities.MiniGames
             _waitingForInput = true;
             _fireball.IsVisible = false;
             _bossLifePercentage -= 20;
-            GenerateWord();
+            LoadWord();
             _runtimeData.DialogBox.AddDialog("Aaaarrggh !", 2).Show();
         }
 
@@ -191,7 +218,7 @@ namespace OrthoCite.Entities.MiniGames
             _waitingForInput = true;
             _fireball.IsVisible = false;
             _runtimeData.Lives -= 1;
-            GenerateWord();
+            LoadWord();
             _runtimeData.DialogBox.AddDialog("Raté !", 2).Show();
         }
 
@@ -210,6 +237,7 @@ namespace OrthoCite.Entities.MiniGames
             spriteBatch.Begin(transformMatrix: frozenMatrix);
             spriteBatch.Draw(_backgroundTexture, new Vector2(0, 0), Color.White);
 
+            _player.Effect = _faceLeft ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             spriteBatch.Draw(_player);
             spriteBatch.Draw(_fireball);
             spriteBatch.Draw(_enemy);
@@ -234,18 +262,30 @@ namespace OrthoCite.Entities.MiniGames
 
         }
 
-
-        void GenerateWord()
-        {
-            _currentSpellWordTyped = "";
-
-            string[] words = new string[] { "constitution", "bateaux", "âge", "goéland", "Noël" };
-            _currentSpellWord = words[_random.Next(0, words.Length)];
-        }
-
         internal override void Start()
         {
-            GenerateWord();
+            LoadWords();
+            LoadWord();
+        }
+
+        public void LoadWords()
+        {
+            _words.Clear();
+            XmlDocument document = new XmlDocument();
+            document.Load(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\Content\dictionaries\boss.xml");
+            XmlNode root = document.DocumentElement;
+
+            foreach (XmlNode word in root.SelectNodes("word"))
+            {
+                _words.Add(word.InnerText);
+            }
+        }
+
+        public void LoadWord()
+        {
+            _currentSpellWordTyped = "";
+            _currentSpellWord = _words[_random.Next(0, _words.Count)];
+            _words.Remove(_currentSpellWord);
         }
     }
 }
