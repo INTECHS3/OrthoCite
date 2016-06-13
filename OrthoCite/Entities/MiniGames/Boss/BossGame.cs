@@ -20,7 +20,7 @@ namespace OrthoCite.Entities.MiniGames
     class BossGame : MiniGame
     {
         const int LATERAL_SPEED = 5;
-        const int FIREBALL_INTERVAL = 100;
+        const int FIREBALL_INTERVAL = 200;
 
         enum GameState
         {
