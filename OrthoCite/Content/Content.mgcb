@@ -718,6 +718,45 @@
 /processorParam:TextureFormat=Color
 /build:lostscreen/coin.png
 
+<<<<<<< 1da3a291dd56638e6d41c5bb9a344f37a0c2c898
+#begin menuingame/leave.jpg
+=======
+#begin minigames/boss/music.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:minigames/boss/music.ogg
+
+#begin minigames/boss/percentagefont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:minigames/boss/percentagefont.spritefont
+
+#begin minigames/boss/fireball_ally.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:minigames/boss/fireball_ally.png
+
+#begin minigames/boss/fireball_enemy.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:minigames/boss/fireball_enemy.png
+
 #begin menuingame/leave.jpg
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -729,4 +768,3 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:menuingame/leave.jpg
-

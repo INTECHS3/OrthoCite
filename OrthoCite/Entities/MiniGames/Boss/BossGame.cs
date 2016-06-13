@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using MonoGame.Extended;
 using MonoGame.Extended.Animations.SpriteSheets;
 using MonoGame.Extended.Animations.Tweens;
@@ -40,17 +41,23 @@ namespace OrthoCite.Entities.MiniGames
         Sprite _player;
         bool _faceLeft;
         Sprite _enemy;
-        Sprite _fireball;
+        Sprite _fireballEnemy;
+        Sprite _fireballAlly;
         Sprite _attackBox;
 
         SpriteFont _fontWord;
+        SpriteFont _fontPercentage;
 
-        SpriteSheetAnimation _animation;
+        SpriteSheetAnimation _animationFireball;
+        SpriteSheetAnimation _animationFireballEnemy;
+        SpriteSheetAnimation _animationFireballAlly;
 
         SoundEffect _arghPlayer;
         SoundEffect _arghEnemy;
         SoundEffect _spell;
         SoundEffectInstance _spellInstance;
+
+        Song _music;
 
         // Game state
         List<string> _words;
@@ -96,19 +103,38 @@ namespace OrthoCite.Entities.MiniGames
             _arghPlayer = content.Load<SoundEffect>("minigames/platformer/argh");
             _arghEnemy = content.Load<SoundEffect>("minigames/boss/arghEnemy");
 
+            _music = content.Load<Song>("minigames/boss/music");
+
             var fireballTexture = content.Load<Texture2D>("minigames/boss/fireball");
             var fireballAtlas = TextureAtlas.Create(fireballTexture, 130, 50);
-            _animation = new SpriteSheetAnimation("fireballAnimation", fireballAtlas)
+            _animationFireball = new SpriteSheetAnimation("fireballAnimation", fireballAtlas)
             {
                 FrameDuration = 0.2f
             };
-            
-            _fireball = new Sprite(_animation.CurrentFrame) { Origin = _player.Origin, IsVisible = false };
+
+            var fireballEnemyTexture = content.Load<Texture2D>("minigames/boss/fireball_enemy");
+            var fireballEnemyAtlas = TextureAtlas.Create(fireballEnemyTexture, 130, 50);
+            _animationFireballEnemy = new SpriteSheetAnimation("fireballEnemyAnimation", fireballEnemyAtlas)
+            {
+                FrameDuration = 0.2f
+            };
+
+            _fireballEnemy = new Sprite(_animationFireballEnemy.CurrentFrame) { Origin = _player.Origin, IsVisible = false };
+
+            var fireballAllyTexture = content.Load<Texture2D>("minigames/boss/fireball_ally");
+            var fireballAllyAtlas = TextureAtlas.Create(fireballAllyTexture, 130, 50);
+            _animationFireballAlly = new SpriteSheetAnimation("fireballAllyAnimation", fireballAllyAtlas)
+            {
+                FrameDuration = 0.2f
+            };
+
+            _fireballAlly = new Sprite(_animationFireballAlly.CurrentFrame) { Origin = _player.Origin, IsVisible = false };
 
             _attackBox = new Sprite(_attackBoxTexture);
             _attackBox.Position = new Vector2(_runtimeData.Scene.Width / 2, _runtimeData.Scene.Height / 2);
 
             _fontWord = content.Load<SpriteFont>("minigames/boss/font");
+            _fontPercentage = content.Load<SpriteFont>("minigames/boss/percentagefont");
 
             Start();
         }
@@ -136,12 +162,15 @@ namespace OrthoCite.Entities.MiniGames
             if (_player.Position.X + _playerTexture.Width >= _runtimeData.Scene.Width - 300) _player.Position = new Vector2(_runtimeData.Scene.Width - _playerTexture.Width - 300, _player.Position.Y); // Right
             if (_player.Position.X < 0) _player.Position = new Vector2(0, _player.Position.Y); // Left
 
-            _animation.Update(gameTime);
-            _fireball.TextureRegion = _animation.CurrentFrame;
+            _animationFireball.Update(gameTime);
+            _animationFireballAlly.Update(gameTime);
+            _fireballAlly.TextureRegion = _animationFireballAlly.CurrentFrame;
+            _animationFireballEnemy.Update(gameTime);
+            _fireballEnemy.TextureRegion = _animationFireballEnemy.CurrentFrame;
 
             if (_lastFireball == DateTime.MaxValue || DateTime.Now - _lastFireball >= TimeSpan.FromMilliseconds(FIREBALL_INTERVAL)) GenerateFireball();
 
-            foreach (Sprite fireball in _fireballs) fireball.TextureRegion = _animation.CurrentFrame;
+            foreach (Sprite fireball in _fireballs) fireball.TextureRegion = _animationFireball.CurrentFrame;
 
             // Handle fireball collisions
             Sprite fireballToRemove = null;
@@ -209,10 +238,10 @@ namespace OrthoCite.Entities.MiniGames
         {
             _spellInstance.Play();
             _waitingForInput = false;
-            _fireball.IsVisible = true;
-            _fireball.Position = new Vector2(_player.Position.X + _playerTexture.Width, _player.Position.Y);
-            _fireball.Effect = SpriteEffects.FlipHorizontally;
-            _fireball.CreateTweenGroup(OnFireSpellOnEnemyEnd).MoveTo(new Vector2(_enemy.Position.X - _fireball.TextureRegion.Width + 27, _enemy.Position.Y), 1.0f, EasingFunctions.SineEaseIn);
+            _fireballAlly.IsVisible = true;
+            _fireballAlly.Position = new Vector2(_player.Position.X + _playerTexture.Width, _player.Position.Y);
+            _fireballAlly.Effect = SpriteEffects.FlipHorizontally;
+            _fireballAlly.CreateTweenGroup(OnFireSpellOnEnemyEnd).MoveTo(new Vector2(_enemy.Position.X - _fireballAlly.TextureRegion.Width + 27, _enemy.Position.Y), 1.0f, EasingFunctions.SineEaseIn);
         }
 
         void OnFireSpellOnEnemyEnd()
@@ -220,7 +249,7 @@ namespace OrthoCite.Entities.MiniGames
             _spellInstance.Stop();
             _arghEnemy.Play();
             _waitingForInput = true;
-            _fireball.IsVisible = false;
+            _fireballAlly.IsVisible = false;
             _bossLifePercentage -= 20;
             LoadWord();
             _runtimeData.DialogBox.AddDialog("Aaaarrggh !", 2).Show();
@@ -230,10 +259,10 @@ namespace OrthoCite.Entities.MiniGames
         {
             _spellInstance.Play();
             _waitingForInput = false;
-            _fireball.IsVisible = true;
-            _fireball.Position = new Vector2(_enemy.Position.X - _fireball.TextureRegion.Width + 27, _enemy.Position.Y);
-            _fireball.Effect = SpriteEffects.None;
-            _fireball.CreateTweenGroup(OnFireSpellOnPlayerEnd).MoveTo(new Vector2(_player.Position.X + _playerTexture.Width - 27, _player.Position.Y), 1.0f, EasingFunctions.SineEaseIn);
+            _fireballEnemy.IsVisible = true;
+            _fireballEnemy.Position = new Vector2(_enemy.Position.X - _fireballEnemy.TextureRegion.Width + 27, _enemy.Position.Y);
+            _fireballEnemy.Effect = SpriteEffects.None;
+            _fireballEnemy.CreateTweenGroup(OnFireSpellOnPlayerEnd).MoveTo(new Vector2(_player.Position.X + _playerTexture.Width - 27, _player.Position.Y), 1.0f, EasingFunctions.SineEaseIn);
         }
 
         void OnFireSpellOnPlayerEnd()
@@ -241,7 +270,7 @@ namespace OrthoCite.Entities.MiniGames
             _spellInstance.Stop();
             _arghPlayer.Play();
             _waitingForInput = true;
-            _fireball.IsVisible = false;
+            _fireballEnemy.IsVisible = false;
             _runtimeData.Lives -= 1;
             LoadWord();
             _runtimeData.DialogBox.AddDialog("Raté !", 2).Show();
@@ -260,7 +289,7 @@ namespace OrthoCite.Entities.MiniGames
         public void GenerateFireball()
         {
             int posX = _random.Next(0, _runtimeData.Scene.Width - 300);
-            Sprite fireball = new Sprite(_animation.CurrentFrame) { Origin = _player.Origin, IsVisible = true };
+            Sprite fireball = new Sprite(_animationFireball.CurrentFrame) { Origin = _player.Origin, IsVisible = true };
             fireball.Rotation = -1.57f;
             fireball.Position = new Vector2(posX, 0);
             fireball.CreateTweenGroup(() => _fireballs.Remove(fireball)).MoveTo(new Vector2(posX, _runtimeData.Scene.Height + 11), 2.0f, EasingFunctions.SineEaseIn);
@@ -276,7 +305,8 @@ namespace OrthoCite.Entities.MiniGames
 
             _player.Effect = _faceLeft ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             spriteBatch.Draw(_player);
-            spriteBatch.Draw(_fireball);
+            spriteBatch.Draw(_fireballAlly);
+            spriteBatch.Draw(_fireballEnemy);
             spriteBatch.Draw(_enemy);
 
             int barWidth = 200;
@@ -284,14 +314,16 @@ namespace OrthoCite.Entities.MiniGames
             Vector2 barPosition = new Vector2(_runtimeData.Scene.Width - barWidth - 40, 650);
             int actualBarWidth = (_bossLifePercentage * barWidth) / 100;
             spriteBatch.Draw(_pixelTexture, new Rectangle((int)barPosition.X, (int)barPosition.Y, actualBarWidth, barHeight), Color.Red);
+            int percentageHeight = (int)_fontPercentage.MeasureString($"{_bossLifePercentage}%").X;
+            spriteBatch.DrawString(_fontPercentage, $"{_bossLifePercentage}%", new Vector2(barPosition.X + (actualBarWidth / 2) - (percentageHeight / 2), barPosition.Y + 2), Color.White);
 
             spriteBatch.Draw(_attackBox);
-            spriteBatch.DrawString(_fontWord, _currentSpellWord, new Vector2(650, 310), Color.Red);
-            spriteBatch.DrawString(_fontWord, _currentSpellWordTyped, new Vector2(450, 440), Color.Black);
+            spriteBatch.DrawString(_fontWord, _currentSpellWord, new Vector2(670, 295), Color.Purple);
+            spriteBatch.DrawString(_fontWord, _currentSpellWordTyped, new Vector2(425, 435), Color.Black);
 
             foreach (Sprite fireball in _fireballs)
             {
-                spriteBatch.Draw(_pixelTexture, new Rectangle((int)fireball.Position.X, (int)fireball.Position.Y - (int)fireball.GetBoundingRectangle().Height, (int)fireball.GetBoundingRectangle().Width, (int)fireball.GetBoundingRectangle().Height), null, Color.Yellow);
+                // spriteBatch.Draw(_pixelTexture, new Rectangle((int)fireball.Position.X, (int)fireball.Position.Y - (int)fireball.GetBoundingRectangle().Height, (int)fireball.GetBoundingRectangle().Width, (int)fireball.GetBoundingRectangle().Height), null, Color.Yellow);
                 spriteBatch.Draw(fireball);
             }
 
@@ -307,6 +339,8 @@ namespace OrthoCite.Entities.MiniGames
 
         internal override void Start()
         {
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Play(_music);
             LoadWords();
             LoadWord();
         }

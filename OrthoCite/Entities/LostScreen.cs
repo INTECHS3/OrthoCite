@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using MonoGame.Extended;
 using MonoGame.Extended.Sprites;
 using System;
@@ -43,6 +44,7 @@ namespace OrthoCite.Entities
             _runtimeData = runtimeData;
 
             _state = State.BEGINNING;
+            MediaPlayer.Stop();
         }
 
         public void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
