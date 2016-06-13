@@ -319,7 +319,7 @@ namespace OrthoCite.Entities.MiniGames
 
             spriteBatch.Draw(_attackBox);
             spriteBatch.DrawString(_fontWord, _currentSpellWord, new Vector2(670, 295), Color.Purple);
-            spriteBatch.DrawString(_fontWord, _currentSpellWordTyped, new Vector2(425, 435), Color.Black);
+            spriteBatch.DrawString(_fontWord, _currentSpellWordTyped, new Vector2(425, 435), Color.Green);
 
             foreach (Sprite fireball in _fireballs)
             {
