@@ -97,7 +97,7 @@ namespace OrthoCite
             EventInput.Initialize(Window);
             Components.Add(new AnimationComponent(this));
 
-            _viewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, SCENE_WIDTH, SCENE_HEIGHT);
+            _viewportAdapter = new BoxingViewportAdapter(Window, _graphics, SCENE_WIDTH, SCENE_HEIGHT);
             _runtimeData.ViewAdapter = _viewportAdapter;
             _runtimeData.Scene = new Rectangle(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
             _runtimeData.Lives = 3;
