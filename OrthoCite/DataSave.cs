@@ -19,6 +19,7 @@ namespace OrthoCite
         internal byte District;
         internal byte ValidatedMiniGames;
         internal byte NumberOfLives;
+        internal byte NumberOfCredits;
         internal byte TrapsNpcTalkedTo;
 #pragma warning restore CS0649
     }
@@ -49,6 +50,16 @@ namespace OrthoCite
             set {
                 if (value < 0 || value > 10) throw new ArgumentException("Lives must be between 0 and 10", nameof(value));
                 _dataSave.NumberOfLives = value;
+            }
+        }
+
+        public byte NumberOfCredits
+        {
+            get { return _dataSave.NumberOfCredits; }
+            set
+            {
+                if (value < 0) throw new ArgumentException("Credits must be above 0", nameof(value));
+                _dataSave.NumberOfCredits = value;
             }
         }
 
@@ -83,10 +94,19 @@ namespace OrthoCite
 
         public DataSave(string path)
         {
-            _dataSave = new DataSaveStruct { Name = "", District = 1, ValidatedMiniGames = 0, NumberOfLives = 2, TrapsNpcTalkedTo = 0 };
+            _dataSave = new DataSaveStruct { Name = "Joueur", District = 1, ValidatedMiniGames = 0, NumberOfLives = 3, NumberOfCredits = 0, TrapsNpcTalkedTo = 0 };
             _path = path;
 
             Directory.CreateDirectory(_path);
+
+            if (File.Exists(_path + @"\datasave.oct"))
+            {
+                Load("datasave");
+            }
+            else
+            {
+                Save();
+            }
         }
 
         public void Load(string datasaveSlug)
@@ -101,7 +121,8 @@ namespace OrthoCite
         public void Save()
         {
             string slug = _GenerateSlug(_dataSave.Name);
-            using (var file = File.OpenWrite(_path + @"\" + slug + ".oct"))
+            //using (var file = File.OpenWrite(_path + @"\" + slug + ".oct"))
+            using (var file = File.OpenWrite(_path + @"\datasave.oct"))
             {
                 var writer = new BinaryFormatter();
                 writer.Serialize(file, _dataSave);

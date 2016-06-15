@@ -85,28 +85,28 @@ namespace OrthoCite.Entities
                     break;
                 case State.CREDIT:
                     if (interval < TimeSpan.FromSeconds(1)) return;
-                    _runtimeData.Credits++;
+                    _runtimeData.GainCredit();
                     _ding.Play();
                     _timeStarted = DateTime.Now;
                     _state = State.LIVE1;
                     break;
                 case State.LIVE1:
                     if (interval < TimeSpan.FromSeconds(1)) return;
-                    _runtimeData.Lives++;
+                    _runtimeData.GainLive();
                     _newLive.Play();
                     _timeStarted = DateTime.Now;
                     _state = State.LIVE2;
                     break;
                 case State.LIVE2:
                     if (interval < TimeSpan.FromMilliseconds(300)) return;
-                    _runtimeData.Lives++;
+                    _runtimeData.GainLive();
                     _newLive.Play();
                     _timeStarted = DateTime.Now;
                     _state = State.LIVE3;
                     break;
                 case State.LIVE3:
                     if (interval < TimeSpan.FromMilliseconds(300)) return;
-                    _runtimeData.Lives++;
+                    _runtimeData.GainLive();
                     _newLive.Play();
                     _timeStarted = DateTime.Now;
                     _state = State.SWITCH_MAP;

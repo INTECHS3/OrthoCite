@@ -180,7 +180,7 @@ namespace OrthoCite.Entities.MiniGames
                 {
                     fireballToRemove = fireball;
                     _arghPlayer.Play();
-                    _runtimeData.Lives -= 1;
+                    _runtimeData.LooseLive();
                 }
             }
 
@@ -271,7 +271,7 @@ namespace OrthoCite.Entities.MiniGames
             _arghPlayer.Play();
             _waitingForInput = true;
             _fireballEnemy.IsVisible = false;
-            _runtimeData.Lives -= 1;
+            _runtimeData.LooseLive();
             LoadWord();
             _runtimeData.DialogBox.AddDialog("Raté !", 2).Show();
         }

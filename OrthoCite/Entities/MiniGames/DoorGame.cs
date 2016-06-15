@@ -306,7 +306,7 @@ namespace OrthoCite.Entities.MiniGames
                         _open.Play();
                         _runtimeData.DialogBox.SetText("Oh non, tu t'es trompé !   Niveau" + _level);
                         _runtimeData.DialogBox.Show();
-                        _runtimeData.Lives -= 1;
+                        _runtimeData.LooseLive();
                         if( _runtimeData.Lives == 0)
                         {
                             _runtimeData.DialogBox.AddDialog("Tu n'as plus de vie !", 2).Show();
