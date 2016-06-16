@@ -95,5 +95,7 @@ namespace OrthoCite
         
         public DoorGame DoorGame { get; set; }
 
+        public Rearranger Rearranger { get; set; }
+
     }
 }
