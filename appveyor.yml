@@ -4,6 +4,7 @@ branches:
     - master
 
 before_build:
+  - ps: choco install --x86 -yf InnoSetup
   - ps: Invoke-WebRequest 'http://www.monogame.net/releases/v3.5.1/MonoGameSetup.exe' -OutFile 'monogame.exe'
   - monogame.exe /S
   - nuget restore
@@ -14,6 +15,9 @@ configuration:
 
 build:
   verbosity: minimal
+
+on_success:
+  - ps: ci\build.ps1
   
 artifacts:
   - path: OrthoCite\bin\Windows\x86\Debug
