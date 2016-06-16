@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <dictionary>
   <district id="0"> <!-- 5 rounds, 5 words per round -->
-    <!-- class -->
-    <sentence>
-      <valid>angle</valid>
-      <invalid>engle</invalid>
-      <invalid>angl</invalid>
-      <invalid>engl</invalid>
-      <invalid>angleu</invalid>
-    </sentence>
     <sentence>
       <valid>armoire</valid>
       <invalid>armoir</invalid>
@@ -37,15 +29,6 @@
       <invalid>peaurte</invalid>
       <invalid>peaurthe</invalid>
     </sentence>
-
-    <!-- work -->
-    <sentence>
-      <valid>stylo</valid>
-      <invalid>styleau</invalid>
-      <invalid>sthylo</invalid>
-      <invalid>stilo</invalid>
-      <invalid>stilau</invalid>
-    </sentence>
     <sentence>
       <valid>page</valid>
       <invalid>paj</invalid>
@@ -54,41 +37,18 @@
       <invalid>pageu</invalid>
     </sentence>
     <sentence>
-      <valid>ligne</valid>
-      <invalid>lign</invalid>
-      <invalid>line</invalid>
-      <invalid>lygne</invalid>
-      <invalid>lygn</invalid>
-    </sentence>
-    <sentence>
-      <valid>affiche</valid>
-      <invalid>afiche</invalid>
-      <invalid>afich</invalid>
-      <invalid>affich</invalid>
-      <invalid>afyche</invalid>
-    </sentence>
-    <sentence>
       <valid>musique</valid>
       <invalid>musik</invalid>
       <invalid>musyk</invalid>
       <invalid>musike</invalid>
       <invalid>muzique</invalid>
     </sentence>
-
-    <!-- games -->
     <sentence>
       <valid>balle</valid>
       <invalid>bale</invalid>
       <invalid>ball</invalid>
       <invalid>balhe</invalid>
       <invalid>baleuh</invalid>
-    </sentence>
-    <sentence>
-      <valid>bateau</valid>
-      <invalid>bato</invalid>
-      <invalid>batteau</invalid>
-      <invalid>batto</invalid>
-      <invalid>batheau</invalid>
     </sentence>
     <sentence>
       <valid>douche</valid>
@@ -111,8 +71,6 @@
       <invalid>salladié</invalid>
       <invalid>saladyer</invalid>
     </sentence>
-
-    <!-- DIY -->
     <sentence>
       <valid>ampoule</valid>
       <invalid>ampoul</invalid>
@@ -128,34 +86,11 @@
       <invalid>cabann</invalid>
     </sentence>
     <sentence>
-      <valid>marteau</valid>
-      <invalid>marto</invalid>
-      <invalid>martho</invalid>
-      <invalid>marthau</invalid>
-      <invalid>martheau</invalid>
-    </sentence>
-    <sentence>
-      <valid>pinceau</valid>
-      <invalid>pinso</invalid>
-      <invalid>pinseau</invalid>
-      <invalid>painseau</invalid>
-      <invalid>pinsso</invalid>
-    </sentence>
-    <sentence>
       <valid>voiture</valid>
       <invalid>voitur</invalid>
       <invalid>vouature</invalid>
       <invalid>vouatur</invalid>
       <invalid>voiturre</invalid>
-    </sentence>
-
-    <!-- market -->
-    <sentence>
-      <valid>abricot</valid>
-      <invalid>abrico</invalid>
-      <invalid>abriceau</invalid>
-      <invalid>abriko</invalid>
-      <invalid>abrikot</invalid>
     </sentence>
     <sentence>
       <valid>ananas</valid>
@@ -163,6 +98,30 @@
       <invalid>annannas</invalid>
       <invalid>anannas</invalid>
       <invalid>annanas</invalid>
+    </sentence>
+  </district>
+
+  <district id="1">
+    <sentence>
+      <valid>angle</valid>
+      <invalid>engle</invalid>
+      <invalid>angl</invalid>
+      <invalid>engl</invalid>
+      <invalid>angleu</invalid>
+    </sentence>
+    <sentence>
+      <valid>ligne</valid>
+      <invalid>lign</invalid>
+      <invalid>line</invalid>
+      <invalid>lygne</invalid>
+      <invalid>lygn</invalid>
+    </sentence>
+    <sentence>
+      <valid>affiche</valid>
+      <invalid>afiche</invalid>
+      <invalid>afich</invalid>
+      <invalid>affich</invalid>
+      <invalid>afyche</invalid>
     </sentence>
     <sentence>
       <valid>crevette</valid>
@@ -185,12 +144,47 @@
       <invalid>résain</invalid>
       <invalid>rézain</invalid>
     </sentence>
-  </district>
-
-  <district id="1">
     <sentence>
-      <valid></valid>
-      <invalid></invalid>
+      <valid>abricot</valid>
+      <invalid>abrico</invalid>
+      <invalid>abriceau</invalid>
+      <invalid>abriko</invalid>
+      <invalid>abrikot</invalid>
+    </sentence>
+    <sentence>
+      <valid>marteau</valid>
+      <invalid>marto</invalid>
+      <invalid>martho</invalid>
+      <invalid>marthau</invalid>
+      <invalid>martheau</invalid>
+    </sentence>
+    <sentence>
+      <valid>pinceau</valid>
+      <invalid>pinso</invalid>
+      <invalid>pinseau</invalid>
+      <invalid>painseau</invalid>
+      <invalid>pinsso</invalid>
+    </sentence>
+    <sentence>
+      <valid>bateau</valid>
+      <invalid>bato</invalid>
+      <invalid>batteau</invalid>
+      <invalid>batto</invalid>
+      <invalid>batheau</invalid>
+    </sentence>
+    <sentence>
+      <valid>stylo</valid>
+      <invalid>styleau</invalid>
+      <invalid>sthylo</invalid>
+      <invalid>stilo</invalid>
+      <invalid>stilau</invalid>
+    </sentence>
+    <sentence>
+      <valid>sourcil</valid>
+      <invalid>soursil</invalid>
+      <invalid>sourcile</invalid>
+      <invalid>soursile</invalid>
+      <invalid>coursil</invalid>
     </sentence>
   </district>
 
@@ -209,6 +203,22 @@
       <invalid>aurthographe</invalid>
       <invalid>orthaugraphe</invalid>
       <invalid>aurthaugraphe</invalid>
+    </sentence>
+    <sentence>
+      <valid>constitution</valid>
+      <invalid>constitussion</invalid>
+      <invalid>constitucion</invalid>
+      <invalid>constitusion</invalid>
+      <invalid>constitucion</invalid>
+      <invalid>constytution</invalid>
+    </sentence>
+    <sentence>
+      <valid>constitution</valid>
+      <invalid>constitussion</invalid>
+      <invalid>constitucion</invalid>
+      <invalid>constitusion</invalid>
+      <invalid>constitucion</invalid>
+      <invalid>constytution</invalid>
     </sentence>
   </district>
 </dictionary>

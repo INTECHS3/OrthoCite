@@ -11,6 +11,7 @@ using System;
 using MonoGame.Extended.Animations;
 using System.IO;
 using System.Reflection;
+using OrthoCite.Helpers;
 
 namespace OrthoCite
 {
@@ -46,6 +47,7 @@ namespace OrthoCite
 
         GameContext _gameContext;
         public bool _gameContextChanged;
+
         
 
         public static void writeSpacerConsole() => System.Console.WriteLine("===========================================");
@@ -95,10 +97,9 @@ namespace OrthoCite
             EventInput.Initialize(Window);
             Components.Add(new AnimationComponent(this));
 
-            _viewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, SCENE_WIDTH, SCENE_HEIGHT);
+            _viewportAdapter = new BoxingViewportAdapter(Window, _graphics, SCENE_WIDTH, SCENE_HEIGHT);
             _runtimeData.ViewAdapter = _viewportAdapter;
             _runtimeData.Scene = new Rectangle(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
-            _runtimeData.Lives = 3;
             _runtimeData.DialogBox = new DialogBox(_runtimeData);
             _camera = new Camera2D(_viewportAdapter);
 
@@ -245,6 +246,12 @@ namespace OrthoCite
             {
                 entity.Execute(cmd);
             }
+        }
+
+        internal void Leave(Button button)
+        {
+            Console.WriteLine("Exit");
+            Exit();
         }
     }
 }

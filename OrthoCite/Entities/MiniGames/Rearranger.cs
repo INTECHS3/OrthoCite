@@ -624,7 +624,7 @@ namespace OrthoCite.Entities.MiniGames
             {
                 _runtimeData.DialogBox.AddDialog("Oh non, le mot était " + _word + " !", 2).Show();
                 _fail.Play();
-                _runtimeData.Lives -= 1;
+                _runtimeData.LooseLive();
                 if (_runtimeData.Lives == 0)
                 {
                     _runtimeData.DialogBox.AddDialog("Tu n'as plus de vie !", 2).Show();
@@ -646,7 +646,10 @@ namespace OrthoCite.Entities.MiniGames
 
             }
         }
-
+        public void SetDistrict(int district)
+        {
+            _district = district;
+        }
         public void editLayer(int tileToChange, int letterToDraw)
         {
             if (_gotLetter)

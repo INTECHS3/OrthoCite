@@ -10,7 +10,7 @@ using MonoGame.Extended.TextureAtlases;
 using System;
 using OrthoCite.Helpers;
 using System.Collections.Generic;
-
+using Microsoft.Xna.Framework.Media;
 
 namespace OrthoCite.Entities
 {
@@ -58,6 +58,8 @@ namespace OrthoCite.Entities
             _runtimeData.Map = this;
             _runtimeData.Player = _player;
 
+            MediaPlayer.Stop();
+            
         }
 
         void IEntity.LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
@@ -133,7 +135,7 @@ namespace OrthoCite.Entities
 
             checkCamera(camera);
 
-            if (keyboardState.IsKeyDown(Keys.F9)) _player.collisionLayer.IsVisible = !_player.collisionLayer.IsVisible;
+            if (keyboardState.IsKeyDown(Keys.F9) && _player.separeFrame == 0) _player.collisionLayer.IsVisible = !_player.collisionLayer.IsVisible;
 
             //Console.WriteLine($"X : {_positionVirt.X} Y : {_positionVirt.Y} ");
         }
@@ -198,7 +200,7 @@ namespace OrthoCite.Entities
             _runtimeData.PNJ[ListPnj.QUARTIER_1].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 24, 25, 26 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_1].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 36, 37, 38}, isLooping: false));
 
-            _runtimeData.PNJ[ListPnj.QUARTIER_1]._positionSec = new Vector2(126,59);
+            _runtimeData.PNJ[ListPnj.QUARTIER_1]._positionSec = new Vector2(126,64);
 
             _runtimeData.PNJ[ListPnj.QUARTIER_1]._talk.Add("Bienvenue sur Orhtocité");
             _runtimeData.PNJ[ListPnj.QUARTIER_1]._talk.Add("Tu es notre sauveur ! ! !");
@@ -252,7 +254,7 @@ namespace OrthoCite.Entities
         {
             _player.positionVirt = vec;
         }
-
+        
         public void checkIfWeLaunchInstance(TiledTile i)
         {
             if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 1165)
@@ -260,6 +262,23 @@ namespace OrthoCite.Entities
                 _runtimeData.gidLast = 1165;
                 _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_PLATFORMER);
             }
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 105)
+            {
+                _runtimeData.gidLast = 105;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_DOORGAME);
+            }
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 186)
+            {
+                _runtimeData.gidLast = 186;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_REARRANGER);
+            }
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 188)
+            {
+                _runtimeData.gidLast = 188;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_BOSS);
+               
+            }
+
         }
 
     }

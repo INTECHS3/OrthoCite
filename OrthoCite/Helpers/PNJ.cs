@@ -132,10 +132,8 @@ namespace OrthoCite.Helpers
             {
                 if (PNJPlayer.positionVirt.X < _positionMain.X) PNJPlayer.MooveChamp(Direction.RIGHT);
                 else if (PNJPlayer.positionVirt.X > _positionMain.X) PNJPlayer.MooveChamp(Direction.LEFT);
-
-
                 else if (PNJPlayer.positionVirt.X == _positionMain.X && PNJPlayer.positionVirt.Y < _positionMain.Y) PNJPlayer.MooveChamp(Direction.DOWN);
-                else if (PNJPlayer.positionVirt.X == _positionMain.Y && PNJPlayer.positionVirt.Y > _positionMain.Y) PNJPlayer.MooveChamp(Direction.UP);
+                else if (PNJPlayer.positionVirt.X == _positionMain.X && PNJPlayer.positionVirt.Y > _positionMain.Y) PNJPlayer.MooveChamp(Direction.UP);
             }
 
             else if (PNJPlayer.separeFrame == 0 && _currentDirection == PnjDirection.PositionSec)
@@ -145,7 +143,7 @@ namespace OrthoCite.Helpers
 
 
                 else if (PNJPlayer.positionVirt.X == _positionSec.X && PNJPlayer.positionVirt.Y < _positionSec.Y) PNJPlayer.MooveChamp(Direction.DOWN);
-                else if (PNJPlayer.positionVirt.X == _positionSec.Y && PNJPlayer.positionVirt.Y > _positionSec.Y) PNJPlayer.MooveChamp(Direction.UP);
+                else if (PNJPlayer.positionVirt.X == _positionSec.X && PNJPlayer.positionVirt.Y > _positionSec.Y) PNJPlayer.MooveChamp(Direction.UP);
             }
 
             if (PNJPlayer.separeFrame == 0 && PNJPlayer.positionVirt == _positionMain || PNJPlayer.separeFrame == 0 && PNJPlayer.positionVirt == _positionSec)

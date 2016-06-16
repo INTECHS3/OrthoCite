@@ -30,7 +30,6 @@ namespace OrthoCite
 
         public Dictionary<ListPnj, PNJ> pnj = new Dictionary<ListPnj, Helpers.PNJ>();
 
-        int _lives;
         int _credits;
 
         public RuntimeData()
@@ -61,18 +60,6 @@ namespace OrthoCite
             set { _orthoCite = value; }
         }
 
-        public int Lives
-        {
-            get { return _lives; }
-            set { _lives = value; }
-        }
-
-        public int Credits
-        {
-            get { return _credits; }
-            set { _credits = value; }
-        }
-
         public Map Map
         {
             get { return map; }
@@ -95,7 +82,49 @@ namespace OrthoCite
         
         public DoorGame DoorGame { get; set; }
 
+
         public Rearranger Rearranger { get; set; }
+
+
+        public int Lives => _dataSave.NumberOfLives;
+        public int Credits => _dataSave.NumberOfCredits;
+
+        /// <summary>
+        /// Loose the given number of lives, saving it in the datasave, and return whether the player is alive or not.
+        /// </summary>
+        /// <param name="count">Number of lives to loose.</param>
+        /// <returns>Is the player alive?</returns>
+        public bool LooseLive(int count = 1)
+        {
+            _dataSave.NumberOfLives -= (byte)count;
+            if (_dataSave.NumberOfLives < 0) _dataSave.NumberOfLives = 0;
+
+            _dataSave.Save();
+
+            return _dataSave.NumberOfLives > 0;
+        }
+
+        /// <summary>
+        /// Gain the given number of lives, saving it in the datasave.
+        /// </summary>
+        /// <param name="count">Number of lives to gain.</param>
+        public void GainLive(int count = 1)
+        {
+            _dataSave.NumberOfLives += (byte)count;
+
+            _dataSave.Save();
+        }
+
+        /// <summary>
+        /// Gain the given number of credits, saving it in the datasave.
+        /// </summary>
+        /// <param name="count">Number of credits to gain.</param>
+        public void GainCredit(int count = 1)
+        {
+            _dataSave.NumberOfCredits += (byte)count;
+
+            _dataSave.Save();
+        }
 
     }
 }
