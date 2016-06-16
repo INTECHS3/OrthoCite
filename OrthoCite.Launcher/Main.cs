@@ -60,6 +60,7 @@ namespace OrthoCite.Launcher
 
         private void BtnAdd_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(TextName.Text)) return;
             _dataSave.Name = TextName.Text;
             _dataSave.Save(false);
             LoadDatasavesIntoList();
