@@ -30,8 +30,6 @@ namespace OrthoCite
 
         public Dictionary<ListPnj, PNJ> pnj = new Dictionary<ListPnj, Helpers.PNJ>();
 
-        int _credits;
-
         public RuntimeData()
         {
         }

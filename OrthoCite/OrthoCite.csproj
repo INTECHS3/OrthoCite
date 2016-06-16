@@ -69,6 +69,7 @@
     <Compile Include="Entities\MiniGames\MiniGame.cs" />
     <Compile Include="Entities\MiniGames\Platformer.cs" />
     <Compile Include="EventInput.cs" />
+    <Compile Include="Helpers\Button.cs" />
     <Compile Include="Helpers\DrawingHelper.cs" />
     <Compile Include="Helpers\Player.cs" />
     <Compile Include="Helpers\PNJ.cs" />
@@ -108,6 +109,9 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\dictionaries\boss.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\dictionaries\DoorGame.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -120,6 +124,9 @@
     <Content Include="Content\binds.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Content\dictionaries\Rearranger.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Icon.ico" />
   </ItemGroup>
