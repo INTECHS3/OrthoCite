@@ -94,7 +94,7 @@ namespace OrthoCite
 
         public DataSave(string path)
         {
-            _dataSave = new DataSaveStruct { Name = "Joueur", District = 1, ValidatedMiniGames = 0, NumberOfLives = 3, NumberOfCredits = 0, TrapsNpcTalkedTo = 0 };
+            Clear();
             _path = path;
 
             Directory.CreateDirectory(_path);
@@ -103,10 +103,11 @@ namespace OrthoCite
             {
                 Load("datasave");
             }
-            else
-            {
-                Save();
-            }
+        }
+
+        public void Clear()
+        {
+            _dataSave = new DataSaveStruct { Name = "Joueur", District = 1, ValidatedMiniGames = 0, NumberOfLives = 3, NumberOfCredits = 0, TrapsNpcTalkedTo = 0 };
         }
 
         public void Load(string datasaveSlug)
@@ -118,11 +119,20 @@ namespace OrthoCite
             }
         }
 
-        public void Save()
+        public void Save(bool current = true)
         {
             string slug = _GenerateSlug(_dataSave.Name);
-            //using (var file = File.OpenWrite(_path + @"\" + slug + ".oct"))
-            using (var file = File.OpenWrite(_path + @"\datasave.oct"))
+            string path;
+            if (current)
+            {
+                path = _path + @"\datasave.oct";
+            }
+            else
+            {
+                path = _path + @"\" + slug + ".oct";
+            }
+
+            using (var file = File.OpenWrite(path))
             {
                 var writer = new BinaryFormatter();
                 writer.Serialize(file, _dataSave);
