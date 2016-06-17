@@ -51,7 +51,8 @@ namespace OrthoCite.Helpers
         TypePNJ _type;
         List<ItemList> _item;
 
-        public List<string> _talk { get; set; }
+        Dictionary<string, Dictionary<string, bool>> _talkAndAnswer;
+
         const int timeTalk = 100;
 
         public Vector2 _positionSec { get; set; } // IF == DYNAMIQUE -> MOOVE TO THIS 
@@ -79,9 +80,13 @@ namespace OrthoCite.Helpers
             _texture = texture;
             _positionMain = positionSpawn;
             _currentDirection = PnjDirection.PositionSec;
-            _talk = new List<string>();
+            _talkAndAnswer = new Dictionary<string, Dictionary<string, bool>>();
             _pnj = new Player(TypePlayer.WithSpriteSheet, positionSpawn ,_runtimeData, texture);
-            
+
+
+            _runtimeData.AnswerBox.heAnswerFalse += DownLifeOfPlayer;
+            _runtimeData.AnswerBox.heAnswerGood += UpLifeOfPlayer;
+
         }
         
         public void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
@@ -97,6 +102,9 @@ namespace OrthoCite.Helpers
         
         public void Update(GameTime gameTime, KeyboardState keyboardState, Camera2D camera, float deltaSeconds)
         {
+
+            if (_runtimeData.AnswerBox.isVisible) return;
+
             _pnj.heroSprite.Scale = new Vector2(0.7f);
             if(keyboardState.IsKeyDown(Keys.E) && _runtimeData.Player != null) collisionWithPlayer(gameTime);
 
@@ -174,21 +182,35 @@ namespace OrthoCite.Helpers
 
         private void talk()
         {
-            foreach(string a in _talk)
-            {
-                _runtimeData.DialogBox.AddDialog(a, 2);
-            }
-            _runtimeData.DialogBox.Show();
+            _runtimeData.AnswerBox._ask = "How Are u ? ";
+            _runtimeData.AnswerBox._Answer.Add("Yes", true);
+            _runtimeData.AnswerBox._Answer.Add("Nope", false);
+            _runtimeData.AnswerBox.Run();
+            
+
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             _pnj.Draw(spriteBatch);
+            
         }  
 
         public void Execute(params string[] param)
         {
 
+        }
+
+        private void DownLifeOfPlayer(RuntimeData runtimeData)
+        {
+            _runtimeData.Lives += -1;
+            _runtimeData.DialogBox.AddDialog("Perdu ahahahahahah", 2);
+        }
+
+        private void UpLifeOfPlayer(RuntimeData runtimeData)
+        {
+            _runtimeData.Lives += +1;
+            _runtimeData.DialogBox.AddDialog("Wouahhhhh Gagné ", 2);
         }
 
         public void spriteFactory(Direction dir, SpriteSheetAnimationData spriteData)

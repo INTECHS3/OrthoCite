@@ -12,6 +12,7 @@ using MonoGame.Extended.Animations;
 using System.IO;
 using System.Reflection;
 using OrthoCite.Helpers;
+using System.Threading.Tasks;
 
 namespace OrthoCite
 {
@@ -47,8 +48,8 @@ namespace OrthoCite
 
         GameContext _gameContext;
         public bool _gameContextChanged;
+        GameQueue _queue;
 
-        
 
         public static void writeSpacerConsole() => System.Console.WriteLine("===========================================");
         
@@ -65,6 +66,7 @@ namespace OrthoCite
             _runtimeData.OrthoCite = this;
             _runtimeData.DataSave = new DataSave(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\datasaves");
             _graphics = new GraphicsDeviceManager(this);
+            _queue = new GameQueue();
 
             _entities = new List<IEntity>();
 
@@ -96,8 +98,8 @@ namespace OrthoCite
         {
             EventInput.Initialize(Window);
             Components.Add(new AnimationComponent(this));
-
-            _viewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, SCENE_WIDTH, SCENE_HEIGHT);
+            
+            _viewportAdapter = new BoxingViewportAdapter(Window, _graphics, SCENE_WIDTH, SCENE_HEIGHT);
             _runtimeData.ViewAdapter = _viewportAdapter;
             _runtimeData.Scene = new Rectangle(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
             _runtimeData.Lives = 3;
@@ -121,6 +123,7 @@ namespace OrthoCite
             {
                 entity.LoadContent(this.Content, this.GraphicsDevice);
             }
+            recordConsole(_queue);
         }
 
 
@@ -143,11 +146,17 @@ namespace OrthoCite
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            string[] message;
+            if((message = _queue.Pull()) != null)
+            {
+                foreach(IEntity i in _entities)
+                {
+                    i.Execute(message);
+                }
+            }
+            
             
 
-#if DEBUG
-            if(Keyboard.GetState().IsKeyDown(Keys.F11)) { recordConsole();  }
-#endif
             foreach (var entity in _entities)
             {
                 entity.Update(gameTime, Keyboard.GetState(), _camera);
@@ -228,8 +237,9 @@ namespace OrthoCite
                 _entities.Add(_runtimeData.DialogBox);
                 _entities.Add(new Lives(_runtimeData));
                 _entities.Add(new MenuInGame(_runtimeData));
+                _entities.Add(new AnswerBox(_runtimeData));
             }
-
+            
             _gameContextChanged = false;
 
 #if DEBUG
@@ -239,20 +249,22 @@ namespace OrthoCite
             LoadContent();
         }
 
-        private void recordConsole()
+        void recordConsole(GameQueue queue)
         {
-            string cmdTmp = System.Console.ReadLine();
-            string[] cmd = cmdTmp.Split(' ');
-            foreach (var entity in _entities)
-            {
-                entity.Execute(cmd);
-            }
+            Task.Factory.StartNew(() => {
+                string cmdTmp = Console.ReadLine();
+                queue.Push(cmdTmp.Split(' '));
+                recordConsole(queue);
+            });
         }
 
         internal void Leave(Button button)
         {
             Console.WriteLine("Exit");
             Exit();
+          
         }
+
+        
     }
 }

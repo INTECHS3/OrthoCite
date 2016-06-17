@@ -69,6 +69,8 @@
     <Compile Include="Entities\MiniGames\MiniGame.cs" />
     <Compile Include="Entities\MiniGames\Platformer.cs" />
     <Compile Include="EventInput.cs" />
+    <Compile Include="GameQueue.cs" />
+    <Compile Include="Entities\AnswerBox.cs" />
     <Compile Include="Helpers\Button.cs" />
     <Compile Include="Helpers\DrawingHelper.cs" />
     <Compile Include="Helpers\Player.cs" />

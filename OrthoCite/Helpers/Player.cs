@@ -200,9 +200,9 @@ namespace OrthoCite.Helpers
         public void checkMove(KeyboardState keyboardState)
         {
 
-            
 
-            
+            if (_runtimeData.AnswerBox.isVisible) return;
+
 
             if (separeFrame == 0)
             {
@@ -217,26 +217,21 @@ namespace OrthoCite.Helpers
                     {
                         if (!ColDown()) { actualDir = Helpers.Direction.DOWN; heroAnimations.Play(Helpers.Direction.DOWN.ToString()); }
                             lastDir = Helpers.Direction.DOWN;
-                        
-
                     }
                     else if (keyboardState.IsKeyDown(bindUp))
                     {
                         if (!ColUp()) { actualDir = Helpers.Direction.UP; heroAnimations.Play(Helpers.Direction.UP.ToString()); }
                         lastDir = Helpers.Direction.UP;
-                        
                     }
                     else if (keyboardState.IsKeyDown(bindLeft))
                     {
                         if (!ColLeft()) { actualDir = Helpers.Direction.LEFT; heroAnimations.Play(Helpers.Direction.LEFT.ToString()); }
                             lastDir = Helpers.Direction.LEFT;
-                        
                     }
                     else if (keyboardState.IsKeyDown(bindRight))
                     {
                         if (!ColRight()) { actualDir = Helpers.Direction.RIGHT; heroAnimations.Play(Helpers.Direction.RIGHT.ToString()); } 
                         lastDir = Helpers.Direction.RIGHT;
-                        
                     }
 
                     separeFrame++;
