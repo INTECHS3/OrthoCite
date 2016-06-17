@@ -186,6 +186,7 @@ namespace OrthoCite.Entities.MiniGames
             if(_level == 10)
             {
                 _runtimeData.DialogBox.AddDialog("Gagné !", 2).Show();
+
                 _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
             }
             if (keyboardState.IsKeyDown(Keys.F9)) _player.collisionLayer.IsVisible = !_player.collisionLayer.IsVisible;
@@ -306,10 +307,11 @@ namespace OrthoCite.Entities.MiniGames
                         _open.Play();
                         _runtimeData.DialogBox.SetText("Oh non, tu t'es trompé !   Niveau" + _level);
                         _runtimeData.DialogBox.Show();
-                        _runtimeData.Lives -= 1;
+                        _runtimeData.LooseLive();
                         if( _runtimeData.Lives == 0)
                         {
                             _runtimeData.DialogBox.AddDialog("Tu n'as plus de vie !", 2).Show();
+
                             _runtimeData.OrthoCite.ChangeGameContext(GameContext.LOST_SCREEN);
                         }
                         instanceWorld();
@@ -471,7 +473,10 @@ namespace OrthoCite.Entities.MiniGames
             }
 
         }
-        
+        public void SetDistrict(int district)
+        {
+            _district = district;
+        }
 
         public void LoadWords()
         {

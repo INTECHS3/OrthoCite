@@ -45,7 +45,7 @@ namespace OrthoCite.Entities.MiniGames
 
         Song _music;
 
-        int _district = 0;
+        int _district = 3;
         int _platformsPerWord = 5;
         int _rounds = 10;
 
@@ -277,7 +277,7 @@ namespace OrthoCite.Entities.MiniGames
             if (platform.Word.IsValid)
             {
                 _argh.Play();
-                _runtimeData.Lives -= 1;
+                _runtimeData.LooseLive();
                 _runtimeData.DialogBox.AddDialog($"Raté, « {platform.Word.Value} » est bien écrit ! 1 vie en moins.", 2).Show();
 
                 if (_runtimeData.Lives == 0)

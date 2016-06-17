@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <dictionary>
   <district id="0"> <!-- 5 rounds, 5 words per round -->
-    <!-- class -->
-    <sentence>
-      <valid>angle</valid>
-      <invalid>engle</invalid>
-      <invalid>angl</invalid>
-      <invalid>engl</invalid>
-      <invalid>angleu</invalid>
-    </sentence>
     <sentence>
       <valid>armoire</valid>
       <invalid>armoir</invalid>
@@ -37,15 +29,6 @@
       <invalid>peaurte</invalid>
       <invalid>peaurthe</invalid>
     </sentence>
-
-    <!-- work -->
-    <sentence>
-      <valid>stylo</valid>
-      <invalid>styleau</invalid>
-      <invalid>sthylo</invalid>
-      <invalid>stilo</invalid>
-      <invalid>stilau</invalid>
-    </sentence>
     <sentence>
       <valid>page</valid>
       <invalid>paj</invalid>
@@ -54,41 +37,18 @@
       <invalid>pageu</invalid>
     </sentence>
     <sentence>
-      <valid>ligne</valid>
-      <invalid>lign</invalid>
-      <invalid>line</invalid>
-      <invalid>lygne</invalid>
-      <invalid>lygn</invalid>
-    </sentence>
-    <sentence>
-      <valid>affiche</valid>
-      <invalid>afiche</invalid>
-      <invalid>afich</invalid>
-      <invalid>affich</invalid>
-      <invalid>afyche</invalid>
-    </sentence>
-    <sentence>
       <valid>musique</valid>
       <invalid>musik</invalid>
       <invalid>musyk</invalid>
       <invalid>musike</invalid>
       <invalid>muzique</invalid>
     </sentence>
-
-    <!-- games -->
     <sentence>
       <valid>balle</valid>
       <invalid>bale</invalid>
       <invalid>ball</invalid>
       <invalid>balhe</invalid>
       <invalid>baleuh</invalid>
-    </sentence>
-    <sentence>
-      <valid>bateau</valid>
-      <invalid>bato</invalid>
-      <invalid>batteau</invalid>
-      <invalid>batto</invalid>
-      <invalid>batheau</invalid>
     </sentence>
     <sentence>
       <valid>douche</valid>
@@ -111,8 +71,6 @@
       <invalid>salladié</invalid>
       <invalid>saladyer</invalid>
     </sentence>
-
-    <!-- DIY -->
     <sentence>
       <valid>ampoule</valid>
       <invalid>ampoul</invalid>
@@ -128,34 +86,11 @@
       <invalid>cabann</invalid>
     </sentence>
     <sentence>
-      <valid>marteau</valid>
-      <invalid>marto</invalid>
-      <invalid>martho</invalid>
-      <invalid>marthau</invalid>
-      <invalid>martheau</invalid>
-    </sentence>
-    <sentence>
-      <valid>pinceau</valid>
-      <invalid>pinso</invalid>
-      <invalid>pinseau</invalid>
-      <invalid>painseau</invalid>
-      <invalid>pinsso</invalid>
-    </sentence>
-    <sentence>
       <valid>voiture</valid>
       <invalid>voitur</invalid>
       <invalid>vouature</invalid>
       <invalid>vouatur</invalid>
       <invalid>voiturre</invalid>
-    </sentence>
-
-    <!-- market -->
-    <sentence>
-      <valid>abricot</valid>
-      <invalid>abrico</invalid>
-      <invalid>abriceau</invalid>
-      <invalid>abriko</invalid>
-      <invalid>abrikot</invalid>
     </sentence>
     <sentence>
       <valid>ananas</valid>
@@ -163,6 +98,30 @@
       <invalid>annannas</invalid>
       <invalid>anannas</invalid>
       <invalid>annanas</invalid>
+    </sentence>
+  </district>
+
+  <district id="1">
+    <sentence>
+      <valid>angle</valid>
+      <invalid>engle</invalid>
+      <invalid>angl</invalid>
+      <invalid>engl</invalid>
+      <invalid>angleu</invalid>
+    </sentence>
+    <sentence>
+      <valid>ligne</valid>
+      <invalid>lign</invalid>
+      <invalid>line</invalid>
+      <invalid>lygne</invalid>
+      <invalid>lygn</invalid>
+    </sentence>
+    <sentence>
+      <valid>affiche</valid>
+      <invalid>afiche</invalid>
+      <invalid>afich</invalid>
+      <invalid>affich</invalid>
+      <invalid>afyche</invalid>
     </sentence>
     <sentence>
       <valid>crevette</valid>
@@ -185,19 +144,138 @@
       <invalid>résain</invalid>
       <invalid>rézain</invalid>
     </sentence>
-  </district>
-
-  <district id="1">
     <sentence>
-      <valid></valid>
-      <invalid></invalid>
+      <valid>abricot</valid>
+      <invalid>abrico</invalid>
+      <invalid>abriceau</invalid>
+      <invalid>abriko</invalid>
+      <invalid>abrikot</invalid>
+    </sentence>
+    <sentence>
+      <valid>marteau</valid>
+      <invalid>marto</invalid>
+      <invalid>martho</invalid>
+      <invalid>marthau</invalid>
+      <invalid>martheau</invalid>
+    </sentence>
+    <sentence>
+      <valid>pinceau</valid>
+      <invalid>pinso</invalid>
+      <invalid>pinseau</invalid>
+      <invalid>painseau</invalid>
+      <invalid>pinsso</invalid>
+    </sentence>
+    <sentence>
+      <valid>bateau</valid>
+      <invalid>bato</invalid>
+      <invalid>batteau</invalid>
+      <invalid>batto</invalid>
+      <invalid>batheau</invalid>
+    </sentence>
+    <sentence>
+      <valid>stylo</valid>
+      <invalid>styleau</invalid>
+      <invalid>sthylo</invalid>
+      <invalid>stilo</invalid>
+      <invalid>stilau</invalid>
+    </sentence>
+    <sentence>
+      <valid>sourcil</valid>
+      <invalid>soursil</invalid>
+      <invalid>sourcile</invalid>
+      <invalid>soursile</invalid>
+      <invalid>coursil</invalid>
     </sentence>
   </district>
 
   <district id="2">
     <sentence>
-      <valid></valid>
-      <invalid></invalid>
+      <valid>grincer</valid>
+      <invalid>grinser</invalid>
+      <invalid>grinsser</invalid>
+      <invalid>gruncer</invalid>
+      <invalid>grunser</invalid>
+      <invalid>graincer</invalid>
+    </sentence>
+    <sentence>
+      <valid>inondation</valid>
+      <invalid>innondation</invalid>
+      <invalid>innondacion</invalid>
+      <invalid>inondassion</invalid>
+      <invalid>innondassion</invalid>
+      <invalid>innondation</invalid>
+    </sentence>
+    <sentence>
+      <valid>inquiéter</valid>
+      <invalid>inquiétter</invalid>
+      <invalid>inquieter</invalid>
+      <invalid>inquietter</invalid>
+      <invalid>unquiéter</invalid>
+      <invalid>ainquiéter</invalid>
+    </sentence>
+    <sentence>
+      <valid>obscurcir</valid>
+      <invalid>obscursir</invalid>
+      <invalid>obscurcire</invalid>
+      <invalid>obscursire</invalid>
+      <invalid>obscursirre</invalid>
+      <invalid>obscurcirre</invalid>
+    </sentence>
+    <sentence>
+      <valid>opinion</valid>
+      <invalid>opignon</invalid>
+      <invalid>opinyon</invalid>
+      <invalid>opynion</invalid>
+      <invalid>oppinion</invalid>
+      <invalid>opinnion</invalid>
+    </sentence>
+    <sentence>
+      <valid>orgueil</valid>
+      <invalid>orgeuil</invalid>
+      <invalid>orgueille</invalid>
+      <invalid>orgeuille</invalid>
+      <invalid>oregeuil</invalid>
+      <invalid>oregueil</invalid>
+    </sentence>
+    <sentence>
+      <valid>persévérer</valid>
+      <invalid>percévérer</invalid>
+      <invalid>perséverer</invalid>
+      <invalid>pérsévérer</invalid>
+      <invalid>pèrsévérer</invalid>
+      <invalid>perséverer</invalid>
+    </sentence>
+    <sentence>
+      <valid>précéder</valid>
+      <invalid>préceder</invalid>
+      <invalid>precéder</invalid>
+      <invalid>présseder</invalid>
+      <invalid>presseder</invalid>
+      <invalid>préseder</invalid>
+    </sentence>
+    <sentence>
+      <valid>récompenser</valid>
+      <invalid>réconpenser</invalid>
+      <invalid>reconpenser</invalid>
+      <invalid>recompenser</invalid>
+      <invalid>réconpensée</invalid>
+      <invalid>récompensser</invalid>
+    </sentence>
+    <sentence>
+      <valid>tressaillir</valid>
+      <invalid>tresailir</invalid>
+      <invalid>tresaillir</invalid>
+      <invalid>tressailir</invalid>
+      <invalid>tréssaillir</invalid>
+      <invalid>trésailir</invalid>
+    </sentence>
+    <sentence>
+      <valid>vieillesse</valid>
+      <invalid>vieillese</invalid>
+      <invalid>vieyesse</invalid>
+      <invalid>vieyese</invalid>
+      <invalid>vieilesse</invalid>
+      <invalid>viéillesse</invalid>
     </sentence>
   </district>
 
@@ -209,6 +287,94 @@
       <invalid>aurthographe</invalid>
       <invalid>orthaugraphe</invalid>
       <invalid>aurthaugraphe</invalid>
+    </sentence>
+    <sentence>
+      <valid>constitution</valid>
+      <invalid>constitussion</invalid>
+      <invalid>constitucion</invalid>
+      <invalid>constitusion</invalid>
+      <invalid>constitucion</invalid>
+      <invalid>constytution</invalid>
+    </sentence>
+    <sentence>
+      <valid>désespérer</valid>
+      <invalid>desesperer</invalid>
+      <invalid>desésperer</invalid>
+      <invalid>déséspérer</invalid>
+      <invalid>deséspérer</invalid>
+      <invalid>desespérer</invalid>
+    </sentence>
+    <sentence>
+      <valid>anxieux</valid>
+      <invalid>anxieu</invalid>
+      <invalid>ancsieu</invalid>
+      <invalid>enxieux</invalid>
+      <invalid>enxieu</invalid>
+      <invalid>enxcieux</invalid>
+    </sentence>
+    <sentence>
+      <valid>pittoresque</valid>
+      <invalid>pitoresque</invalid>
+      <invalid>pitorresque</invalid>
+      <invalid>pittorresque</invalid>
+      <invalid>pithoresque</invalid>
+      <invalid>pytoresque</invalid>
+    </sentence>
+    <sentence>
+      <valid>exaucer</valid>
+      <invalid>exocer</invalid>
+      <invalid>exhocer</invalid>
+      <invalid>exhaucer</invalid>
+      <invalid>éxausser</invalid>
+      <invalid>éxosser</invalid>
+    </sentence>
+    <sentence>
+      <valid>homologue</valid>
+      <invalid>omologue</invalid>
+      <invalid>omhologue</invalid>
+      <invalid>homolog</invalid>
+      <invalid>omolog</invalid>
+      <invalid>homaulogue</invalid>
+    </sentence>
+    <sentence>
+      <valid>rhododendron</valid>
+      <invalid>rododundron</invalid>
+      <invalid>rododindron</invalid>
+      <invalid>rhododindron</invalid>
+      <invalid>rodhododendron</invalid>
+      <invalid>rodeaudendron</invalid>
+    </sentence>
+    <sentence>
+      <valid>rocambolesque</valid>
+      <invalid>roquembolesque</invalid>
+      <invalid>rocembolesque</invalid>
+      <invalid>roquambolesque</invalid>
+      <invalid>rocanbolesque</invalid>
+      <invalid>raucambolesque</invalid>
+    </sentence>
+    <sentence>
+      <valid>trottinette</valid>
+      <invalid>trotinette</invalid>
+      <invalid>trotinnette</invalid>
+      <invalid>trottinnette</invalid>
+      <invalid>trotinete</invalid>
+      <invalid>trottinnete</invalid>
+    </sentence>
+    <sentence>
+      <valid>Méditerranée</valid>
+      <invalid>Méditterrannée</invalid>
+      <invalid>Méditterranée</invalid>
+      <invalid>Méditeranée</invalid>
+      <invalid>Mediterranée</invalid>
+      <invalid>Méditterannée</invalid>
+    </sentence>
+    <sentence>
+      <valid>quincaillier</valid>
+      <invalid>quincailler</invalid>
+      <invalid>quincaillé</invalid>
+      <invalid>quncailler</invalid>
+      <invalid>quincayer</invalid>
+      <invalid>quincayé</invalid>
     </sentence>
   </district>
 </dictionary>

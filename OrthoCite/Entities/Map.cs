@@ -10,7 +10,7 @@ using MonoGame.Extended.TextureAtlases;
 using System;
 using OrthoCite.Helpers;
 using System.Collections.Generic;
-
+using Microsoft.Xna.Framework.Media;
 
 namespace OrthoCite.Entities
 {
@@ -57,6 +57,8 @@ namespace OrthoCite.Entities
 
             _runtimeData.Map = this;
             _runtimeData.Player = _player;
+
+            MediaPlayer.Stop();
             
         }
 

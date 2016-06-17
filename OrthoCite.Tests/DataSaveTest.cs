@@ -42,7 +42,7 @@ namespace OrthoCite.Tests
             _dataSave.TrapsNpcTalkTo(4);
             _dataSave.TrapsNpcTalkTo(5);
 
-            _dataSave.Save();
+            _dataSave.Save(false);
             Assert.IsTrue(File.Exists(DATASAVES_PATH + @"\marvin.oct"));
 
             _dataSave.Load("marvin");
@@ -61,10 +61,10 @@ namespace OrthoCite.Tests
         public void DataSave_List_should_list_all_datasaves()
         {
             _dataSave.Name = "Bélican";
-            _dataSave.Save();
+            _dataSave.Save(false);
             Assert.IsTrue(File.Exists(DATASAVES_PATH + @"\belican.oct"));
             _dataSave.Name = "Nom à jouer";
-            _dataSave.Save();
+            _dataSave.Save(false);
             Assert.IsTrue(File.Exists(DATASAVES_PATH + @"\nom-a-jouer.oct"));
 
             var datasaves = _dataSave.List();

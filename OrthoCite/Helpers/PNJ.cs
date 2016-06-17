@@ -203,13 +203,13 @@ namespace OrthoCite.Helpers
 
         private void DownLifeOfPlayer(RuntimeData runtimeData)
         {
-            _runtimeData.Lives += -1;
+            _runtimeData.LooseLive();
             _runtimeData.DialogBox.AddDialog("Perdu ahahahahahah", 2);
         }
 
         private void UpLifeOfPlayer(RuntimeData runtimeData)
         {
-            _runtimeData.Lives += +1;
+            _runtimeData.GainLive();
             _runtimeData.DialogBox.AddDialog("Wouahhhhh Gagné ", 2);
         }
 

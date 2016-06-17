@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<dictionary>
+  <district id="0"> <!-- 5 rounds, 5 words per round -->
+    <!-- class -->
+    <sentence>
+      <valid>patate</valid>
+    </sentence>
+    <sentence>
+      <valid>seau</valid>
+    </sentence>
+    <sentence>
+      <valid>tapis</valid>
+    </sentence>
+    <sentence>
+      <valid>cheval</valid>
+    </sentence>
+    <sentence>
+      <valid>crapaud</valid>
+    </sentence>
+    <sentence>
+      <valid>herbe</valid>
+    </sentence>
+    <sentence>
+      <valid>oiseau</valid>
+    </sentence>
+    <sentence>
+      <valid>arbre</valid>
+    </sentence>
+    <sentence>
+      <valid>folie</valid>
+    </sentence>
+    <sentence>
+      <valid>couche</valid>
+    </sentence>
+    <sentence>
+      <valid>tableau</valid>
+    </sentence>
+    <sentence>
+      <valid>souche</valid>
+    </sentence>
+    <sentence>
+      <valid>truelle</valid>
+    </sentence>
+    
+  </district>
+    <district id="1">
+    <sentence>
+      <valid></valid>
+    </sentence>
+  </district>
+
+  <district id="2">
+    <sentence>
+      <valid></valid>
+    </sentence>
+  </district>
+
+  <district id="3">
+    <sentence>
+    </sentence>
+  </district>
+</dictionary>

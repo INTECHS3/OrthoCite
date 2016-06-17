@@ -98,11 +98,9 @@ namespace OrthoCite
         {
             EventInput.Initialize(Window);
             Components.Add(new AnimationComponent(this));
-            
             _viewportAdapter = new BoxingViewportAdapter(Window, _graphics, SCENE_WIDTH, SCENE_HEIGHT);
             _runtimeData.ViewAdapter = _viewportAdapter;
             _runtimeData.Scene = new Rectangle(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
-            _runtimeData.Lives = 3;
             _runtimeData.DialogBox = new DialogBox(_runtimeData);
             _camera = new Camera2D(_viewportAdapter);
 
