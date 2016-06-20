@@ -293,6 +293,11 @@ namespace OrthoCite.Entities.MiniGames
                     if (_currentRound == _rounds)
                     {
                         _runtimeData.DialogBox.AddDialog("Tu as gagné ce mini-jeu !", 2).Show();
+                        if (_runtimeData.DataSave.District == _district)
+                        {
+                            _runtimeData.DataSave.ValidateMiniGame(DataSaveMiniGame.PLATFORMER);
+                            _runtimeData.DataSave.Save();
+                        }
                         _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
                     }
                     else

@@ -190,12 +190,17 @@ namespace OrthoCite.Entities.MiniGames
             {
                 _gameState = GameState.LOST;
                 _runtimeData.DialogBox.AddDialog("Perdu !", 2).Show();
-                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.LOST_SCREEN);
             }
             else if (_bossLifePercentage == 0)
             {
                 _gameState = GameState.WON;
                 _runtimeData.DialogBox.AddDialog("Gagné !", 2).Show();
+                if (_runtimeData.DataSave.District == 4)
+                {
+                    _runtimeData.DataSave.ValidateMiniGame(DataSaveMiniGame.BOSS);
+                    _runtimeData.DataSave.Save();
+                }
                 _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
             }
 

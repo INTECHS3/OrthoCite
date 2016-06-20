@@ -187,6 +187,11 @@ namespace OrthoCite.Entities.MiniGames
             {
                 _runtimeData.DialogBox.AddDialog("Gagné !", 2).Show();
 
+                if (_runtimeData.DataSave.District == _district)
+                {
+                    _runtimeData.DataSave.ValidateMiniGame(DataSaveMiniGame.DOORGAME);
+                    _runtimeData.DataSave.Save();
+                }
                 _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
             }
             if (keyboardState.IsKeyDown(Keys.F9)) _player.collisionLayer.IsVisible = !_player.collisionLayer.IsVisible;

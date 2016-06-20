@@ -24,7 +24,7 @@ namespace OrthoCite
 #pragma warning restore CS0649
     }
 
-    public enum MiniGame : byte
+    public enum DataSaveMiniGame : byte
     {
         PLATFORMER = 1,
         DOORGAME = 2,
@@ -71,7 +71,7 @@ namespace OrthoCite
             }
         }
 
-        public bool MiniGameIsValidated(MiniGame miniGameId)
+        public bool MiniGameIsValidated(DataSaveMiniGame miniGameId)
         {
      
             if (miniGameId <= 0 || (byte)miniGameId > 8) throw new ArgumentException("Mini-game ID must be between 1 and 8", nameof(miniGameId));
@@ -79,7 +79,7 @@ namespace OrthoCite
             return (_dataSave.ValidatedMiniGames & mask) != 0;
         }
 
-        public void ValidateMiniGame(MiniGame miniGameId)
+        public void ValidateMiniGame(DataSaveMiniGame miniGameId)
         {
             if (miniGameId <= 0 || (byte)miniGameId > 8) throw new ArgumentException("Mini-game ID must be between 1 and 8", nameof(miniGameId));
             int mask = 1 << 8 - (byte)miniGameId;
