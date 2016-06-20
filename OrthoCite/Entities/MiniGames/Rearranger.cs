@@ -32,7 +32,6 @@ namespace OrthoCite.Entities.MiniGames
         SoundEffect _fail;
         SoundEffect _success;
         Song _music;
-        XmlDocument document;
         List<Texture2D> _alphabet;
         TiledTileLayer _visible;
         Dictionary<int, Texture2D> _alphaSprite;
@@ -60,7 +59,6 @@ namespace OrthoCite.Entities.MiniGames
         const int _lowSpeedPlayer = 13;
         const int _zoom = 3;
         bool _firstUpdate;
-        bool _firstChange;
         List<string> _wordCollections;
         string _word;
        List<int> _world;
@@ -116,8 +114,6 @@ namespace OrthoCite.Entities.MiniGames
 
         public override void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
         {
-
-            _firstChange = true;
             textMap = content.Load<TiledMap>("minigames/Rearranger/Rearranger1");
             _i = new TiledTileLayer(textMap, graphicsDevice, "Letter", 17, 17, _r);
             _i.IsVisible = true;

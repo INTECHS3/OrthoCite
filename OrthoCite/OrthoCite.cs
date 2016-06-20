@@ -45,6 +45,7 @@ namespace OrthoCite
         const int SCENE_WIDTH = 1366;
         const int SCENE_HEIGHT = 768;
 
+        int _miniGameDistrict;
         GameContext _gameContext;
         public bool _gameContextChanged;
         GameQueue _queue;
@@ -181,10 +182,11 @@ namespace OrthoCite
             base.Draw(gameTime);
         }
 
-        public void ChangeGameContext(GameContext context)
+        public void ChangeGameContext(GameContext context, int district = 0)
         {
             _gameContext = context;
             _gameContextChanged = true;
+            _miniGameDistrict = district;
         }
 
         void PopulateEntitiesFromGameContext()
@@ -209,19 +211,29 @@ namespace OrthoCite
                     break;
                 case GameContext.MINIGAME_PLATFORMER:
                     Console.WriteLine("platformer minigame");
-                    _entities.Add(new Platformer(_runtimeData));
-                    break;
-                case GameContext.MINIGAME_BOSS:
-                    Console.WriteLine("boss minigame");
-                    _entities.Add(new BossGame(_runtimeData));
+                    Platformer platformer = new Platformer(_runtimeData);
+                    platformer.SetDistrict(_miniGameDistrict);
+                    platformer.LoadContent(this.Content, this.GraphicsDevice); // content needs to be loaded before calling start
+                    platformer.Start();
+                    _entities.Add(platformer);
                     break;
                 case GameContext.MINIGAME_DOORGAME:
                     Console.WriteLine("DoorGame");
+                    DoorGame doorGame = new DoorGame(_runtimeData);
+                    doorGame.SetDistrict(_miniGameDistrict);
+                    doorGame.Start();
                     _entities.Add(new DoorGame(_runtimeData));
                     break;
                 case GameContext.MINIGAME_REARRANGER:
                     Console.WriteLine("Rearranger");
-                    _entities.Add(new Rearranger(_runtimeData));
+                    Rearranger rearranger = new Rearranger(_runtimeData);
+                    rearranger.SetDistrict(_miniGameDistrict);
+                    rearranger.Start();
+                    _entities.Add(rearranger);
+                    break;
+                case GameContext.MINIGAME_BOSS:
+                    Console.WriteLine("boss minigame");
+                    _entities.Add(new BossGame(_runtimeData));
                     break;
             }
 
