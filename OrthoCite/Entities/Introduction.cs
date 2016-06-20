@@ -5,8 +5,10 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using MonoGame.Extended;
 using MonoGame.Extended.Animations.Tweens;
+using MonoGame.Extended.Maps.Tiled;
 using MonoGame.Extended.Sprites;
 using MonoGame.Extended.TextureAtlases;
+using System;
 
 namespace OrthoCite.Entities
 {
@@ -14,15 +16,20 @@ namespace OrthoCite.Entities
     {
         RuntimeData _runtimeData;
 
-        Texture2D _backgroundTexture;
+        TiledMap _map;
+
+        Texture2D _overlayTexture;
         Texture2D _logoTexture;
 
-        Sprite _background;
         Sprite _logo;
 
         Song _song;
 
+        SpriteFont _font;
+
         bool _animationStarted;
+        uint _mapState = 0;
+        TweenAnimation<Camera2D> _cameraAnimation;
 
         public Introduction(RuntimeData runtimeData)
         {
@@ -31,15 +38,25 @@ namespace OrthoCite.Entities
 
         public void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
         {
-            _backgroundTexture = content.Load<Texture2D>("intro/background");
+            _map = content.Load<TiledMap>("map/Map");
+            foreach (TiledTileLayer layer in _map.TileLayers)
+            {
+                if (layer.Name == "Collision")
+                {
+                    layer.IsVisible = false;
+                    break;
+                }
+            }
+
+            _overlayTexture = new Texture2D(graphicsDevice, 1, 1);
+            _overlayTexture.SetData(new Color[] { Color.Black * 0.4f });
             _logoTexture = content.Load<Texture2D>("intro/logo");
-            _background = new Sprite(_backgroundTexture);
-            _background.Origin = new Vector2(0, 0);
-            _background.Position = new Vector2(0, _runtimeData.Scene.Height - _backgroundTexture.Height);
             _logo = new Sprite(_logoTexture);
             _logo.Position = new Vector2(_runtimeData.Scene.Width / 2, -_logoTexture.Height);
 
             _song = content.Load<Song>("intro/music");
+
+            _font = content.Load<SpriteFont>("intro/font");
         }
 
         public void UnloadContent()
@@ -51,43 +68,80 @@ namespace OrthoCite.Entities
         {
             if (!_animationStarted)
             {
-                StartAnimation();
+                camera.Zoom = 2f;
+                StartAnimation(camera);
                 MediaPlayer.Play(_song);
+            }
+
+            if (keyboardState.IsKeyDown(Keys.Space))
+            {
+                MediaPlayer.Stop();
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
+                _cameraAnimation.Stop();
             }
         }
 
-        public void StartAnimation()
+        public void StartAnimation(Camera2D camera)
         {
             _animationStarted = true;
-            _background.CreateTweenGroup(OnBackgroundReached).MoveTo(new Vector2(0, 0), 2.0f, EasingFunctions.SineEaseIn);
+            MoveMap(camera);
+            _logo.CreateTweenGroup(OnLogoMoved).MoveTo(new Vector2(_runtimeData.Scene.Width / 2, _runtimeData.Scene.Height / 2), 3.0f, EasingFunctions.SineEaseIn);
         }
 
-        void OnBackgroundReached()
+        void MoveMap(Camera2D camera)
         {
-            _logo.CreateTweenGroup(OnLogoMoved).MoveTo(new Vector2(_runtimeData.Scene.Width / 2, _runtimeData.Scene.Height / 2), 3.0f, EasingFunctions.SineEaseOut);
+            float delay = 0;
+            float x = 0;
+            float y = 0;
+            switch (_mapState)
+            {
+                case 0:
+                    x = _map.WidthInPixels - _runtimeData.Scene.Width;
+                    y = _map.HeightInPixels - _runtimeData.Scene.Height;
+                    delay = 12.0f;
+                    _mapState++;
+                    break;
+                case 1:
+                    x = 0;
+                    y = _map.HeightInPixels - _runtimeData.Scene.Height;
+                    delay = 10.0f;
+                    _mapState++;
+                    break;
+                case 2:
+                    x = _map.WidthInPixels - _runtimeData.Scene.Width;
+                    y = 0;
+                    delay = 12.0f;
+                    _mapState++;
+                    break;
+                case 3:
+                    x = 0;
+                    y = 0;
+                    delay = 10.0f;
+                    _mapState = 0;
+                    break;
+            }
+            _cameraAnimation = camera.CreateTweenGroup(() => MoveMap(camera)).MoveTo(new Vector2(x, y), delay, EasingFunctions.SineEaseInOut);
         }
 
         void OnLogoMoved()
         {
-            _logo.CreateTweenGroup(OnLogoFaded).ScaleTo(new Vector2(4, 4), 2.0f, EasingFunctions.SineEaseIn).FadeTo(0, 2.0f, EasingFunctions.SineEaseIn);
-        }
-
-        void OnLogoFaded()
-        {
-            _runtimeData.OrthoCite.ChangeGameContext(GameContext.MENU);
+            
         }
 
         public void Draw(SpriteBatch spriteBatch, Matrix frozenMatrix, Matrix cameraMatrix)
         {
-            spriteBatch.Begin(transformMatrix: frozenMatrix);
+            spriteBatch.Begin(transformMatrix: cameraMatrix);
+            spriteBatch.Draw(_map);
+            spriteBatch.End();
 
-            spriteBatch.Draw(_background);
+            spriteBatch.Begin(transformMatrix: frozenMatrix);
+            spriteBatch.Draw(_overlayTexture, new Rectangle(0, 0, _runtimeData.Scene.Width, _runtimeData.Scene.Height), Color.White);
+
             spriteBatch.Draw(_logo);
 
+            spriteBatch.DrawString(_font, "Appuyez sur la touche espace...", new Vector2(480, 600), Color.White);
             spriteBatch.End();
         }
-
-
 
         public void Execute(params string[] param)
         {

@@ -19,7 +19,6 @@ namespace OrthoCite
     public enum GameContext
     {
         INTRO,
-        MENU,
         LOST_SCREEN,
         MAP,
         MINIGAME_PLATFORMER,
@@ -34,7 +33,7 @@ namespace OrthoCite
     public class OrthoCite : Game
     {
 
-        const GameContext STARTING_ENTITY = GameContext.MAP;
+        const GameContext STARTING_ENTITY = GameContext.INTRO;
 
         BoxingViewportAdapter _viewportAdapter;
         Camera2D _camera;
@@ -200,10 +199,6 @@ namespace OrthoCite
                     Console.WriteLine("introduction");
                     _entities.Add(new Introduction(_runtimeData));
                     break;
-                case GameContext.MENU:
-                    Console.WriteLine("menu");
-                    _entities.Add(new Mainmenu(_runtimeData));
-                    break;
                 case GameContext.LOST_SCREEN:
                     Console.WriteLine("lost screen");
                     _entities.Add(new LostScreen(_runtimeData));
@@ -230,7 +225,7 @@ namespace OrthoCite
                     break;
             }
 
-            if (_gameContext != GameContext.MENU && _gameContext != GameContext.INTRO)
+            if (_gameContext != GameContext.INTRO)
             {
                 _entities.Add(_runtimeData.DialogBox);
                 _entities.Add(new Lives(_runtimeData));

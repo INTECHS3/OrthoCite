@@ -76,8 +76,6 @@
     <Compile Include="Helpers\Player.cs" />
     <Compile Include="Helpers\PNJ.cs" />
     <Compile Include="IEntity.cs" />
-    <Compile Include="Entities\Menu\Element.cs" />
-    <Compile Include="Entities\Menu\MainMenu.cs" />
     <Compile Include="OrthoCite.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -122,10 +120,6 @@
     </Content>
     <Content Include="Content\dictionaries\platformer.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\binds.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
     </Content>
     <Content Include="Content\dictionaries\Rearranger.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
