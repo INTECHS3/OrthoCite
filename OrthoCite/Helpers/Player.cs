@@ -335,6 +335,7 @@ namespace OrthoCite.Helpers
                 if(_runtimeData.Map != null) _runtimeData.Map.checkIfWeLaunchInstance(i);
                 if (_runtimeData.DoorGame != null && _runtimeData.DoorGame.CheckColUp(i)) return true;
                 if (_runtimeData.Rearranger != null && _runtimeData.Rearranger.CheckColUp(i)) return true;
+              
 
             }
 

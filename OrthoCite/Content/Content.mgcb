@@ -1120,3 +1120,50 @@
 /processorParam:TextureFormat=Compressed
 /build:minigames/boss/percentagefont.spritefont
 
+#begin minigames/GuessGame/GuessGame.tmx
+/importer:TiledMapImporter
+/processor:TiledMapProcessor
+/build:minigames/GuessGame/GuessGame.tmx
+
+#begin minigames/GuessGame/zelda.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:minigames/GuessGame/zelda.png
+
+#begin minigames/GuessGame/font.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:minigames/GuessGame/font.spritefont
+
+#begin minigames/GuessGame/Sans titre-1 (1).png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:minigames/GuessGame/Sans titre-1 (1).png
+
+#begin minigames/GuessGame/success.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:minigames/GuessGame/success.ogg
+
+#begin minigames/GuessGame/hurt.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:minigames/GuessGame/hurt.ogg
+

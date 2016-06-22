@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<dictionary>
+  <district id="0"> <!-- 5 rounds, 5 words per round -->
+    <!-- class -->
+    <sentence>
+      <valid>je prends</valid>
+    </sentence>
+    <sentence>
+      <valid>il prenait</valid>
+    </sentence>
+    <sentence>
+      <valid>tu voudras</valid>
+    </sentence>
+    <sentence>
+      <valid>nous comprenons</valid>
+    </sentence>
+    <sentence>
+      <valid>vous entendez</valid>
+    </sentence>
+    <sentence>
+      <valid>ils mentent</valid>
+    </sentence>
+    <sentence>
+      <valid>tu bois</valid>
+    </sentence>
+    <sentence>
+      <valid>je serre</valid>
+    </sentence>
+    <sentence>
+      <valid>tu vivras</valid>
+    </sentence>
+    <sentence>
+      <valid>il s'endort</valid>
+    </sentence>
+    <sentence>
+      <valid>nous tondions</valid>
+    </sentence>
+    <sentence>
+      <valid>vous mangiez</valid>
+    </sentence>
+    <sentence>
+      <valid>ils reniflaient</valid>
+    </sentence>
+    <sentence>
+      <invalid>il comptais</invalid>
+    </sentence>
+    <sentence>
+      <invalid>je comprend</invalid>
+    </sentence>
+    <sentence>
+      <invalid>nous nageont</invalid>
+    </sentence>
+    <sentence>
+      <invalid>tu casse</invalid>
+    </sentence>
+    <sentence>
+      <valid>ils émigrent</valid>
+    </sentence>
+    <sentence>
+      <invalid>je m'amuses</invalid>
+    </sentence>
+    <sentence>
+      <invalid>nous riont</invalid>
+    </sentence>
+    <sentence>
+      <invalid>je tricotait</invalid>
+    </sentence>
+    <sentence>
+      <invalid>ils glissait</invalid>
+    </sentence>
+    <sentence>
+      <invalid>tu construira</invalid>
+    </sentence>
+    <sentence>
+      <invalid>ils torde</invalid>
+    </sentence>
+    <sentence>
+      <invalid>vous perdé</invalid>
+    </sentence>
+    <sentence>
+      <invalid>vous sourié</invalid>
+    </sentence>
+    <sentence>
+      <invalid>ils sente</invalid>
+    </sentence>
+    <sentence>
+      <invalid>il ranges</invalid>
+    </sentence>
+    <sentence>
+      <valid>tu abandonnes</valid>
+    </sentence>
+    <sentence>
+      <valid>je m'abaisse</valid>
+    </sentence>
+    <sentence>
+      <valid>il bâille</valid>
+    </sentence>
+    <sentence>
+      <valid>nous bouchons</valid>
+    </sentence>
+    <sentence>
+      <valid>vous coloriez</valid>
+    </sentence>
+    <sentence>
+      <valid>tu crées</valid>
+    </sentence>
+    <sentence>
+      <invalid>il dégénèrent</invalid>
+    </sentence>
+    <sentence>
+      <valid>il a fondu</valid>
+    </sentence>
+    <sentence>
+      <valid>nous travaillions</valid>
+    </sentence>
+    <sentence>
+      <valid>tu foudroieras</valid>
+    </sentence>
+    <sentence>
+      <valid>ils grandissent</valid>
+    </sentence>
+    <sentence>
+      <valid>j'illumine</valid>
+    </sentence>
+    <sentence>
+      <valid>tu fabriques</valid>
+    </sentence>
+
+    
+  </district>
+    <district id="1">
+    <sentence>
+      <valid></valid>
+    </sentence>
+  </district>
+
+  <district id="2">
+    <sentence>
+      <valid></valid>
+    </sentence>
+  </district>
+
+  <district id="3">
+    <sentence>
+    </sentence>
+  </district>
+</dictionary>

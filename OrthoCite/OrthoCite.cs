@@ -24,7 +24,8 @@ namespace OrthoCite
         MINIGAME_PLATFORMER,
         MINIGAME_BOSS,
         MINIGAME_DOORGAME,
-        MINIGAME_REARRANGER
+        MINIGAME_REARRANGER,
+        MINIGAME_GUESSGAME
     }
 
     /// <summary>
@@ -33,7 +34,7 @@ namespace OrthoCite
     public class OrthoCite : Game
     {
 
-        const GameContext STARTING_ENTITY = GameContext.MAP;
+        const GameContext STARTING_ENTITY = GameContext.MINIGAME_GUESSGAME;
 
         BoxingViewportAdapter _viewportAdapter;
         Camera2D _camera;
@@ -219,6 +220,10 @@ namespace OrthoCite
                 case GameContext.MINIGAME_REARRANGER:
                     Console.WriteLine("Rearranger");
                     _entities.Add(new Rearranger(_runtimeData));
+                    break;
+                case GameContext.MINIGAME_GUESSGAME:
+                    Console.WriteLine("GuessGame");
+                    _entities.Add(new GuessGame(_runtimeData));
                     break;
             }
 
