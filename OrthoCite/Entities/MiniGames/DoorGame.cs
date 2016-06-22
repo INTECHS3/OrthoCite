@@ -496,6 +496,7 @@ namespace OrthoCite.Entities.MiniGames
 
             foreach (XmlNode sentence in district.SelectNodes("sentence"))
             {
+                
                 WordCollection collection = new WordCollection(sentence.SelectSingleNode("valid").InnerText);
                 foreach (XmlNode invalid in sentence.SelectNodes("invalid"))
                 {

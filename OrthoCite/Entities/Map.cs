@@ -14,13 +14,6 @@ using Microsoft.Xna.Framework.Media;
 
 namespace OrthoCite.Entities
 {
-    public enum ListPnj
-    {
-        QUARTIER_1,
-        QUARTIER_2,
-        QUARTIER_3,
-        QUARTIER_4
-    }
 
     public class Map : IEntity
     {
@@ -206,8 +199,11 @@ namespace OrthoCite.Entities
 
             _runtimeData.PNJ[ListPnj.QUARTIER_1]._positionSec = new Vector2(126,64);
 
-            //_runtimeData.PNJ[ListPnj.QUARTIER_1]._talk.Add("Bienvenue sur Orhtocité");
-            //_runtimeData.PNJ[ListPnj.QUARTIER_1]._talk.Add("Tu es notre sauveur ! ! !");
+            _runtimeData.PNJ[ListPnj.QUARTIER_1]._curentTalker = TypeTalkerPNJ.Talk;
+
+            Dictionary<string, Dictionary<string, bool>> talkAnswer = new Dictionary<string, Dictionary<string, bool>>();
+            talkAnswer.Add("Bienvenu sur OrthoCité", new Dictionary<string, bool>());
+            _runtimeData.PNJ[ListPnj.QUARTIER_1]._talkAndAnswer = talkAnswer;
          
             foreach(KeyValuePair<ListPnj, PNJ> i in _runtimeData.PNJ)
             {

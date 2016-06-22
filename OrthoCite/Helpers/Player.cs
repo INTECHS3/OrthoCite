@@ -23,7 +23,11 @@ namespace OrthoCite.Helpers
         LEFT,
         RIGHT,
         UP,
-        DOWN
+        DOWN,
+        ATTACK_TOP,
+        ATTACK_LEFT,
+        ATTACK_DOWN,
+        ATTACK_RIGHT
     }
 
     public enum TypePlayer
@@ -40,6 +44,15 @@ namespace OrthoCite.Helpers
 
     public class Player
     {
+
+        public delegate void AttackEvent(Player player);
+        public event AttackEvent playerAttack;
+        public void AttackEventNow()
+        {
+            if (playerAttack != null)
+                playerAttack(this);
+        }
+
         RuntimeData _runtimeData;
 
         public string[] tabsXml;
@@ -116,10 +129,20 @@ namespace OrthoCite.Helpers
                 HeroWalkingFactory.Add(Direction.LEFT.ToString(), spriteFactory[Direction.LEFT]);
                 HeroWalkingFactory.Add(Direction.RIGHT.ToString(), spriteFactory[Direction.RIGHT]);
                 HeroWalkingFactory.Add(Direction.UP.ToString(), spriteFactory[Direction.UP]);
+                try
+                {
+                    HeroWalkingFactory.Add(Direction.ATTACK_TOP.ToString(), spriteFactory[Direction.ATTACK_TOP]);
+                    HeroWalkingFactory.Add(Direction.ATTACK_DOWN.ToString(), spriteFactory[Direction.ATTACK_DOWN]);
+                    HeroWalkingFactory.Add(Direction.ATTACK_LEFT.ToString(), spriteFactory[Direction.ATTACK_LEFT]);
+                    HeroWalkingFactory.Add(Direction.ATTACK_RIGHT.ToString(), spriteFactory[Direction.ATTACK_RIGHT]);
+                }
+                catch { Console.WriteLine("No Attack"); }
+               
 
                 heroAnimations = new SpriteSheetAnimator(HeroWalkingFactory);
                 heroSprite = heroAnimations.CreateSprite(positionVirt);
 
+                playerAttack += goAttack;
                 
             }
             else if (typePlayer == TypePlayer.WithTexture2D)
@@ -146,12 +169,12 @@ namespace OrthoCite.Helpers
             //Keys key2 = (Keys)converter.ConvertFromString(keyValueTemp[1]);
         }
 
-
+       
         public void Draw(SpriteBatch spriteBatch)
         {
             if(typePlayer == TypePlayer.WithSpriteSheet)
             {
-                if (lastDir == Direction.LEFT) heroSprite.Effect = SpriteEffects.FlipHorizontally;
+                if (lastDir == Direction.LEFT || lastDir == Direction.ATTACK_LEFT) heroSprite.Effect = SpriteEffects.FlipHorizontally;
                 else heroSprite.Effect = SpriteEffects.None;
 
                 spriteBatch.Draw(heroSprite);
@@ -196,6 +219,15 @@ namespace OrthoCite.Helpers
 
             return tabXml;
         }
+
+        private void goAttack(Player player)
+        {
+            if (player.lastDir == Direction.LEFT) player.heroAnimations.Play(Direction.ATTACK_LEFT.ToString());
+            else if (player.lastDir == Direction.RIGHT) player.heroAnimations.Play(Direction.ATTACK_RIGHT.ToString());
+            else if (player.lastDir == Direction.UP) player.heroAnimations.Play(Direction.ATTACK_TOP.ToString());
+            else if (player.lastDir == Direction.DOWN) player.heroAnimations.Play(Direction.ATTACK_DOWN.ToString());
+        }
+
 
         public void checkMove(KeyboardState keyboardState)
         {
@@ -330,11 +362,12 @@ namespace OrthoCite.Helpers
                 if(_runtimeData.Map != null) _runtimeData.Map.checkIfWeLaunchInstance(i);
                 if (_runtimeData.DoorGame != null && _runtimeData.DoorGame.CheckColUp(i)) return true;
                 if (_runtimeData.Rearranger != null && _runtimeData.Rearranger.CheckColUp(i)) return true;
+                if (_runtimeData.ThrowGame != null) _runtimeData.ThrowGame.CheckBadTile(i);
 
             }
 
 
-            foreach(KeyValuePair<Entities.ListPnj,PNJ> i in _runtimeData.PNJ)
+            foreach(KeyValuePair<ListPnj,PNJ> i in _runtimeData.PNJ)
             {
                 if (positionVirt.X == i.Value.PNJPlayer.positionVirt.X && positionVirt.Y - 1 == i.Value.PNJPlayer.positionVirt.Y) return true;
             }
@@ -350,8 +383,9 @@ namespace OrthoCite.Helpers
             {
                 if (i.X == positionVirt.X && i.Y == positionVirt.Y + 1 && i.Id == gidCol) return true;
                 if (_runtimeData.Player != null && _runtimeData.Player != this && _runtimeData.Player.positionVirt.X == positionVirt.X && _runtimeData.Player.positionVirt.Y == positionVirt.Y + 1) return true;
+                if (_runtimeData.ThrowGame != null) _runtimeData.ThrowGame.CheckBadTile(i);
             }
-            foreach (KeyValuePair<Entities.ListPnj, PNJ> i in _runtimeData.PNJ)
+            foreach (KeyValuePair<ListPnj, PNJ> i in _runtimeData.PNJ)
             {
                 if (positionVirt.X == i.Value.PNJPlayer.positionVirt.X && positionVirt.Y + 1 == i.Value.PNJPlayer.positionVirt.Y) return true;
             }
@@ -366,9 +400,10 @@ namespace OrthoCite.Helpers
             {
                 if (i.X == positionVirt.X - 1 && i.Y == positionVirt.Y && i.Id == gidCol) return true;
                 if (_runtimeData.Player != null && _runtimeData.Player != this && _runtimeData.Player.positionVirt.X == positionVirt.X - 1 && _runtimeData.Player.positionVirt.Y == positionVirt.Y) return true;
+                if (_runtimeData.ThrowGame != null) _runtimeData.ThrowGame.CheckBadTile(i);
                 if (_runtimeData.DoorGame != null && _runtimeData.DoorGame.CheckColLeft(i)) return true;
             }
-            foreach (KeyValuePair<Entities.ListPnj, PNJ> i in _runtimeData.PNJ)
+            foreach (KeyValuePair<ListPnj, PNJ> i in _runtimeData.PNJ)
             {
                 if (positionVirt.X - 1 == i.Value.PNJPlayer.positionVirt.X && _runtimeData.Player.positionVirt.Y == i.Value.PNJPlayer.positionVirt.Y) return true;
             }
@@ -382,11 +417,11 @@ namespace OrthoCite.Helpers
             {
                 if (i.X == positionVirt.X + 1 && i.Y == positionVirt.Y && i.Id == gidCol) return true;
                 if (_runtimeData.Player != null && _runtimeData.Player != this && _runtimeData.Player.positionVirt.X == positionVirt.X + 1 && _runtimeData.Player.positionVirt.Y == positionVirt.Y) return true;
-
+                if (_runtimeData.ThrowGame != null) _runtimeData.ThrowGame.CheckBadTile(i);
                 if (_runtimeData.DoorGame != null && _runtimeData.DoorGame.CheckColRight(i)) return true;
 
             }
-            foreach (KeyValuePair<Entities.ListPnj, PNJ> i in _runtimeData.PNJ)
+            foreach (KeyValuePair<ListPnj, PNJ> i in _runtimeData.PNJ)
             {
                 if (positionVirt.X + 1 == i.Value.PNJPlayer.positionVirt.X && _runtimeData.Player.positionVirt.Y == i.Value.PNJPlayer.positionVirt.Y) return true;
             }

@@ -19,7 +19,7 @@ namespace OrthoCite.Entities
 
         Sprite _background;
         Sprite _logo;
-
+     
         Song _song;
 
         bool _animationStarted;
