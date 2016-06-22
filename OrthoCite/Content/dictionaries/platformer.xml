@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <dictionary>
-  <district id="0"> <!-- 5 rounds, 5 words per round -->
+  <district id="1"> <!-- 5 rounds, 5 words per round -->
     <sentence>
       <valid>armoire</valid>
       <invalid>armoir</invalid>
@@ -101,7 +101,7 @@
     </sentence>
   </district>
 
-  <district id="1">
+  <district id="2">
     <sentence>
       <valid>angle</valid>
       <invalid>engle</invalid>
@@ -188,7 +188,7 @@
     </sentence>
   </district>
 
-  <district id="2">
+  <district id="3">
     <sentence>
       <valid>grincer</valid>
       <invalid>grinser</invalid>
@@ -279,7 +279,7 @@
     </sentence>
   </district>
 
-  <district id="3">
+  <district id="4">
     <sentence>
       <valid>orthographe</valid>
       <invalid>ortographe</invalid>
