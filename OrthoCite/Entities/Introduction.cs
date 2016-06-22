@@ -29,6 +29,7 @@ namespace OrthoCite.Entities
 
         bool _animationStarted;
         uint _mapState = 0;
+        TweenAnimation<Sprite> _logoAnimation;
         TweenAnimation<Camera2D> _cameraAnimation;
         int _fontOpacity = 0;
         bool _fadingIn = true;
@@ -85,15 +86,17 @@ namespace OrthoCite.Entities
             if (keyboardState.IsKeyDown(Keys.Space))
             {
                 MediaPlayer.Stop();
+                if (_logoAnimation != null) _logoAnimation.Stop();
+                if (_cameraAnimation != null) _cameraAnimation.Stop();
+                
                 _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
-                _cameraAnimation.Stop();
             }
         }
 
         public void StartAnimation(Camera2D camera)
         {
             _animationStarted = true;
-            _logo.CreateTweenGroup(() => OnLogoMoved(camera)).MoveTo(new Vector2(_runtimeData.Scene.Width / 2, _runtimeData.Scene.Height / 2 - 50), 3.0f, EasingFunctions.SineEaseOut);
+            _logoAnimation = _logo.CreateTweenGroup(() => OnLogoMoved(camera)).MoveTo(new Vector2(_runtimeData.Scene.Width / 2, _runtimeData.Scene.Height / 2 - 50), 3.0f, EasingFunctions.SineEaseOut);
         }
 
         void MoveMap(Camera2D camera)
