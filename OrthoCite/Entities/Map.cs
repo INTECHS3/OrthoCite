@@ -225,7 +225,7 @@ namespace OrthoCite.Entities
 
             _runtimeData.PNJ[ListPnj.QUARTIER_1_1]._positionSec = new Vector2(126,64);
 
-            _runtimeData.PNJ[ListPnj.QUARTIER_1_1]._curentTalker = TypeTalkerPNJ.Talk;
+            _runtimeData.PNJ[ListPnj.QUARTIER_1_1]._curentTalker = TypeTalkerPNJ.AnswerTalk;
             
             _runtimeData.PNJ[ListPnj.QUARTIER_1_1]._talkAndAnswer.Add("Bienvenu sur OrthoCité", new Dictionary<string, bool>());
 

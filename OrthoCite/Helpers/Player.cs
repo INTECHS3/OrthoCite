@@ -200,26 +200,27 @@ namespace OrthoCite.Helpers
 
                     if (keyboardState.IsKeyDown(Keys.Down))
                     {
-                        if (!ColDown()) { actualDir = Helpers.Direction.DOWN; heroAnimations.Play(Helpers.Direction.DOWN.ToString()); }
+                        if (!ColDown()) { actualDir = Helpers.Direction.DOWN; }
                             lastDir = Helpers.Direction.DOWN;
                     }
                     else if (keyboardState.IsKeyDown(Keys.Up))
                     {
-                        if (!ColUp()) { actualDir = Helpers.Direction.UP; heroAnimations.Play(Helpers.Direction.UP.ToString()); }
+                        if (!ColUp()) { actualDir = Helpers.Direction.UP; }
                         lastDir = Helpers.Direction.UP;
                     }
                     else if (keyboardState.IsKeyDown(Keys.Left))
                     {
-                        if (!ColLeft()) { actualDir = Helpers.Direction.LEFT; heroAnimations.Play(Helpers.Direction.LEFT.ToString()); }
+                        if (!ColLeft()) { actualDir = Helpers.Direction.LEFT; }
                             lastDir = Helpers.Direction.LEFT;
                     }
                     else if (keyboardState.IsKeyDown(Keys.Right))
                     {
-                        if (!ColRight()) { actualDir = Helpers.Direction.RIGHT; heroAnimations.Play(Helpers.Direction.RIGHT.ToString()); } 
+                        if (!ColRight()) { actualDir = Helpers.Direction.RIGHT; } 
                         lastDir = Helpers.Direction.RIGHT;
                     }
+                    heroAnimations.Play(lastDir.ToString());
 
-                    separeFrame++;
+                   separeFrame++;
                 }
 
             }
