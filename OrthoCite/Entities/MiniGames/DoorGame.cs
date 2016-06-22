@@ -94,6 +94,13 @@ namespace OrthoCite.Entities.MiniGames
             _player.lowFrame = _lowSpeedPlayer;
             _player.fastFrame = _fastSpeedPlayer;
             _player.typeDeplacement = TypeDeplacement.WithKey;
+
+            _player.spriteFactory.Add(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 0 }));
+            _player.spriteFactory.Add(Helpers.Direction.DOWN, new SpriteSheetAnimationData(new[] { 5, 10 }, isLooping: false));
+            _player.spriteFactory.Add(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 32, 26, 37, 26 }, isLooping: false));
+            _player.spriteFactory.Add(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 32, 26, 37, 26 }, isLooping: false));
+            _player.spriteFactory.Add(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 19, 13, 24, 13 }, isLooping: false));
+
             _random = new Random();
             _runtimeData.DoorGame = this;
             _wordCollections = new List<WordCollection>();
@@ -133,18 +140,12 @@ namespace OrthoCite.Entities.MiniGames
             _runtimeData.gidLast = 0;
 
             _player.gidCol = 633;
-            _player.spriteFactory.Add(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 0 }));
-            _player.spriteFactory.Add(Helpers.Direction.DOWN, new SpriteSheetAnimationData(new[] { 5,10 }, isLooping: false));
-            _player.spriteFactory.Add(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 32, 26, 37, 26 }, isLooping: false));
-            _player.spriteFactory.Add(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 32, 26, 37, 26 }, isLooping: false));
-            _player.spriteFactory.Add(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 19, 13, 24, 13 }, isLooping: false));
 
             _player.LoadContent(content);
             LoadWords();
 
             WordCollection words = _wordCollections[_random.Next(0, _wordCollections.Count)];
             _wordCollections.Remove(words);
-            Start();
             instanceWorld();
             
         }
