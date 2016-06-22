@@ -107,7 +107,8 @@ namespace OrthoCite.Entities.MiniGames
             _letters = new Dictionary<int, int>();
             _table = new Dictionary<int, int>();
             _timer = new TimeSpan(0);
-            
+
+         
             
             
         }
@@ -189,6 +190,18 @@ namespace OrthoCite.Entities.MiniGames
                 for (int a = 140; a < 149; a++)
                 {
                     _r[a] = 832;
+                }
+                foreach (TiledTile a in _player.collisionLayer.Tiles)
+                {
+                    if (a.Id == _gidSpawn) _player.positionVirt = new Vector2(a.X, a.Y);
+                }
+                _runtimeData.DialogBox.AddDialog("Le temps est écoulé ! le mot était " + _word, 2);
+                _runtimeData.LooseLive();
+
+                if(_runtimeData.Lives == 0)
+                {
+                    _runtimeData.DialogBox.AddDialog("tu as perdu !", 2);
+                    _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
                 }
                 instanceWorld();
             }

@@ -1108,6 +1108,13 @@
 /processorParam:TextureFormat=Compressed
 /build:minigames/boss/percentagefont.spritefont
 
+
+#begin minigames/GuessGame/GuessGame.tmx
+/importer:TiledMapImporter
+/processor:TiledMapProcessor
+/build:minigames/GuessGame/GuessGame.tmx
+
+
 #begin minigames/throwgame/black_tile.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1135,7 +1142,14 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:minigames/throwgame/zelda.png
+/build:minigames/GuessGame/zelda.png
+
+#begin minigames/GuessGame/font.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:minigames/GuessGame/font.spritefont
+
 
 #begin animations/Walking_V2.png
 /importer:TextureImporter
@@ -1160,6 +1174,20 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:minigames/throwgame/ATTACK_DOWN.png
+
+
+#begin minigames/GuessGame/success.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:minigames/GuessGame/success.ogg
+
+#begin minigames/GuessGame/hurt.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:minigames/GuessGame/hurt.ogg
+
 
 #begin minigames/throwgame/ATTACK_LEFT.png
 /importer:TextureImporter
@@ -1214,3 +1242,4 @@
 /processor:FontDescriptionProcessor
 /processorParam:TextureFormat=Compressed
 /build:intro/font.spritefont
+

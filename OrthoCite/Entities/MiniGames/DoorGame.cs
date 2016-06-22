@@ -146,7 +146,7 @@ namespace OrthoCite.Entities.MiniGames
             _wordCollections.Remove(words);
             Start();
             instanceWorld();
-
+            
         }
 
         public override void UnloadContent()

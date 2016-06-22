@@ -25,6 +25,7 @@ namespace OrthoCite
         MINIGAME_BOSS,
         MINIGAME_DOORGAME,
         MINIGAME_REARRANGER,
+        MINIGAME_GUESSGAME,
         MINIGAME_THROWGAME
     }
 
@@ -36,6 +37,7 @@ namespace OrthoCite
 
 
         const GameContext STARTING_ENTITY = GameContext.MAP;
+
 
 
         BoxingViewportAdapter _viewportAdapter;
@@ -242,6 +244,10 @@ namespace OrthoCite
                 case GameContext.MINIGAME_THROWGAME:
                     Console.WriteLine("ThrowGame");
                     _entities.Add(new ThrowGame(_runtimeData));
+                    break;
+                case GameContext.MINIGAME_GUESSGAME:
+                    Console.WriteLine("GuessGame");
+                    _entities.Add(new GuessGame(_runtimeData));
                     break;
             }
 

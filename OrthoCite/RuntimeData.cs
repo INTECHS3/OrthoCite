@@ -84,7 +84,10 @@ namespace OrthoCite
 
         public Rearranger Rearranger { get; set; }
 
+        public GuessGame GuessGame { get; set; }
+
         public ThrowGame ThrowGame { get; set; }
+
 
         public int Lives => _dataSave.NumberOfLives;
         public int Credits => _dataSave.NumberOfCredits;

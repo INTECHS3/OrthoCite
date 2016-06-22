@@ -19,6 +19,7 @@ namespace OrthoCite.Entities.MiniGames
 {
     class BossGame : MiniGame
     {
+        const int DISTRICT = 4;
         const int LATERAL_SPEED = 5;
         const int FIREBALL_INTERVAL = 200;
 
@@ -196,16 +197,13 @@ namespace OrthoCite.Entities.MiniGames
             {
                 _gameState = GameState.WON;
                 _runtimeData.DialogBox.AddDialog("Gagné !", 2).Show();
-                if (_runtimeData.DataSave.District == 4)
+                if (_runtimeData.DataSave.District == DISTRICT)
                 {
                     _runtimeData.DataSave.ValidateMiniGame(DataSaveMiniGame.BOSS);
                     _runtimeData.DataSave.Save();
                 }
                 _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
             }
-
-            if (_gameState == GameState.LOST) _runtimeData.OrthoCite.ChangeGameContext(GameContext.LOST_SCREEN);
-            else if (_gameState == GameState.WON) if (_gameState == GameState.LOST) _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
         }
 
         private void EventInput_CharEntered(object sender, CharacterEventArgs e)

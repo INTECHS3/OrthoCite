@@ -317,6 +317,7 @@ namespace OrthoCite.Helpers
                 if (_runtimeData.Rearranger != null && _runtimeData.Rearranger.CheckColUp(i)) return true;
                 if (_runtimeData.ThrowGame != null) _runtimeData.ThrowGame.CheckBadTile(i);
 
+
             }
 
 

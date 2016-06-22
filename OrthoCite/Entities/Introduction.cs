@@ -30,6 +30,8 @@ namespace OrthoCite.Entities
         bool _animationStarted;
         uint _mapState = 0;
         TweenAnimation<Camera2D> _cameraAnimation;
+        int _fontOpacity = 0;
+        bool _fadingIn = true;
 
         public Introduction(RuntimeData runtimeData)
         {
@@ -70,8 +72,15 @@ namespace OrthoCite.Entities
             {
                 camera.Zoom = 2f;
                 StartAnimation(camera);
+                MediaPlayer.IsRepeating = true;
                 MediaPlayer.Play(_song);
             }
+
+            if (_fontOpacity == 0) _fadingIn = true;
+            else if (_fontOpacity == 100) _fadingIn = false;
+
+            if (_fadingIn) _fontOpacity += 1;
+            else _fontOpacity -= 1;
 
             if (keyboardState.IsKeyDown(Keys.Space))
             {
@@ -84,8 +93,7 @@ namespace OrthoCite.Entities
         public void StartAnimation(Camera2D camera)
         {
             _animationStarted = true;
-            MoveMap(camera);
-            _logo.CreateTweenGroup(OnLogoMoved).MoveTo(new Vector2(_runtimeData.Scene.Width / 2, _runtimeData.Scene.Height / 2), 3.0f, EasingFunctions.SineEaseIn);
+            _logo.CreateTweenGroup(() => OnLogoMoved(camera)).MoveTo(new Vector2(_runtimeData.Scene.Width / 2, _runtimeData.Scene.Height / 2 - 50), 3.0f, EasingFunctions.SineEaseOut);
         }
 
         void MoveMap(Camera2D camera)
@@ -123,9 +131,9 @@ namespace OrthoCite.Entities
             _cameraAnimation = camera.CreateTweenGroup(() => MoveMap(camera)).MoveTo(new Vector2(x, y), delay, EasingFunctions.SineEaseInOut);
         }
 
-        void OnLogoMoved()
+        void OnLogoMoved(Camera2D camera)
         {
-            
+            MoveMap(camera);
         }
 
         public void Draw(SpriteBatch spriteBatch, Matrix frozenMatrix, Matrix cameraMatrix)
@@ -139,7 +147,7 @@ namespace OrthoCite.Entities
 
             spriteBatch.Draw(_logo);
 
-            spriteBatch.DrawString(_font, "Appuyez sur la touche espace...", new Vector2(480, 600), Color.White);
+            spriteBatch.DrawString(_font, "Appuyez sur la touche espace...", new Vector2(480, 550), Color.White * ((float)_fontOpacity / 100));
             spriteBatch.End();
         }
 
