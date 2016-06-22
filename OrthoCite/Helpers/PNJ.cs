@@ -20,8 +20,14 @@ namespace OrthoCite.Helpers
 {
     public enum ListPnj
     {
-        QUARTIER_1,
-        QUARTIER_2,
+        QUARTIER_1_1,
+        QUARTIER_1_2,
+        QUARTIER_1_3,
+        QUARTIER_1_4,
+        QUARTIER_2_1,
+        QUARTIER_2_2,
+        QUARTIER_2_3,
+        QUARTIER_2_4,
         QUARTIER_3,
         QUARTIER_4,
         THROWGAME
@@ -84,6 +90,8 @@ namespace OrthoCite.Helpers
 
 
         TimeSpan _saveTime;
+
+        public Direction lookDir { get; set; }
         
 
         //TALKABLE, TEXT, NEDD LESS PARAMS CONTRUCTOR
@@ -123,17 +131,17 @@ namespace OrthoCite.Helpers
         {
 
             if (_runtimeData.AnswerBox.isVisible) return;
-
-            _pnj.heroSprite.Scale = new Vector2(0.7f);
+            
             if(keyboardState.IsKeyDown(Keys.E) && _runtimeData.Player != null) collisionWithPlayer(gameTime);
 
-           
+
+
             if (_type != TypePNJ.Static)
             {
                 iaMovePnj(gameTime);
                 _pnj.checkMove(keyboardState);
             }
-            
+            else _pnj.heroAnimations.Play(lookDir.ToString());
             
             _pnj.heroAnimations.Update(deltaSeconds);
             _pnj.heroSprite.Position = new Vector2(_pnj.position.X + _pnj.tileWidth / 2, _pnj.position.Y + _pnj.tileHeight / 2);
@@ -223,6 +231,7 @@ namespace OrthoCite.Helpers
             }
             else
             {
+
                 foreach(KeyValuePair<string, Dictionary<string, bool>> i in _talkAndAnswer)
                 {
                     _runtimeData.DialogBox.AddDialog(i.Key, 2).Show();

@@ -166,7 +166,20 @@ namespace OrthoCite.Entities
             {
                 case "movePlayer":
                     try{ MoveTo(new Vector2(Int32.Parse(param[1]), Int32.Parse(param[2]))); }
-                    catch { Console.WriteLine("use : movePlayer {x] {y}"); }
+                    catch { Console.WriteLine("use : movePlayer {x} {y}"); }
+                    break;
+                case "changeDistrict":
+                    try { _runtimeData.DataSave.District = Byte.Parse(param[1]);
+                        Console.WriteLine($"District is change to : {_runtimeData.DataSave.District}" );
+                    }
+                    catch { Console.WriteLine("use : changeDistrict {nbDistrict}"); }
+                    break;
+                case "exit":
+                    try
+                    {
+                        _runtimeData.OrthoCite.Exit();
+                    }
+                    catch { Console.WriteLine("Can't Exit"); }
                     break;
                 default:
                     Console.WriteLine("Can't find method to invoke in Map Class");
@@ -179,8 +192,26 @@ namespace OrthoCite.Entities
         private void addAllPnj(ContentManager content, GraphicsDevice graphicsDevice)
         {
             _runtimeData.PNJ = new Dictionary<ListPnj, PNJ>();
-            _runtimeData.PNJ.Add(ListPnj.QUARTIER_1, new PNJ(TypePNJ.Dynamique, new Vector2(120, 59), new List<ItemList>(), _runtimeData, "map/pnj"));
-            
+            _runtimeData.PNJ.Add(ListPnj.QUARTIER_1_1, new PNJ(TypePNJ.Dynamique, new Vector2(120, 59), new List<ItemList>(), _runtimeData, "map/pnj"));
+
+            if(_runtimeData.DataSave.District != 4)
+            {
+                Vector2 tmpPostionOfPNJ = new Vector2();
+                if (_runtimeData.DataSave.District == 1) tmpPostionOfPNJ = new Vector2(75, 40);
+                else if (_runtimeData.DataSave.District == 2) tmpPostionOfPNJ = new Vector2(0, 0);
+                else if (_runtimeData.DataSave.District == 3) tmpPostionOfPNJ = new Vector2(0, 0);
+
+                _runtimeData.PNJ.Add(ListPnj.QUARTIER_1_4, new PNJ(TypePNJ.Static, tmpPostionOfPNJ, new List<ItemList>(), _runtimeData, "map/pnj"));
+                _runtimeData.PNJ[ListPnj.QUARTIER_1_4].spriteFactory(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 0 , 1, 2}, isLooping: true));
+                _runtimeData.PNJ[ListPnj.QUARTIER_1_4].spriteFactory(Helpers.Direction.DOWN, new SpriteSheetAnimationData(new[] { 0, 1, 2 }, isLooping: true));
+                _runtimeData.PNJ[ListPnj.QUARTIER_1_4].spriteFactory(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 24, 25, 26 }, isLooping: false));
+                _runtimeData.PNJ[ListPnj.QUARTIER_1_4].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 24, 25, 26 }, isLooping: false));
+                _runtimeData.PNJ[ListPnj.QUARTIER_1_4].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 36, 37, 38 }, isLooping: false));
+                _runtimeData.PNJ[ListPnj.QUARTIER_1_4]._curentTalker = TypeTalkerPNJ.Talk;
+                _runtimeData.PNJ[ListPnj.QUARTIER_1_4].lookDir = Direction.NONE;
+                _runtimeData.PNJ[ListPnj.QUARTIER_1_4]._talkAndAnswer.Add($"Désolé tu n'as pas fini les mini jeux du quartier {_runtimeData.DataSave.District}, tu ne peux pas avancer !", new Dictionary<string, bool>());
+                _runtimeData.PNJ[ListPnj.QUARTIER_1_4]._talkAndAnswer.Add($"Fini et reviens me voir après ! ", new Dictionary<string, bool>());
+            }
 
             foreach(KeyValuePair<ListPnj, PNJ> i in _runtimeData.PNJ)
             {
@@ -191,21 +222,20 @@ namespace OrthoCite.Entities
                 i.Value.PNJPlayer.gidCol = 889;
             }
 
-            _runtimeData.PNJ[ListPnj.QUARTIER_1].spriteFactory(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 0 }));
-            _runtimeData.PNJ[ListPnj.QUARTIER_1].spriteFactory(Helpers.Direction.DOWN, new SpriteSheetAnimationData(new[] { 0, 1, 2}, isLooping: false));
-            _runtimeData.PNJ[ListPnj.QUARTIER_1].spriteFactory(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 24,25 ,26 }, isLooping: false));
-            _runtimeData.PNJ[ListPnj.QUARTIER_1].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 24, 25, 26 }, isLooping: false));
-            _runtimeData.PNJ[ListPnj.QUARTIER_1].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 36, 37, 38}, isLooping: false));
+            _runtimeData.PNJ[ListPnj.QUARTIER_1_1].spriteFactory(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 0 }));
+            _runtimeData.PNJ[ListPnj.QUARTIER_1_1].spriteFactory(Helpers.Direction.DOWN, new SpriteSheetAnimationData(new[] { 0, 1, 2}, isLooping: false));
+            _runtimeData.PNJ[ListPnj.QUARTIER_1_1].spriteFactory(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 24,25 ,26 }, isLooping: false));
+            _runtimeData.PNJ[ListPnj.QUARTIER_1_1].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 24, 25, 26 }, isLooping: false));
+            _runtimeData.PNJ[ListPnj.QUARTIER_1_1].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 36, 37, 38}, isLooping: false));
 
-            _runtimeData.PNJ[ListPnj.QUARTIER_1]._positionSec = new Vector2(126,64);
+            _runtimeData.PNJ[ListPnj.QUARTIER_1_1]._positionSec = new Vector2(126,64);
 
-            _runtimeData.PNJ[ListPnj.QUARTIER_1]._curentTalker = TypeTalkerPNJ.Talk;
+            _runtimeData.PNJ[ListPnj.QUARTIER_1_1]._curentTalker = TypeTalkerPNJ.Talk;
+            
+            _runtimeData.PNJ[ListPnj.QUARTIER_1_1]._talkAndAnswer.Add("Bienvenu sur OrthoCité", new Dictionary<string, bool>());
 
-            Dictionary<string, Dictionary<string, bool>> talkAnswer = new Dictionary<string, Dictionary<string, bool>>();
-            talkAnswer.Add("Bienvenu sur OrthoCité", new Dictionary<string, bool>());
-            _runtimeData.PNJ[ListPnj.QUARTIER_1]._talkAndAnswer = talkAnswer;
-         
-            foreach(KeyValuePair<ListPnj, PNJ> i in _runtimeData.PNJ)
+
+            foreach (KeyValuePair<ListPnj, PNJ> i in _runtimeData.PNJ)
             {
                 i.Value.LoadContent(content, graphicsDevice);
                 i.Value.PNJPlayer.heroSprite.Scale = new Vector2(0.8f);
