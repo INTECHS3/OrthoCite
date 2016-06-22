@@ -56,6 +56,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="DataSave.cs" />
+    <Compile Include="Entities\Rules.cs" />
     <Compile Include="Entities\MiniGames\Boss\ThrowGame.cs" />
     <Compile Include="Entities\LostScreen.cs" />
     <Compile Include="Entities\Lives.cs" />
