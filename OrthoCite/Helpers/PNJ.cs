@@ -30,7 +30,8 @@ namespace OrthoCite.Helpers
         QUARTIER_2_4,
         QUARTIER_3,
         QUARTIER_4,
-        THROWGAME
+        THROWGAME,
+        PORTAILBLOCK
     }
 
     public enum TypePNJ
