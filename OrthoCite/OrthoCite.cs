@@ -19,7 +19,6 @@ namespace OrthoCite
     public enum GameContext
     {
         INTRO,
-        MENU,
         LOST_SCREEN,
         MAP,
         MINIGAME_PLATFORMER,
@@ -35,7 +34,9 @@ namespace OrthoCite
     public class OrthoCite : Game
     {
 
+
         const GameContext STARTING_ENTITY = GameContext.MINIGAME_THROWGAME;
+
 
         BoxingViewportAdapter _viewportAdapter;
         Camera2D _camera;
@@ -47,6 +48,7 @@ namespace OrthoCite
         const int SCENE_WIDTH = 1366;
         const int SCENE_HEIGHT = 768;
 
+        int _miniGameDistrict;
         GameContext _gameContext;
         public bool _gameContextChanged;
         GameQueue _queue;
@@ -183,10 +185,11 @@ namespace OrthoCite
             base.Draw(gameTime);
         }
 
-        public void ChangeGameContext(GameContext context)
+        public void ChangeGameContext(GameContext context, int district = 0)
         {
             _gameContext = context;
             _gameContextChanged = true;
+            _miniGameDistrict = district;
         }
 
         void PopulateEntitiesFromGameContext()
@@ -202,10 +205,6 @@ namespace OrthoCite
                     Console.WriteLine("introduction");
                     _entities.Add(new Introduction(_runtimeData));
                     break;
-                case GameContext.MENU:
-                    Console.WriteLine("menu");
-                    _entities.Add(new Mainmenu(_runtimeData));
-                    break;
                 case GameContext.LOST_SCREEN:
                     Console.WriteLine("lost screen");
                     _entities.Add(new LostScreen(_runtimeData));
@@ -216,19 +215,29 @@ namespace OrthoCite
                     break;
                 case GameContext.MINIGAME_PLATFORMER:
                     Console.WriteLine("platformer minigame");
-                    _entities.Add(new Platformer(_runtimeData));
-                    break;
-                case GameContext.MINIGAME_BOSS:
-                    Console.WriteLine("boss minigame");
-                    _entities.Add(new BossGame(_runtimeData));
+                    Platformer platformer = new Platformer(_runtimeData);
+                    platformer.SetDistrict(_miniGameDistrict);
+                    platformer.LoadContent(this.Content, this.GraphicsDevice); // content needs to be loaded before calling start
+                    platformer.Start();
+                    _entities.Add(platformer);
                     break;
                 case GameContext.MINIGAME_DOORGAME:
                     Console.WriteLine("DoorGame");
+                    DoorGame doorGame = new DoorGame(_runtimeData);
+                    doorGame.SetDistrict(_miniGameDistrict);
+                    doorGame.Start();
                     _entities.Add(new DoorGame(_runtimeData));
                     break;
                 case GameContext.MINIGAME_REARRANGER:
                     Console.WriteLine("Rearranger");
-                    _entities.Add(new Rearranger(_runtimeData));
+                    Rearranger rearranger = new Rearranger(_runtimeData);
+                    rearranger.SetDistrict(_miniGameDistrict);
+                    rearranger.Start();
+                    _entities.Add(rearranger);
+                    break;
+                case GameContext.MINIGAME_BOSS:
+                    Console.WriteLine("boss minigame");
+                    _entities.Add(new BossGame(_runtimeData));
                     break;
                 case GameContext.MINIGAME_THROWGAME:
                     Console.WriteLine("ThrowGame");
@@ -236,7 +245,7 @@ namespace OrthoCite
                     break;
             }
 
-            if (_gameContext != GameContext.MENU && _gameContext != GameContext.INTRO)
+            if (_gameContext != GameContext.INTRO)
             {
                 _entities.Add(_runtimeData.DialogBox);
                 _entities.Add(new Lives(_runtimeData));

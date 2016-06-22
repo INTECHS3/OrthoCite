@@ -260,17 +260,17 @@ namespace OrthoCite.Entities
             if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 1165)
             {
                 _runtimeData.gidLast = 1165;
-                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_PLATFORMER);
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_PLATFORMER, 1);
             }
             else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 105)
             {
                 _runtimeData.gidLast = 105;
-                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_DOORGAME);
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_DOORGAME, 1);
             }
             else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 186)
             {
                 _runtimeData.gidLast = 186;
-                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_REARRANGER);
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_REARRANGER, 1);
             }
             else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 188)
             {

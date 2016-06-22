@@ -48,6 +48,7 @@ namespace OrthoCite.Entities.MiniGames
         const int INTERVAL_OF_TOUCH_BAD_TILE = 2000;
         const int BAD_TILE = 1622;
         const int TIME_OF_THIS_GAME = 2; //IN MINUTES
+        const int DISTRICT = 3;
 
         List<Shoot> _ball;
         Dictionary<WorldCollection, Vector2> _badBoyShootActual;
@@ -164,9 +165,18 @@ namespace OrthoCite.Entities.MiniGames
         public override void Update(GameTime gameTime, KeyboardState keyboardState, Camera2D camera)
         {
             if (_runtimeData.Lives == 0) _runtimeData.OrthoCite.ChangeGameContext(GameContext.LOST_SCREEN);
-            if (_words.Count == 0) _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
-            if (CountTimeOfGame(gameTime)) _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
-            else CountTimeOfGame(gameTime);
+            if (_words.Count == 0 || CountTimeOfGame(gameTime))
+            {
+                if (_runtimeData.DataSave.District == DISTRICT)
+                {
+                    _runtimeData.DataSave.ValidateMiniGame(DataSaveMiniGame.BOSS);
+                    _runtimeData.DataSave.Save();
+                }
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
+
+            }
+
+            CountTimeOfGame(gameTime);
 
             _saveGameTime = gameTime;
             var deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;

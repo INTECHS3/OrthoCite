@@ -45,7 +45,7 @@ namespace OrthoCite.Entities.MiniGames
 
         Song _music;
 
-        int _district = 3;
+        int _district = 0;
         int _platformsPerWord = 5;
         int _rounds = 10;
 
@@ -133,8 +133,6 @@ namespace OrthoCite.Entities.MiniGames
             _hammer.IsVisible = false;
 
             _playerPosition = new Vector2((_runtimeData.Scene.Width / 2) - (_playerStraight.Width / 2), _runtimeData.Scene.Height - _playerStraight.Height);
-
-            Start();
         }
 
         public override void UnloadContent()
@@ -295,6 +293,11 @@ namespace OrthoCite.Entities.MiniGames
                     if (_currentRound == _rounds)
                     {
                         _runtimeData.DialogBox.AddDialog("Tu as gagné ce mini-jeu !", 2).Show();
+                        if (_runtimeData.DataSave.District == _district)
+                        {
+                            _runtimeData.DataSave.ValidateMiniGame(DataSaveMiniGame.PLATFORMER);
+                            _runtimeData.DataSave.Save();
+                        }
                         _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
                     }
                     else
@@ -369,22 +372,6 @@ namespace OrthoCite.Entities.MiniGames
         public void SetDistrict(int district)
         {
             _district = district;
-
-            switch(district)
-            {
-                case 0:
-                    _platformsPerWord = 5;
-                    break;
-                case 1:
-                    _platformsPerWord = 8;
-                    break;
-                case 2:
-                    _platformsPerWord = 10;
-                    break;
-                case 3:
-                    _platformsPerWord = 12;
-                    break;
-            }
         }
 
         public void LoadWords()

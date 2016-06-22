@@ -24,6 +24,14 @@ namespace OrthoCite
 #pragma warning restore CS0649
     }
 
+    public enum DataSaveMiniGame : byte
+    {
+        PLATFORMER = 1,
+        DOORGAME = 2,
+        REARRANGER = 3,
+        BOSS = 4
+    }
+
     public class DataSave
     {
         DataSaveStruct _dataSave;
@@ -63,19 +71,24 @@ namespace OrthoCite
             }
         }
 
-        public bool MiniGameIsValidated(byte miniGameId)
+        public bool MiniGameIsValidated(DataSaveMiniGame miniGameId)
         {
      
-            if (miniGameId <= 0 || miniGameId > 8) throw new ArgumentException("Mini-game ID must be between 1 and 8", nameof(miniGameId));
-            int mask = 1 << 8 - miniGameId;
+            if (miniGameId <= 0 || (byte)miniGameId > 8) throw new ArgumentException("Mini-game ID must be between 1 and 8", nameof(miniGameId));
+            int mask = 1 << 8 - (byte)miniGameId;
             return (_dataSave.ValidatedMiniGames & mask) != 0;
         }
 
-        public void ValidateMiniGame(byte miniGameId)
+        public void ValidateMiniGame(DataSaveMiniGame miniGameId)
         {
-            if (miniGameId <= 0 || miniGameId > 8) throw new ArgumentException("Mini-game ID must be between 1 and 8", nameof(miniGameId));
-            int mask = 1 << 8 - miniGameId;
+            if (miniGameId <= 0 || (byte)miniGameId > 8) throw new ArgumentException("Mini-game ID must be between 1 and 8", nameof(miniGameId));
+            int mask = 1 << 8 - (byte)miniGameId;
             _dataSave.ValidatedMiniGames |= (byte)mask;
+        }
+
+        public void ClearMiniGames()
+        {
+            _dataSave.ValidatedMiniGames = 0;
         }
 
         public bool TrapsNpcWereTalkedTo(byte NpcId)
