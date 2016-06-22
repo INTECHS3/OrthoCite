@@ -17,8 +17,6 @@ namespace OrthoCite.Entities
 
     public class Map : IEntity
     {
-        
-
         RuntimeData _runtimeData;
         public TiledMap textMap;
         TiledTileLayer _upLayer;

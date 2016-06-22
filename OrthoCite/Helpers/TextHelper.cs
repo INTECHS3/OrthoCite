@@ -37,7 +37,17 @@ namespace OrthoCite
 
             foreach (string word in words) // split in lines
             {
+                if (word == "\n")
+                {
+                    WrappedTextLine line = new WrappedTextLine { Text = currentLine, Position = new Vector2(0, currentLineY) };
+                    lines.Add(line);
+                    currentLine = "";
+                    currentWidth = 0;
+                    currentLineY += fontHeight + interline;
+                }
+
                 int wordWidth = (int)font.MeasureString(word).X;
+
                 if (currentWidth + wordWidth < maxWidth)
                 {
                     currentLine += word + ' ';

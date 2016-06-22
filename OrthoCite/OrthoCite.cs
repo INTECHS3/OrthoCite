@@ -18,7 +18,9 @@ namespace OrthoCite
 {
     public enum GameContext
     {
+        NONE,
         INTRO,
+        RULES,
         LOST_SCREEN,
         MAP,
         MINIGAME_PLATFORMER,
@@ -39,7 +41,6 @@ namespace OrthoCite
         const GameContext STARTING_ENTITY = GameContext.MAP;
 
 
-
         BoxingViewportAdapter _viewportAdapter;
         Camera2D _camera;
         RuntimeData _runtimeData;
@@ -51,6 +52,7 @@ namespace OrthoCite
         const int SCENE_HEIGHT = 768;
 
         int _miniGameDistrict;
+        GameContext _pendingRulesMiniGame;
         GameContext _gameContext;
         public bool _gameContextChanged;
         GameQueue _queue;
@@ -194,12 +196,32 @@ namespace OrthoCite
             _miniGameDistrict = district;
         }
 
+        public void RulesDone()
+        {
+            _gameContextChanged = true;
+        }
+
         void PopulateEntitiesFromGameContext()
         {
             _entities.Clear();
             writeSpacerConsole();
             IsMouseVisible = true;
             Console.Write("Context switched to ");
+
+            if (_pendingRulesMiniGame != GameContext.NONE)
+            {
+                _gameContext = _pendingRulesMiniGame;
+                _pendingRulesMiniGame = GameContext.NONE;
+            }
+            else
+            {
+                if (_gameContext != GameContext.INTRO && _gameContext != GameContext.LOST_SCREEN && _gameContext != GameContext.MAP && _gameContext != GameContext.RULES)
+                {
+                    // if minigame asked and rules not shown
+                    _pendingRulesMiniGame = _gameContext;
+                    _gameContext = GameContext.RULES;
+                }
+            }
 
             switch (_gameContext)
             {
@@ -214,6 +236,13 @@ namespace OrthoCite
                 case GameContext.MAP:
                     Console.WriteLine("map");
                     _entities.Add(new Map(_runtimeData));
+                    break;
+                case GameContext.RULES:
+                    Console.WriteLine("rules");
+                    Rules rules = new Rules(_runtimeData);
+                    rules.LoadContent(this.Content, this.GraphicsDevice);
+                    rules.SetMiniGame(_pendingRulesMiniGame);
+                    _entities.Add(rules);
                     break;
                 case GameContext.MINIGAME_PLATFORMER:
                     Console.WriteLine("platformer minigame");
