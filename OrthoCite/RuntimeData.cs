@@ -80,10 +80,13 @@ namespace OrthoCite
         
         public DoorGame DoorGame { get; set; }
 
+        public AnswerBox AnswerBox { get; set; }
 
         public Rearranger Rearranger { get; set; }
 
         public GuessGame GuessGame { get; set; }
+
+        public ThrowGame ThrowGame { get; set; }
 
 
         public int Lives => _dataSave.NumberOfLives;

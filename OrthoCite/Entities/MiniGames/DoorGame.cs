@@ -187,6 +187,11 @@ namespace OrthoCite.Entities.MiniGames
             {
                 _runtimeData.DialogBox.AddDialog("Gagné !", 2).Show();
 
+                if (_runtimeData.DataSave.District == _district)
+                {
+                    _runtimeData.DataSave.ValidateMiniGame(DataSaveMiniGame.DOORGAME);
+                    _runtimeData.DataSave.Save();
+                }
                 _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
             }
             if (keyboardState.IsKeyDown(Keys.F9)) _player.collisionLayer.IsVisible = !_player.collisionLayer.IsVisible;
@@ -236,7 +241,7 @@ namespace OrthoCite.Entities.MiniGames
             if (OutOfScreenLeft(camera) && OutOfScreenBottom(camera)) camera.LookAt(new Vector2(-_runtimeData.Scene.Width / _zoom + _runtimeData.Scene.Width / 2, textMap.HeightInPixels - (_runtimeData.Scene.Height / _zoom) * 2 + _runtimeData.Scene.Height / 2));
             if (OutOfScreenLeft(camera) && OutOfScreenTop(camera)) camera.LookAt(new Vector2(-_runtimeData.Scene.Width / _zoom + _runtimeData.Scene.Width / 2, -_runtimeData.Scene.Height / _zoom + _runtimeData.Scene.Height / 2));
 
-            if (OutOfScreenRight(camera) && OutOfScreenTop(camera)) camera.LookAt(new Vector2(textMap.WidthInPixels - (_runtimeData.Scene.Width / _zoom) * 2 + _runtimeData.Scene.Width / 2, textMap.HeightInPixels - (_runtimeData.Scene.Height / _zoom) * 2 + _runtimeData.Scene.Height / 2));
+            if (OutOfScreenRight(camera) && OutOfScreenTop(camera)) camera.LookAt(new Vector2(textMap.WidthInPixels - (_runtimeData.Scene.Width / _zoom) * 2 + _runtimeData.Scene.Width / 2, -_runtimeData.Scene.Height / _zoom + _runtimeData.Scene.Height / 2));
             if (OutOfScreenRight(camera) && OutOfScreenBottom(camera)) camera.LookAt(new Vector2(textMap.WidthInPixels - (_runtimeData.Scene.Width / _zoom) * 2 + _runtimeData.Scene.Width / 2, textMap.HeightInPixels - (_runtimeData.Scene.Height / _zoom) * 2 + _runtimeData.Scene.Height / 2));
             
         }
@@ -496,6 +501,7 @@ namespace OrthoCite.Entities.MiniGames
 
             foreach (XmlNode sentence in district.SelectNodes("sentence"))
             {
+                
                 WordCollection collection = new WordCollection(sentence.SelectSingleNode("valid").InnerText);
                 foreach (XmlNode invalid in sentence.SelectNodes("invalid"))
                 {

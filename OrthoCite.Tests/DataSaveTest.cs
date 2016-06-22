@@ -37,9 +37,9 @@ namespace OrthoCite.Tests
             _dataSave.Name = "Marvin";
             _dataSave.District = 4;
             _dataSave.NumberOfLives = 2;
-            _dataSave.ValidateMiniGame(1);
-            _dataSave.ValidateMiniGame(2);
-            _dataSave.TrapsNpcTalkTo(4);
+            _dataSave.ValidateMiniGame(DataSaveMiniGame.DOORGAME);
+            _dataSave.ValidateMiniGame(DataSaveMiniGame.PLATFORMER);
+            _dataSave.TrapsNpcTalkTo(1);
             _dataSave.TrapsNpcTalkTo(5);
 
             _dataSave.Save(false);
@@ -49,12 +49,18 @@ namespace OrthoCite.Tests
             Assert.AreEqual(_dataSave.Name, "Marvin");
             Assert.AreEqual(_dataSave.District, 4);
             Assert.AreEqual(_dataSave.NumberOfLives, 2);
-            Assert.IsTrue(_dataSave.MiniGameIsValidated(1));
-            Assert.IsTrue(_dataSave.MiniGameIsValidated(2));
-            Assert.IsFalse(_dataSave.MiniGameIsValidated(3));
-            Assert.IsTrue(_dataSave.TrapsNpcWereTalkedTo(4));
+            Assert.IsTrue(_dataSave.MiniGameIsValidated(DataSaveMiniGame.DOORGAME));
+            Assert.IsTrue(_dataSave.MiniGameIsValidated(DataSaveMiniGame.PLATFORMER));
+            Assert.IsFalse(_dataSave.MiniGameIsValidated(DataSaveMiniGame.REARRANGER));
+            Assert.IsFalse(_dataSave.MiniGameIsValidated(DataSaveMiniGame.BOSS));
+            Assert.IsTrue(_dataSave.TrapsNpcWereTalkedTo(1));
+            Assert.IsFalse(_dataSave.TrapsNpcWereTalkedTo(2));
+            Assert.IsFalse(_dataSave.TrapsNpcWereTalkedTo(3));
+            Assert.IsFalse(_dataSave.TrapsNpcWereTalkedTo(4));
             Assert.IsTrue(_dataSave.TrapsNpcWereTalkedTo(5));
             Assert.IsFalse(_dataSave.TrapsNpcWereTalkedTo(6));
+            Assert.IsFalse(_dataSave.TrapsNpcWereTalkedTo(7));
+            Assert.IsFalse(_dataSave.TrapsNpcWereTalkedTo(8));
         }
 
         [TestMethod]

@@ -47,9 +47,9 @@ namespace OrthoCite.Helpers
         }
 
         public void Update(GameTime gameTime, KeyboardState keyboardState, Camera2D camera, float deltaSeconds)
-        {
-            MouseInput = _runtimeData.ViewAdapter.PointToScreen(MouseState.X, MouseState.Y);
+        {           
             MouseState = Mouse.GetState();
+            MouseInput = _runtimeData.ViewAdapter.PointToScreen(MouseState.X, MouseState.Y);
 
             if (MouseInput.X < _position.X + _texture.Width &&
                     MouseInput.X > _position.X &&
@@ -63,5 +63,7 @@ namespace OrthoCite.Helpers
         {
             spriteBatch.Draw(_texture, _position, Color.White);
         }
+
+        
     }
 }

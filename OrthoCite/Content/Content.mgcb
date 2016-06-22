@@ -504,18 +504,6 @@
 /processorParam:TextureFormat=Color
 /build:minigames/platformer/hammer.png
 
-#begin intro/background.jpg
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:intro/background.jpg
-
 #begin intro/logo.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1120,12 +1108,31 @@
 /processorParam:TextureFormat=Compressed
 /build:minigames/boss/percentagefont.spritefont
 
+
 #begin minigames/GuessGame/GuessGame.tmx
 /importer:TiledMapImporter
 /processor:TiledMapProcessor
 /build:minigames/GuessGame/GuessGame.tmx
 
-#begin minigames/GuessGame/zelda.png
+
+#begin minigames/throwgame/black_tile.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:minigames/throwgame/black_tile.png
+
+#begin minigames/throwgame/throwGame.tmx
+/importer:TiledMapImporter
+/processor:TiledMapProcessor
+/build:minigames/throwgame/throwGame.tmx
+
+#begin minigames/throwgame/zelda.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1143,7 +1150,8 @@
 /processorParam:TextureFormat=Compressed
 /build:minigames/GuessGame/font.spritefont
 
-#begin minigames/GuessGame/Sans titre-1 (1).png
+
+#begin animations/Walking_V2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1153,7 +1161,20 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:minigames/GuessGame/Sans titre-1 (1).png
+/build:animations/Walking_V2.png
+
+#begin minigames/throwgame/ATTACK_DOWN.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:minigames/throwgame/ATTACK_DOWN.png
+
 
 #begin minigames/GuessGame/success.ogg
 /importer:OggImporter
@@ -1166,4 +1187,59 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:minigames/GuessGame/hurt.ogg
+
+
+#begin minigames/throwgame/ATTACK_LEFT.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:minigames/throwgame/ATTACK_LEFT.png
+
+#begin minigames/throwgame/ATTACK_RIGHT.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:minigames/throwgame/ATTACK_RIGHT.png
+
+#begin minigames/throwgame/ATTACK_TOP.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:minigames/throwgame/ATTACK_TOP.png
+
+#begin minigames/throwgame/font.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:minigames/throwgame/font.spritefont
+
+#begin minigames/throwgame/font_compteur.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:minigames/throwgame/font_compteur.spritefont
+
+#begin intro/font.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:intro/font.spritefont
 

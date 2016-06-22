@@ -12,20 +12,21 @@ using MonoGame.Extended.Animations;
 using System.IO;
 using System.Reflection;
 using OrthoCite.Helpers;
+using System.Threading.Tasks;
 
 namespace OrthoCite
 {
     public enum GameContext
     {
         INTRO,
-        MENU,
         LOST_SCREEN,
         MAP,
         MINIGAME_PLATFORMER,
         MINIGAME_BOSS,
         MINIGAME_DOORGAME,
         MINIGAME_REARRANGER,
-        MINIGAME_GUESSGAME
+        MINIGAME_GUESSGAME,
+        MINIGAME_THROWGAME
     }
 
     /// <summary>
@@ -35,6 +36,7 @@ namespace OrthoCite
     {
 
         const GameContext STARTING_ENTITY = GameContext.MINIGAME_GUESSGAME;
+
 
         BoxingViewportAdapter _viewportAdapter;
         Camera2D _camera;
@@ -46,10 +48,11 @@ namespace OrthoCite
         const int SCENE_WIDTH = 1366;
         const int SCENE_HEIGHT = 768;
 
+        int _miniGameDistrict;
         GameContext _gameContext;
         public bool _gameContextChanged;
+        GameQueue _queue;
 
-        
 
         public static void writeSpacerConsole() => System.Console.WriteLine("===========================================");
         
@@ -66,6 +69,7 @@ namespace OrthoCite
             _runtimeData.OrthoCite = this;
             _runtimeData.DataSave = new DataSave(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\datasaves");
             _graphics = new GraphicsDeviceManager(this);
+            _queue = new GameQueue();
 
             _entities = new List<IEntity>();
 
@@ -97,7 +101,6 @@ namespace OrthoCite
         {
             EventInput.Initialize(Window);
             Components.Add(new AnimationComponent(this));
-
             _viewportAdapter = new BoxingViewportAdapter(Window, _graphics, SCENE_WIDTH, SCENE_HEIGHT);
             _runtimeData.ViewAdapter = _viewportAdapter;
             _runtimeData.Scene = new Rectangle(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
@@ -121,6 +124,7 @@ namespace OrthoCite
             {
                 entity.LoadContent(this.Content, this.GraphicsDevice);
             }
+            recordConsole(_queue);
         }
 
 
@@ -143,11 +147,17 @@ namespace OrthoCite
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            string[] message;
+            if((message = _queue.Pull()) != null)
+            {
+                foreach(IEntity i in _entities)
+                {
+                    i.Execute(message);
+                }
+            }
+            
             
 
-#if DEBUG
-            if(Keyboard.GetState().IsKeyDown(Keys.F11)) { recordConsole();  }
-#endif
             foreach (var entity in _entities)
             {
                 entity.Update(gameTime, Keyboard.GetState(), _camera);
@@ -175,16 +185,18 @@ namespace OrthoCite
             base.Draw(gameTime);
         }
 
-        public void ChangeGameContext(GameContext context)
+        public void ChangeGameContext(GameContext context, int district = 0)
         {
             _gameContext = context;
             _gameContextChanged = true;
+            _miniGameDistrict = district;
         }
 
         void PopulateEntitiesFromGameContext()
         {
             _entities.Clear();
             writeSpacerConsole();
+            IsMouseVisible = true;
             Console.Write("Context switched to ");
 
             switch (_gameContext)
@@ -192,10 +204,6 @@ namespace OrthoCite
                 case GameContext.INTRO:
                     Console.WriteLine("introduction");
                     _entities.Add(new Introduction(_runtimeData));
-                    break;
-                case GameContext.MENU:
-                    Console.WriteLine("menu");
-                    _entities.Add(new Mainmenu(_runtimeData));
                     break;
                 case GameContext.LOST_SCREEN:
                     Console.WriteLine("lost screen");
@@ -207,19 +215,33 @@ namespace OrthoCite
                     break;
                 case GameContext.MINIGAME_PLATFORMER:
                     Console.WriteLine("platformer minigame");
-                    _entities.Add(new Platformer(_runtimeData));
+                    Platformer platformer = new Platformer(_runtimeData);
+                    platformer.SetDistrict(_miniGameDistrict);
+                    platformer.LoadContent(this.Content, this.GraphicsDevice); // content needs to be loaded before calling start
+                    platformer.Start();
+                    _entities.Add(platformer);
+                    break;
+                case GameContext.MINIGAME_DOORGAME:
+                    Console.WriteLine("DoorGame");
+                    DoorGame doorGame = new DoorGame(_runtimeData);
+                    doorGame.SetDistrict(_miniGameDistrict);
+                    doorGame.Start();
+                    _entities.Add(new DoorGame(_runtimeData));
+                    break;
+                case GameContext.MINIGAME_REARRANGER:
+                    Console.WriteLine("Rearranger");
+                    Rearranger rearranger = new Rearranger(_runtimeData);
+                    rearranger.SetDistrict(_miniGameDistrict);
+                    rearranger.Start();
+                    _entities.Add(rearranger);
                     break;
                 case GameContext.MINIGAME_BOSS:
                     Console.WriteLine("boss minigame");
                     _entities.Add(new BossGame(_runtimeData));
                     break;
-                case GameContext.MINIGAME_DOORGAME:
-                    Console.WriteLine("DoorGame");
-                    _entities.Add(new DoorGame(_runtimeData));
-                    break;
-                case GameContext.MINIGAME_REARRANGER:
-                    Console.WriteLine("Rearranger");
-                    _entities.Add(new Rearranger(_runtimeData));
+                case GameContext.MINIGAME_THROWGAME:
+                    Console.WriteLine("ThrowGame");
+                    _entities.Add(new ThrowGame(_runtimeData));
                     break;
                 case GameContext.MINIGAME_GUESSGAME:
                     Console.WriteLine("GuessGame");
@@ -227,13 +249,14 @@ namespace OrthoCite
                     break;
             }
 
-            if (_gameContext != GameContext.MENU && _gameContext != GameContext.INTRO)
+            if (_gameContext != GameContext.INTRO)
             {
                 _entities.Add(_runtimeData.DialogBox);
                 _entities.Add(new Lives(_runtimeData));
                 _entities.Add(new MenuInGame(_runtimeData));
+                _entities.Add(new AnswerBox(_runtimeData));
             }
-
+            
             _gameContextChanged = false;
 
 #if DEBUG
@@ -243,20 +266,22 @@ namespace OrthoCite
             LoadContent();
         }
 
-        private void recordConsole()
+        void recordConsole(GameQueue queue)
         {
-            string cmdTmp = System.Console.ReadLine();
-            string[] cmd = cmdTmp.Split(' ');
-            foreach (var entity in _entities)
-            {
-                entity.Execute(cmd);
-            }
+            Task.Factory.StartNew(() => {
+                string cmdTmp = Console.ReadLine();
+                queue.Push(cmdTmp.Split(' '));
+                recordConsole(queue);
+            });
         }
 
         internal void Leave(Button button)
         {
             Console.WriteLine("Exit");
             Exit();
+          
         }
+
+        
     }
 }

@@ -18,6 +18,15 @@ using System.Collections;
 
 namespace OrthoCite.Helpers
 {
+    public enum ListPnj
+    {
+        QUARTIER_1,
+        QUARTIER_2,
+        QUARTIER_3,
+        QUARTIER_4,
+        THROWGAME
+    }
+
     public enum TypePNJ
     {
         Static,
@@ -29,6 +38,12 @@ namespace OrthoCite.Helpers
         None,
         Spawn,
         PositionSec
+    }
+
+    public enum TypeTalkerPNJ
+    {
+        Talk,
+        AnswerTalk
     }
 
     public enum ItemList
@@ -46,12 +61,14 @@ namespace OrthoCite.Helpers
             if (changeDirection != null)
                 changeDirection(j);
         }
-
+        public delegate void AttackEvent(PNJ player);
+        public event AttackEvent playerAttack;
 
         TypePNJ _type;
         List<ItemList> _item;
 
-        public List<string> _talk { get; set; }
+        public Dictionary<string, Dictionary<string, bool>> _talkAndAnswer { get; set; }
+
         const int timeTalk = 100;
 
         public Vector2 _positionSec { get; set; } // IF == DYNAMIQUE -> MOOVE TO THIS 
@@ -60,12 +77,14 @@ namespace OrthoCite.Helpers
         Player _pnj;
 
         PnjDirection _currentDirection;
+        public TypeTalkerPNJ _curentTalker { get; set; }
 
         RuntimeData _runtimeData;
         string _texture;
 
 
         TimeSpan _saveTime;
+        
 
         //TALKABLE, TEXT, NEDD LESS PARAMS CONTRUCTOR
 
@@ -79,9 +98,14 @@ namespace OrthoCite.Helpers
             _texture = texture;
             _positionMain = positionSpawn;
             _currentDirection = PnjDirection.PositionSec;
-            _talk = new List<string>();
+            _talkAndAnswer = new Dictionary<string, Dictionary<string, bool>>();
             _pnj = new Player(TypePlayer.WithSpriteSheet, positionSpawn ,_runtimeData, texture);
-            
+
+
+            _runtimeData.AnswerBox.heAnswerFalse += DownLifeOfPlayer;
+            _runtimeData.AnswerBox.heAnswerGood += UpLifeOfPlayer;
+            playerAttack += goAttack;
+
         }
         
         public void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
@@ -97,6 +121,9 @@ namespace OrthoCite.Helpers
         
         public void Update(GameTime gameTime, KeyboardState keyboardState, Camera2D camera, float deltaSeconds)
         {
+
+            if (_runtimeData.AnswerBox.isVisible) return;
+
             _pnj.heroSprite.Scale = new Vector2(0.7f);
             if(keyboardState.IsKeyDown(Keys.E) && _runtimeData.Player != null) collisionWithPlayer(gameTime);
 
@@ -153,7 +180,15 @@ namespace OrthoCite.Helpers
             }
 
         }
-        
+
+        private void goAttack(PNJ player)
+        {
+            if (player.PNJPlayer.lastDir == Direction.LEFT) player.PNJPlayer.heroAnimations.Play(Direction.ATTACK_LEFT.ToString());
+            else if (player.PNJPlayer.lastDir == Direction.RIGHT) player.PNJPlayer.heroAnimations.Play(Direction.ATTACK_RIGHT.ToString());
+            else if (player.PNJPlayer.lastDir == Direction.UP) player.PNJPlayer.heroAnimations.Play(Direction.ATTACK_TOP.ToString());
+            else if (player.PNJPlayer.lastDir == Direction.ATTACK_DOWN) player.PNJPlayer.heroAnimations.Play(Direction.ATTACK_DOWN.ToString());
+        }
+
         private void collisionWithPlayer(GameTime time)
         {
             if (_saveTime.TotalMilliseconds == 0)
@@ -174,21 +209,50 @@ namespace OrthoCite.Helpers
 
         private void talk()
         {
-            foreach(string a in _talk)
+            if(_curentTalker == TypeTalkerPNJ.AnswerTalk)
             {
-                _runtimeData.DialogBox.AddDialog(a, 2);
+                foreach (KeyValuePair<string, Dictionary<string, bool>> i in _talkAndAnswer)
+                {
+                    _runtimeData.AnswerBox._ask = i.Key;
+                    foreach(KeyValuePair<string, bool> e in i.Value)
+                    {
+                        _runtimeData.AnswerBox._Answer.Add(e.Key, e.Value);
+                    }
+                }
+                _runtimeData.AnswerBox.Run();
             }
-            _runtimeData.DialogBox.Show();
+            else
+            {
+                foreach(KeyValuePair<string, Dictionary<string, bool>> i in _talkAndAnswer)
+                {
+                    _runtimeData.DialogBox.AddDialog(i.Key, 2).Show();
+                }
+            }
+            
+
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             _pnj.Draw(spriteBatch);
+            
         }  
 
         public void Execute(params string[] param)
         {
 
+        }
+
+        private void DownLifeOfPlayer(RuntimeData runtimeData)
+        {
+            _runtimeData.LooseLive();
+            _runtimeData.DialogBox.AddDialog("Perdu ahahahahahah", 2);
+        }
+
+        private void UpLifeOfPlayer(RuntimeData runtimeData)
+        {
+            _runtimeData.GainLive();
+            _runtimeData.DialogBox.AddDialog("Wouahhhhh Gagné ", 2);
         }
 
         public void spriteFactory(Direction dir, SpriteSheetAnimationData spriteData)

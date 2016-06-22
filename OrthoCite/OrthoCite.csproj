@@ -56,6 +56,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="DataSave.cs" />
+    <Compile Include="Entities\MiniGames\Boss\ThrowGame.cs" />
     <Compile Include="Entities\LostScreen.cs" />
     <Compile Include="Entities\Lives.cs" />
     <Compile Include="Entities\DialogBox.cs" />
@@ -70,13 +71,14 @@
     <Compile Include="Entities\MiniGames\MiniGame.cs" />
     <Compile Include="Entities\MiniGames\Platformer.cs" />
     <Compile Include="EventInput.cs" />
+    <Compile Include="GameQueue.cs" />
+    <Compile Include="Entities\AnswerBox.cs" />
     <Compile Include="Helpers\Button.cs" />
     <Compile Include="Helpers\DrawingHelper.cs" />
     <Compile Include="Helpers\Player.cs" />
     <Compile Include="Helpers\PNJ.cs" />
+    <Compile Include="Helpers\Shoot.cs" />
     <Compile Include="IEntity.cs" />
-    <Compile Include="Entities\Menu\Element.cs" />
-    <Compile Include="Entities\Menu\MainMenu.cs" />
     <Compile Include="OrthoCite.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -115,6 +117,7 @@
     </Content>
     <Content Include="Content\dictionaries\DoorGame.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Content\dictionaries\DoorGame2.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -122,7 +125,7 @@
     <Content Include="Content\dictionaries\platformer.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\binds.xml">
+    <Content Include="Content\dictionaries\ThrowGame.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
@@ -146,7 +149,7 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>

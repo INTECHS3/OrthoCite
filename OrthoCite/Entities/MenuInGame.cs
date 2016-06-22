@@ -33,7 +33,7 @@ namespace OrthoCite.Entities
         }
         void IEntity.LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
         {
-            _leaveButton = new Button(new Vector2(500, 500), "menuingame/leave", _runtimeData);
+            _leaveButton = new Button(new Vector2(700, 50), "menuingame/leave", _runtimeData);
             _leaveButton.LoadContent(content, graphicsDevice);
             _leaveButton.onClick += _runtimeData.OrthoCite.Leave;
 
@@ -104,7 +104,10 @@ namespace OrthoCite.Entities
             
         }
 
-        
+        public bool IsVIsible
+        {
+            get { return _isVisible; }
+        } 
 
        
         

@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<binds>
-  <bind key="up">Up</bind>
-  <bind key="right">Right</bind>
-  <bind key="left">Left</bind>
-  <bind key="down">Down</bind>
-</binds>
