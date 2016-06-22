@@ -113,6 +113,7 @@ namespace OrthoCite.Helpers
 
             _runtimeData.AnswerBox.heAnswerFalse += DownLifeOfPlayer;
             _runtimeData.AnswerBox.heAnswerGood += UpLifeOfPlayer;
+
             playerAttack += goAttack;
 
         }
