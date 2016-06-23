@@ -40,7 +40,7 @@ namespace OrthoCite
 
 
         const GameContext STARTING_ENTITY = GameContext.MINIGAME_REARRANGER;
-        const int MINIGAME_DISTRICT_DEBUG = 1;
+        
 
         BoxingViewportAdapter _viewportAdapter;
         Camera2D _camera;
@@ -78,7 +78,7 @@ namespace OrthoCite
 
             _entities = new List<IEntity>();
 
-            ChangeGameContext(STARTING_ENTITY, MINIGAME_DISTRICT_DEBUG);
+            ChangeGameContext(STARTING_ENTITY, _runtimeData.DistrictActual);
 
 #if DEBUG
             _graphics.PreferredBackBufferWidth = 928;
