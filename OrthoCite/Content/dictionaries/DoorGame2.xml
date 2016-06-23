@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <dictionary>
-  <district id="0"> <!-- 5 rounds, 5 words per round -->
+  <district id="1"> <!-- 5 rounds, 5 words per round -->
     <!-- class -->
     <sentence>
       <valid>C'est sa maison</valid>
@@ -43,14 +43,7 @@
       <invalid>c'est sa l'amitié</invalid>
     </sentence>
   </district>
-    <district id="1">
-    <sentence>
-      <valid></valid>
-      <invalid></invalid>
-    </sentence>
-  </district>
-
-  <district id="2">
+    <district id="2">
     <sentence>
       <valid></valid>
       <invalid></invalid>
@@ -58,6 +51,13 @@
   </district>
 
   <district id="3">
+    <sentence>
+      <valid></valid>
+      <invalid></invalid>
+    </sentence>
+  </district>
+
+  <district id="4">
     <sentence>
     </sentence>
   </district>

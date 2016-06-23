@@ -39,8 +39,8 @@ namespace OrthoCite
     {
 
 
-        const GameContext STARTING_ENTITY = GameContext.MAP;
-
+        const GameContext STARTING_ENTITY = GameContext.MINIGAME_REARRANGER;
+        const int MINIGAME_DISTRICT_DEBUG = 1;
 
         BoxingViewportAdapter _viewportAdapter;
         Camera2D _camera;
@@ -78,7 +78,7 @@ namespace OrthoCite
 
             _entities = new List<IEntity>();
 
-            ChangeGameContext(STARTING_ENTITY);
+            ChangeGameContext(STARTING_ENTITY, MINIGAME_DISTRICT_DEBUG);
 
 #if DEBUG
             _graphics.PreferredBackBufferWidth = 928;
@@ -257,13 +257,15 @@ namespace OrthoCite
                     Console.WriteLine("DoorGame");
                     DoorGame doorGame = new DoorGame(_runtimeData);
                     doorGame.SetDistrict(_miniGameDistrict);
+                    doorGame.LoadContent(this.Content, this.GraphicsDevice);
                     doorGame.Start();
-                    _entities.Add(new DoorGame(_runtimeData));
+                    _entities.Add(doorGame);
                     break;
                 case GameContext.MINIGAME_REARRANGER:
                     Console.WriteLine("Rearranger");
                     Rearranger rearranger = new Rearranger(_runtimeData);
                     rearranger.SetDistrict(_miniGameDistrict);
+                    rearranger.LoadContent(this.Content, this.GraphicsDevice);
                     rearranger.Start();
                     _entities.Add(rearranger);
                     break;
