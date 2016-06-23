@@ -53,7 +53,7 @@ namespace OrthoCite.Entities.MiniGames
         int _letToDraw = 0;
         const int MARGIN_RIGHT = 20;
         const int MARGIN_TOP = 80;
-        int _district;
+        int _district = 1;
         int _level = 1;
         const int _fastSpeedPlayer = 8;
         const int _lowSpeedPlayer = 13;

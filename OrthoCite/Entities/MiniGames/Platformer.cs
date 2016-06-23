@@ -45,7 +45,7 @@ namespace OrthoCite.Entities.MiniGames
 
         Song _music;
 
-        int _district = 0;
+        int _district = 1;
         int _platformsPerWord = 5;
         int _rounds = 10;
 
