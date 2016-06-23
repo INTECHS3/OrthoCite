@@ -292,6 +292,7 @@ namespace OrthoCite.Entities.MiniGames
             
             
             MediaPlayer.Play(_music);
+            
             MediaPlayer.IsRepeating = true;
 
 
@@ -646,6 +647,7 @@ namespace OrthoCite.Entities.MiniGames
                 _runtimeData.LooseLive();
                 if (_runtimeData.Lives == 0)
                 {
+                    _i.IsVisible = false;
                     _runtimeData.DialogBox.AddDialog("Tu n'as plus de vie !", 2).Show();
                     _runtimeData.OrthoCite.ChangeGameContext(GameContext.LOST_SCREEN);
                 }
