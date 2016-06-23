@@ -156,5 +156,10 @@ namespace OrthoCite.Entities
 
         }
         
+        public bool EmptyListDialog()
+        {
+            try { if (_dialogs.Count != 0) return false; } catch { Console.WriteLine("Dialog List is null"); return true; }
+            return true;
+        }
     }
 }

@@ -108,9 +108,13 @@ namespace OrthoCite.Entities.MiniGames
             _table = new Dictionary<int, int>();
             _timer = new TimeSpan(0);
 
-         
-            
-            
+
+            _player.spriteFactory.Add(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 0 }));
+            _player.spriteFactory.Add(Helpers.Direction.DOWN, new SpriteSheetAnimationData(new[] { 5, 10 }, isLooping: false));
+            _player.spriteFactory.Add(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 32, 26, 37, 26 }, isLooping: false));
+            _player.spriteFactory.Add(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 32, 26, 37, 26 }, isLooping: false));
+            _player.spriteFactory.Add(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 19, 13, 24, 13 }, isLooping: false));
+
         }
 
         public override void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
@@ -124,6 +128,7 @@ namespace OrthoCite.Entities.MiniGames
             _open = content.Load<SoundEffect>("minigames/Rearranger/open");
             _fail = content.Load<SoundEffect>("minigames/Rearranger/fail");
             _success = content.Load<SoundEffect>("minigames/Rearranger/success");
+            _alphabet.Clear();
             for (int i = 0; i <= 25; i++)
             {
                 _alphabet.Add(content.Load<Texture2D>("minigames/Rearranger/" + i));
@@ -155,6 +160,7 @@ namespace OrthoCite.Entities.MiniGames
                     if (i.Id == _gidSpawn) _player.positionVirt = new Vector2(i.X, i.Y);
                 }
             }
+            _alphaSprite.Clear();
             for(int i = 0; i <_alphabet.Count; i++)
             {
                 _alphaSprite.Add(_tileAlpha + i, _alphabet[i]);
@@ -162,15 +168,9 @@ namespace OrthoCite.Entities.MiniGames
             _runtimeData.gidLast = 0;
            
             _player.gidCol = 633;
-            _player.spriteFactory.Add(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 0 }));
-            _player.spriteFactory.Add(Helpers.Direction.DOWN, new SpriteSheetAnimationData(new[] { 5, 10 }, isLooping: false));
-            _player.spriteFactory.Add(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 32, 26, 37, 26 }, isLooping: false));
-            _player.spriteFactory.Add(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 32, 26, 37, 26 }, isLooping: false));
-            _player.spriteFactory.Add(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 19, 13, 24, 13 }, isLooping: false));
 
             _player.LoadContent(content);
             LoadWords();
-            Start();
             instanceWorld();
         }
 

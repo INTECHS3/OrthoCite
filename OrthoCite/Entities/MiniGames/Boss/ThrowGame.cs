@@ -148,12 +148,11 @@ namespace OrthoCite.Entities.MiniGames
             _shootTexture.Add(Direction.DOWN, content.Load<Texture2D>("minigames/throwgame/ATTACK_DOWN"));
             _shootTexture.Add(Direction.LEFT, content.Load<Texture2D>("minigames/throwgame/ATTACK_LEFT"));
             _shootTexture.Add(Direction.RIGHT, content.Load<Texture2D>("minigames/throwgame/ATTACK_RIGHT"));
-
+            _runtimeData.PNJ.Clear();
             _runtimeData.PNJ.Add(ListPnj.THROWGAME,_badBoy);
 
             LoadAllWord();
             Start();
-            if(_runtimeData.Lives == 0) _runtimeData.GainLive(3);
             
             
         }
@@ -417,7 +416,7 @@ namespace OrthoCite.Entities.MiniGames
             _saveOfWordXml.Load(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\Content\dictionaries\ThrowGame.xml");
 
             XmlNode elementWords = _saveOfWordXml.DocumentElement;
-            XmlNode districtElement = elementWords.SelectSingleNode("district[@id='" + 0 + "']");
+            XmlNode districtElement = elementWords.SelectSingleNode("district");
 
             foreach (XmlNode world in districtElement.SelectNodes("word"))
             {
