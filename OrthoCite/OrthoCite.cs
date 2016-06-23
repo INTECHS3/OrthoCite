@@ -242,6 +242,7 @@ namespace OrthoCite
                 case GameContext.RULES:
                     Console.WriteLine("rules");
                     Rules rules = new Rules(_runtimeData);
+                    rules.LoadContent(this.Content, this.GraphicsDevice);
                     rules.SetMiniGame(_pendingRulesMiniGame);
                     _entities.Add(rules);
                     break;
@@ -249,6 +250,7 @@ namespace OrthoCite
                     Console.WriteLine("platformer minigame");
                     Platformer platformer = new Platformer(_runtimeData);
                     platformer.SetDistrict(_miniGameDistrict);
+                    platformer.LoadContent(this.Content, this.GraphicsDevice); // content needs to be loaded before calling start
                     platformer.Start();
                     _entities.Add(platformer);
                     break;
