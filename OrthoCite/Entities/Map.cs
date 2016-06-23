@@ -243,11 +243,11 @@ namespace OrthoCite.Entities
                 else if (_runtimeData.DataSave.District == 3) tmpPostionOfPNJ = new Vector2(38, 32);
 
                 _runtimeData.PNJ.Add(ListPnj.PORTAILBLOCK, new PNJ(TypePNJ.Static, tmpPostionOfPNJ, new List<ItemList>(), _runtimeData, "map/pnj"));
-                _runtimeData.PNJ[ListPnj.PORTAILBLOCK].spriteFactory(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 0 , 1, 2}, isLooping: true));
-                _runtimeData.PNJ[ListPnj.PORTAILBLOCK].spriteFactory(Helpers.Direction.DOWN, new SpriteSheetAnimationData(new[] { 0, 1, 2 }, isLooping: true));
-                _runtimeData.PNJ[ListPnj.PORTAILBLOCK].spriteFactory(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 24, 25, 26 }, isLooping: false));
-                _runtimeData.PNJ[ListPnj.PORTAILBLOCK].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 24, 25, 26 }, isLooping: false));
-                _runtimeData.PNJ[ListPnj.PORTAILBLOCK].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 36, 37, 38 }, isLooping: false));
+                _runtimeData.PNJ[ListPnj.PORTAILBLOCK].spriteFactory(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 1}, isLooping: true));
+                _runtimeData.PNJ[ListPnj.PORTAILBLOCK].spriteFactory(Helpers.Direction.DOWN, new SpriteSheetAnimationData(new[] { 1}, isLooping: true));
+                _runtimeData.PNJ[ListPnj.PORTAILBLOCK].spriteFactory(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 1}, isLooping: false));
+                _runtimeData.PNJ[ListPnj.PORTAILBLOCK].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 1 }, isLooping: false));
+                _runtimeData.PNJ[ListPnj.PORTAILBLOCK].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 1 }, isLooping: false));
                 _runtimeData.PNJ[ListPnj.PORTAILBLOCK]._curentTalker = TypeTalkerPNJ.Talk;
                 if (_runtimeData.DataSave.District == 1) _runtimeData.PNJ[ListPnj.PORTAILBLOCK].lookDir = Direction.NONE;
                 else if (_runtimeData.DataSave.District == 2) _runtimeData.PNJ[ListPnj.PORTAILBLOCK].lookDir = Direction.RIGHT;

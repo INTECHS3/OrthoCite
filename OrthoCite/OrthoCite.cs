@@ -40,7 +40,8 @@ namespace OrthoCite
 
 
         const GameContext STARTING_ENTITY = GameContext.MINIGAME_REARRANGER;
-        
+
+
 
         BoxingViewportAdapter _viewportAdapter;
         Camera2D _camera;

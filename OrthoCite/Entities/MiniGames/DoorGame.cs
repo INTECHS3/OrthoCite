@@ -39,7 +39,7 @@ namespace OrthoCite.Entities.MiniGames
 
         int _gidStart;
         const int _gidSpawn = 46;
-        int _district;
+        int _district = 1;
         int _level = 1;
         const int _fastSpeedPlayer = 8;
         const int _lowSpeedPlayer = 13;
@@ -153,6 +153,7 @@ namespace OrthoCite.Entities.MiniGames
         public override void UnloadContent()
         {
         }
+
 
         public override void Update(GameTime gameTime, KeyboardState keyboardState, Camera2D camera)
         {
