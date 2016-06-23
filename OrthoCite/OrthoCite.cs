@@ -39,7 +39,7 @@ namespace OrthoCite
     {
 
 
-        const GameContext STARTING_ENTITY = GameContext.MINIGAME_REARRANGER;
+        const GameContext STARTING_ENTITY = GameContext.MINIGAME_DOORGAME;
 
 
 
@@ -258,14 +258,12 @@ namespace OrthoCite
                     Console.WriteLine("DoorGame");
                     DoorGame doorGame = new DoorGame(_runtimeData);
                     doorGame.SetDistrict(_miniGameDistrict);
-                    doorGame.Start();
                     _entities.Add(doorGame);
                     break;
                 case GameContext.MINIGAME_REARRANGER:
                     Console.WriteLine("Rearranger");
                     Rearranger rearranger = new Rearranger(_runtimeData);
                     rearranger.SetDistrict(_miniGameDistrict);
-                    rearranger.Start();
                     _entities.Add(rearranger);
                     break;
                 case GameContext.MINIGAME_BOSS:
