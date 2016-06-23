@@ -147,6 +147,7 @@ namespace OrthoCite.Entities.MiniGames
             WordCollection words = _wordCollections[_random.Next(0, _wordCollections.Count)];
             _wordCollections.Remove(words);
             instanceWorld();
+            Start();
             
         }
 

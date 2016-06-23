@@ -172,6 +172,7 @@ namespace OrthoCite.Entities.MiniGames
             _player.LoadContent(content);
             LoadWords();
             instanceWorld();
+            Start();
         }
 
         public override void UnloadContent()
@@ -250,7 +251,7 @@ namespace OrthoCite.Entities.MiniGames
             spriteBatch.Begin(transformMatrix: cameraMatrix);
 
             spriteBatch.Draw(actualTextMap, gameTime: _runtimeData.GameTime);
- _player.Draw(spriteBatch);
+            _player.Draw(spriteBatch);
             
 
             spriteBatch.End();
