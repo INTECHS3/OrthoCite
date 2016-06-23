@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <dictionary>
-  <district id="0">
+  <district>
     <!-- 5 rounds, 5 words per round -->
     <!-- class -->
     <word typeWorld="true">Armoire</word>

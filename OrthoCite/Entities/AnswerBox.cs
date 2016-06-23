@@ -94,6 +94,7 @@ namespace OrthoCite.Helpers
 
         public void Update(GameTime gameTime, KeyboardState keyboardState, Camera2D camera)
         {
+           
             if (!_isVisible) return;
             _runtimeData.DialogBox.SetText(_ask).Show();
 
@@ -188,6 +189,22 @@ namespace OrthoCite.Helpers
         public void Execute(params string[] param)
         {
 
+        }
+
+        /// <summary>
+        /// Counts the time text. Return int in seconds
+        /// </summary>
+        /// <param name="text">The text.</param>
+        /// <returns></returns>
+        public int CountTimeText(string text)
+        {
+            int baseTime = 60;
+            char[] arrayCount = text.ToCharArray();
+            for(int i = 1; i < arrayCount.Length; i++)
+            {
+                if (baseTime * i >= arrayCount.Length) return i;
+            }
+            return 1;
         }
     }
 }

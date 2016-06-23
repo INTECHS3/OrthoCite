@@ -31,6 +31,7 @@ namespace OrthoCite
         MINIGAME_THROWGAME
     }
 
+
     /// <summary>
     /// This is the main type for your game.
     /// </summary>

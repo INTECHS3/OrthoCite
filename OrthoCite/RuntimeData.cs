@@ -23,6 +23,7 @@ namespace OrthoCite
         ViewportAdapter _viewAdapter;
         DialogBox _dialogBox;
         OrthoCite _orthoCite;
+        int _district = 1;
 
         public GameTime GameTime { set; get; }
         public int gidLast { set; get; }
@@ -88,6 +89,17 @@ namespace OrthoCite
 
         public ThrowGame ThrowGame { get; set; }
 
+
+
+        public int DistrictActual
+        {
+            get { return _district; }
+            set
+            {
+                if (value >= 0 || value <= 4) _district = value;
+                else throw new ArgumentException("1 - 4 District, not > || <");
+            }
+        }
 
         public int Lives => _dataSave.NumberOfLives;
         public int Credits => _dataSave.NumberOfCredits;

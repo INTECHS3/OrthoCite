@@ -14,6 +14,23 @@ using Microsoft.Xna.Framework.Media;
 
 namespace OrthoCite.Entities
 {
+    struct District
+    {
+        public int NUM_DISTRICT { get; private set; }
+        public Vector2 TOP_LEFT { get; private set; }
+        public Vector2 DOWN_LEFT { get; private set; }
+        public Vector2 TOP_RIGHT { get; private set; }
+        public Vector2 DOWN_RIGHT { get; private set; }
+
+        public District(int num, Vector2 top_left, Vector2 down_left, Vector2 top_right, Vector2 down_right)
+        {
+            NUM_DISTRICT = num;
+            TOP_LEFT = top_left;
+            DOWN_LEFT = down_left;
+            TOP_RIGHT = top_right;
+            DOWN_RIGHT = down_right;
+        }
+    }
 
     public class Map : IEntity
     {
@@ -30,6 +47,8 @@ namespace OrthoCite.Entities
         const int _zoom = 3;
         bool _firstUpdate;
 
+        List<District> _district;
+
         
         public Map(RuntimeData runtimeData)
         {
@@ -38,7 +57,8 @@ namespace OrthoCite.Entities
 
             _firstUpdate = true;
 
-            
+            _district = new List<District>();
+
             _player = new Helpers.Player(Helpers.TypePlayer.WithSpriteSheet, new Vector2(0, 0), _runtimeData, "animations/walking");
             
             _player.separeFrame = 0;
@@ -93,7 +113,11 @@ namespace OrthoCite.Entities
 
             addAllPnj(content, graphicsDevice);
 
-
+            _district.Add(new District(1, new Vector2(59,40), new Vector2(59, textMap.Height), new Vector2(textMap.Width, 40), new Vector2(textMap.Width, textMap.Height)));
+            _district.Add(new District(2, new Vector2(56, 0), new Vector2(56, 33), new Vector2(textMap.Width, 0), new Vector2(textMap.Width, 33)));
+            _district.Add(new District(3, new Vector2(0, 0), new Vector2(0, 33), new Vector2(51,0), new Vector2(51, 33)));
+            _district.Add(new District(4, new Vector2(0, 40), new Vector2(0, textMap.Height), new Vector2(46 , 40), new Vector2(46, textMap.Height)));
+            
         }
 
         void IEntity.UnloadContent()
@@ -103,7 +127,8 @@ namespace OrthoCite.Entities
 
         void IEntity.Update(GameTime gameTime, KeyboardState keyboardState, Camera2D camera)
         {
-      
+
+            if(keyboardState.IsKeyDown(Keys.X)) checkDistrict();
 
 
             var deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -134,7 +159,7 @@ namespace OrthoCite.Entities
             //Console.WriteLine($"X : {_positionVirt.X} Y : {_positionVirt.Y} ");
         }
 
-
+        
         void IEntity.Draw(SpriteBatch spriteBatch, Matrix frozenMatrix, Matrix cameraMatrix)
         {
             spriteBatch.Begin(transformMatrix: cameraMatrix);
@@ -181,12 +206,28 @@ namespace OrthoCite.Entities
                     }
                     catch { Console.WriteLine("Can't Exit"); }
                     break;
+                case "giveLife":
+                    try { _runtimeData.GainLive(Int32.Parse(param[1])); Console.WriteLine($"You give {param[1]}"); }
+                    catch { Console.WriteLine("use : giveLife {nbLife}"); }
+                    break;
                 default:
                     Console.WriteLine("Can't find method to invoke in Map Class");
                     break;
             }
         }
 
+        private void checkDistrict()
+        {
+            foreach (District dis in _district)
+            {
+                if (_player.positionVirt.X >= dis.TOP_LEFT.X && _player.positionVirt.Y >= dis.TOP_LEFT.Y &&
+                    _player.positionVirt.X >= dis.DOWN_LEFT.X && _player.positionVirt.Y <= dis.DOWN_LEFT.Y &&
+                    _player.positionVirt.X <= dis.TOP_RIGHT.X && _player.positionVirt.Y >= dis.TOP_RIGHT.Y &&
+                    _player.positionVirt.X <= dis.DOWN_RIGHT.X && _player.positionVirt.Y <= dis.DOWN_RIGHT.Y
+                    ) { _runtimeData.DistrictActual = dis.NUM_DISTRICT; break;  }
+               
+            }
+        }
 
 
         private void addAllPnj(ContentManager content, GraphicsDevice graphicsDevice)
