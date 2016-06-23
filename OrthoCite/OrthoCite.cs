@@ -39,7 +39,7 @@ namespace OrthoCite
     {
 
 
-        const GameContext STARTING_ENTITY = GameContext.MINIGAME_DOORGAME;
+        const GameContext STARTING_ENTITY = GameContext.MAP;
 
 
 
@@ -153,6 +153,11 @@ namespace OrthoCite
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            if (Keyboard.GetState().IsKeyDown(Keys.F12))
+            {
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
+            }
+
             string[] message;
             if((message = _queue.Pull()) != null)
             {
@@ -191,11 +196,11 @@ namespace OrthoCite
             base.Draw(gameTime);
         }
 
-        public void ChangeGameContext(GameContext context, int district = 0)
+        public void ChangeGameContext(GameContext context, int district = 1)
         {
             _gameContext = context;
             _gameContextChanged = true;
-            _miniGameDistrict = district;
+            _miniGameDistrict = _runtimeData.DistrictActual;
         }
 
         public void RulesDone()

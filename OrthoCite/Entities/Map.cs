@@ -127,8 +127,7 @@ namespace OrthoCite.Entities
 
         void IEntity.Update(GameTime gameTime, KeyboardState keyboardState, Camera2D camera)
         {
-
-            if(keyboardState.IsKeyDown(Keys.X)) checkDistrict();
+            checkDistrict();
 
 
             var deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -331,6 +330,7 @@ namespace OrthoCite.Entities
         
         public void checkIfWeLaunchInstance(TiledTile i)
         {
+            //DISTRICT 1
             if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 1165)
             {
                 _runtimeData.gidLast = 1165;
@@ -349,8 +349,83 @@ namespace OrthoCite.Entities
             else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 188)
             {
                 _runtimeData.gidLast = 188;
-                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_BOSS);
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_GUESSGAME);
                
+            }
+            //DISTRICT 2
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 1050)
+            {
+                _runtimeData.gidLast = 1050;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_PLATFORMER);
+
+            }
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 1051)
+            {
+                _runtimeData.gidLast = 1051;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_DOORGAME);
+
+            }
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 1052)
+            {
+                _runtimeData.gidLast = 1052;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_REARRANGER);
+
+            }
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 1053)
+            {
+                _runtimeData.gidLast = 1053;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_BOSS); // LAST GAME A FINIR
+
+            }
+            //DISTRICT 3
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 1329)
+            {
+                _runtimeData.gidLast = 1329;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_PLATFORMER);
+
+            }
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 1330)
+            {
+                _runtimeData.gidLast = 1330;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_DOORGAME);
+
+            }
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 1331)
+            {
+                _runtimeData.gidLast = 1331;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_REARRANGER);
+
+            }
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 1332)
+            {
+                _runtimeData.gidLast = 1332;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_THROWGAME); 
+
+            }
+            //DISTRICT 4
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 1594)
+            {
+                _runtimeData.gidLast = 1594;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_PLATFORMER);
+
+            }
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 1595)
+            {
+                _runtimeData.gidLast = 1595;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_DOORGAME);
+
+            }
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 1596)
+            {
+                _runtimeData.gidLast = 1596;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_REARRANGER);
+
+            }
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 1597)
+            {
+                _runtimeData.gidLast = 1597;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_BOSS);
+
             }
 
         }
