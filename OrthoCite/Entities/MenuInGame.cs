@@ -27,6 +27,8 @@ namespace OrthoCite.Entities
         SpriteFont _font;
         Button _leaveButton;
 
+        Texture2D _textPlayerPosition;
+
         public MenuInGame(RuntimeData runtimeData)
         {
             _runtimeData = runtimeData;
@@ -48,6 +50,8 @@ namespace OrthoCite.Entities
             
 
             _bgRectangle = new Texture2D(graphicsDevice, 1, 1);
+            _textPlayerPosition = new Texture2D(graphicsDevice, 1, 1);
+            _textPlayerPosition.SetData(new Color[] { Color.Red });
             _bgRectangle.SetData(new Color[] { Color.Black });
             _rec = new Rectangle(0, 0, _runtimeData.Scene.Width, _runtimeData.Scene.Height);
             _recContourMap = new Rectangle(0, 0, _tileMap.WidthInPixels + 50, _tileMap.HeightInPixels + 50);
@@ -95,6 +99,7 @@ namespace OrthoCite.Entities
             {
                 spriteBatch.Draw(_bgRectangleContour, _recContourMap, Color.Aqua);
                 _tileMap.Draw(spriteBatch, new Rectangle(500,500, 1, 1), gameTime: _runtimeData.GameTime);
+                if (_runtimeData.Player != null) spriteBatch.Draw(_textPlayerPosition, new Rectangle((int)_runtimeData.Player.position.X, (int)_runtimeData.Player.position.Y, 75 ,75 ), Color.White);
             }
             spriteBatch.End();
         }

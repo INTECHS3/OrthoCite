@@ -47,12 +47,6 @@ namespace OrthoCite.Helpers
         PositionSec
     }
 
-    public enum TypeTalkerPNJ
-    {
-        Talk,
-        AnswerTalk
-    }
-
     public enum ItemList
     {
 
@@ -84,7 +78,6 @@ namespace OrthoCite.Helpers
         Player _pnj;
 
         PnjDirection _currentDirection;
-        public TypeTalkerPNJ _curentTalker { get; set; }
 
         RuntimeData _runtimeData;
         string _texture;
@@ -167,20 +160,20 @@ namespace OrthoCite.Helpers
 
             if(PNJPlayer.separeFrame == 0 && _currentDirection == PnjDirection.Spawn)
             {
-                if (PNJPlayer.positionVirt.X < _positionMain.X) PNJPlayer.MooveChamp(Direction.RIGHT);
-                else if (PNJPlayer.positionVirt.X > _positionMain.X) PNJPlayer.MooveChamp(Direction.LEFT);
-                else if (PNJPlayer.positionVirt.X == _positionMain.X && PNJPlayer.positionVirt.Y < _positionMain.Y) PNJPlayer.MooveChamp(Direction.DOWN);
-                else if (PNJPlayer.positionVirt.X == _positionMain.X && PNJPlayer.positionVirt.Y > _positionMain.Y) PNJPlayer.MooveChamp(Direction.UP);
+                if (PNJPlayer.positionVirt.X < _positionMain.X && !PNJPlayer.ColRight()) PNJPlayer.MooveChamp(Direction.RIGHT);
+                else if (PNJPlayer.positionVirt.X > _positionMain.X && !PNJPlayer.ColLeft()) PNJPlayer.MooveChamp(Direction.LEFT);
+                else if (PNJPlayer.positionVirt.Y < _positionMain.Y && !PNJPlayer.ColDown()) PNJPlayer.MooveChamp(Direction.DOWN);
+                else if (PNJPlayer.positionVirt.Y > _positionMain.Y && !PNJPlayer.ColUp()) PNJPlayer.MooveChamp(Direction.UP);
             }
 
             else if (PNJPlayer.separeFrame == 0 && _currentDirection == PnjDirection.PositionSec)
             {
-                if (PNJPlayer.positionVirt.X < _positionSec.X) PNJPlayer.MooveChamp(Direction.RIGHT);
-                else if (PNJPlayer.positionVirt.X > _positionSec.X) PNJPlayer.MooveChamp(Direction.LEFT);
+                if (PNJPlayer.positionVirt.X < _positionSec.X && !PNJPlayer.ColRight()) PNJPlayer.MooveChamp(Direction.RIGHT);
+                else if (PNJPlayer.positionVirt.X > _positionSec.X && !PNJPlayer.ColLeft()) PNJPlayer.MooveChamp(Direction.LEFT);
 
 
-                else if (PNJPlayer.positionVirt.X == _positionSec.X && PNJPlayer.positionVirt.Y < _positionSec.Y) PNJPlayer.MooveChamp(Direction.DOWN);
-                else if (PNJPlayer.positionVirt.X == _positionSec.X && PNJPlayer.positionVirt.Y > _positionSec.Y) PNJPlayer.MooveChamp(Direction.UP);
+                else if (PNJPlayer.positionVirt.Y < _positionSec.Y && !PNJPlayer.ColDown()) PNJPlayer.MooveChamp(Direction.DOWN);
+                else if (PNJPlayer.positionVirt.Y > _positionSec.Y && !PNJPlayer.ColUp()) PNJPlayer.MooveChamp(Direction.UP);
             }
 
             if (PNJPlayer.separeFrame == 0 && PNJPlayer.positionVirt == _positionMain || PNJPlayer.separeFrame == 0 && PNJPlayer.positionVirt == _positionSec)
@@ -219,26 +212,20 @@ namespace OrthoCite.Helpers
 
         private void talk()
         {
-            if(_curentTalker == TypeTalkerPNJ.AnswerTalk)
-            {
+
                 foreach (KeyValuePair<string, Dictionary<string, bool>> i in _talkAndAnswer)
                 {
-                    _runtimeData.AnswerBox._ask = i.Key;
-                    foreach(KeyValuePair<string, bool> e in i.Value)
+                    if (i.Value != null && i.Value.Count != 0)
                     {
-                        _runtimeData.AnswerBox._Answer.Add(e.Key, e.Value);
+                        _runtimeData.AnswerBox._ask = i.Key;
+                        foreach (KeyValuePair<string, bool> e in i.Value)
+                        {
+                            _runtimeData.AnswerBox._Answer.Add(e.Key, e.Value);
+                        }
                     }
+                    else _runtimeData.DialogBox.AddDialog(i.Key, AnswerBox.CountTimeText(i.Key)).Show();
                 }
                 _runtimeData.AnswerBox.Run();
-            }
-            else
-            {
-
-                foreach(KeyValuePair<string, Dictionary<string, bool>> i in _talkAndAnswer)
-                {
-                    _runtimeData.DialogBox.AddDialog(i.Key, 2).Show();
-                }
-            }
             
 
         }

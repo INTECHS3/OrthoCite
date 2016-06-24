@@ -55,7 +55,7 @@ namespace OrthoCite.Helpers
 
         public AnswerBox Run()
         {
-            _isVisible = true;
+            if(_ask != "" && _ask != null && _Answer.Count != 0)_isVisible = true;
             return this;
         }
 
@@ -122,7 +122,6 @@ namespace OrthoCite.Helpers
             if (keyboardState.IsKeyDown(Keys.Down)) tryDownCursor();
             else if (keyboardState.IsKeyDown(Keys.Up)) tryUpCursor();
             else if (keyboardState.IsKeyDown(Keys.Enter)) lookAnswer();
-
         }
 
         private void lookAnswer()
@@ -196,9 +195,9 @@ namespace OrthoCite.Helpers
         /// </summary>
         /// <param name="text">The text.</param>
         /// <returns></returns>
-        public int CountTimeText(string text)
+        public static int CountTimeText(string text)
         {
-            int baseTime = 60;
+            int baseTime = 30;
             char[] arrayCount = text.ToCharArray();
             for(int i = 1; i < arrayCount.Length; i++)
             {

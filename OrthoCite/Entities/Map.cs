@@ -161,6 +161,7 @@ namespace OrthoCite.Entities
         
         void IEntity.Draw(SpriteBatch spriteBatch, Matrix frozenMatrix, Matrix cameraMatrix)
         {
+            
             spriteBatch.Begin(transformMatrix: cameraMatrix);
 
             _upLayer.IsVisible = false;
@@ -247,7 +248,6 @@ namespace OrthoCite.Entities
                 _runtimeData.PNJ[ListPnj.PORTAILBLOCK].spriteFactory(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 1}, isLooping: false));
                 _runtimeData.PNJ[ListPnj.PORTAILBLOCK].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 1 }, isLooping: false));
                 _runtimeData.PNJ[ListPnj.PORTAILBLOCK].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 1 }, isLooping: false));
-                _runtimeData.PNJ[ListPnj.PORTAILBLOCK]._curentTalker = TypeTalkerPNJ.Talk;
                 if (_runtimeData.DataSave.District == 1) _runtimeData.PNJ[ListPnj.PORTAILBLOCK].lookDir = Direction.NONE;
                 else if (_runtimeData.DataSave.District == 2) _runtimeData.PNJ[ListPnj.PORTAILBLOCK].lookDir = Direction.RIGHT;
                 else if (_runtimeData.DataSave.District == 3) _runtimeData.PNJ[ListPnj.PORTAILBLOCK].lookDir = Direction.UP;
@@ -264,8 +264,7 @@ namespace OrthoCite.Entities
             _runtimeData.PNJ[ListPnj.QUARTIER_1_1].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 36, 37, 38}, isLooping: false));
 
             _runtimeData.PNJ[ListPnj.QUARTIER_1_1]._positionSec = new Vector2(126,64);
-
-            _runtimeData.PNJ[ListPnj.QUARTIER_1_1]._curentTalker = TypeTalkerPNJ.AnswerTalk;
+            
             
             _runtimeData.PNJ[ListPnj.QUARTIER_1_1]._talkAndAnswer.Add("Bienvenu sur OrthoCité", new Dictionary<string, bool>());
 
