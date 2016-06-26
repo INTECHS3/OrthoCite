@@ -6,7 +6,7 @@
       <valid>patate</valid>
     </sentence>
     <sentence>
-      <valid>seau</valid>
+      <valid>pauvre</valid>
     </sentence>
     <sentence>
       <valid>tapis</valid>
@@ -27,7 +27,7 @@
       <valid>arbre</valid>
     </sentence>
     <sentence>
-      <valid>folie</valid>
+      <valid>certain</valid>
     </sentence>
     <sentence>
       <valid>couche</valid>
@@ -36,27 +36,158 @@
       <valid>tableau</valid>
     </sentence>
     <sentence>
-      <valid>souche</valid>
+      <valid>enfant</valid>
     </sentence>
     <sentence>
-      <valid>truelle</valid>
+      <valid>vivant</valid>
     </sentence>
+    
     
   </district>
     <district id="2">
     <sentence>
-      <valid></valid>
+      <valid>meilleur</valid>
     </sentence>
+      <sentence>
+        <valid>gentil</valid>
+      </sentence>
+      <sentence>
+        <valid>entier</valid>
+      </sentence>
+      <sentence>
+        <valid>ombre</valid>
+      </sentence>
+      <sentence>
+        <valid>famille</valid>
+      </sentence>
+      <sentence>
+        <valid>habitude</valid>
+      </sentence>
+      <sentence>
+        <valid>histoire</valid>
+      </sentence>
+      <sentence>
+        <valid>langue</valid>
+      </sentence>
+      <sentence>
+        <valid>marche</valid>
+      </sentence>
+      <sentence>
+        <valid>photo</valid>
+      </sentence>
+      <sentence>
+        <valid>pierre</valid>
+      </sentence>
+      <sentence>
+        <valid>prison</valid>
+      </sentence>
+      <sentence>
+        <valid>raison</valid>
+      </sentence>
+      <sentence>
+        <valid>route</valid>
+      </sentence>
+      <sentence>
+        <valid>signe</valid>
+      </sentence>
   </district>
 
   <district id="3">
     <sentence>
-      <valid></valid>
+      <valid>seconde</valid>
+    </sentence>
+    <sentence>
+      <valid>colonel</valid>
+    </sentence>
+    <sentence>
+      <valid>docteur</valid>
+    </sentence>
+    <sentence>
+      <valid>ennemi</valid>
+    </sentence>
+    <sentence>
+      <valid>honneur</valid>
+    </sentence>
+    <sentence>
+      <valid>jardin</valid>
+    </sentence>
+    <sentence>
+      <valid>moment</valid>
+    </sentence>
+    <sentence>
+      <valid>nouveau</valid>
+    </sentence>
+    <sentence>
+      <valid>parent</valid>
+    </sentence>
+    <sentence>
+      <valid>passage</valid>
+    </sentence>
+    <sentence>
+      <valid>plaisir</valid>
+    </sentence>
+    <sentence>
+      <valid>regard</valid>
+    </sentence>
+    <sentence>
+      <valid>retour</valid>
+    </sentence>
+    <sentence>
+      <valid>silence</valid>
+    </sentence>
+    <sentence>
+      <valid>ventre</valid>
     </sentence>
   </district>
 
   <district id="4">
     <sentence>
+      <valid>souche</valid>
+    </sentence>
+    <sentence>
+      <valid>truelle</valid>
+    </sentence>
+    <sentence>
+      <valid>deviner</valid>
+    </sentence>
+    <sentence>
+      <valid>exister</valid>
+    </sentence>
+    <sentence>
+      <valid>ignorer</valid>
+    </sentence>
+    <sentence>
+      <valid>manquer</valid>
+    </sentence>
+    <sentence>
+      <valid>occuper</valid>
+    </sentence>
+    <sentence>
+      <valid>recevoir</valid>
+    </sentence>
+    <sentence>
+      <valid>remettre</valid>
+    </sentence>
+    <sentence>
+      <valid>organe</valid>
+    </sentence>
+    <sentence>
+      <valid>tromper</valid>
+    </sentence>
+    <sentence>
+      <valid>vouloir</valid>
+    </sentence>
+    <sentence>
+      <valid>bizarre</valid>
+    </sentence>
+    <sentence>
+      <valid>malade</valid>
+    </sentence>
+    <sentence>
+      <valid>heureux</valid>
+    </sentence>
+    <sentence>
+      <valid>premier</valid>
     </sentence>
   </district>
 </dictionary>
