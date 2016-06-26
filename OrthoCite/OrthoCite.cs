@@ -39,7 +39,7 @@ namespace OrthoCite
     {
 
 
-        const GameContext STARTING_ENTITY = GameContext.MINIGAME_DOORGAME;
+        const GameContext STARTING_ENTITY = GameContext.MINIGAME_PLATFORMER;
 
 
 

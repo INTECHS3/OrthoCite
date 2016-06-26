@@ -154,6 +154,7 @@ namespace OrthoCite.Entities.MiniGames
             _player.spriteFactory.Add(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 19, 13, 24, 13 }, isLooping: false));
             _calculator = new int[_ligne];
             _calculator[0] = 0;
+            _district = 1;
             for(int i = 1; i < _ligne; i++ )
             {
                 _calculator[i] = _calculator[i - 1] + columns;

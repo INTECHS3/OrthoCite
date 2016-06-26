@@ -39,7 +39,7 @@ namespace OrthoCite.Entities.MiniGames
 
         int _gidStart;
         const int _gidSpawn = 46;
-        int _district = 1;
+        int _district;
         int _level = 1;
         const int _fastSpeedPlayer = 8;
         const int _lowSpeedPlayer = 13;

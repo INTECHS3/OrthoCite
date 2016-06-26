@@ -24,12 +24,24 @@ namespace OrthoCite.Helpers
         QUARTIER_1_2,
         QUARTIER_1_3,
         QUARTIER_1_4,
+        QUARTIER_1_5,
+        QUARTIER_1_6,
         QUARTIER_2_1,
         QUARTIER_2_2,
         QUARTIER_2_3,
         QUARTIER_2_4,
-        QUARTIER_3,
-        QUARTIER_4,
+        QUARTIER_3_1,
+        QUARTIER_3_2,
+        QUARTIER_3_3,
+        QUARTIER_3_4,
+        QUARTIER_3_5,
+        QUARTIER_3_6,
+        QUARTIER_4_1,
+        QUARTIER_4_2,
+        QUARTIER_4_3,
+        QUARTIER_4_4,
+        QUARTIER_4_5,
+        QUARTIER_4_6,
         THROWGAME,
         PORTAILBLOCK
     }
@@ -203,14 +215,23 @@ namespace OrthoCite.Helpers
         {
             if (_saveTime.TotalMilliseconds == 0)
             {
-                if (_runtimeData.Player.positionVirt.X == _pnj.positionVirt.X && _runtimeData.Player.positionVirt.Y + 1 == _pnj.positionVirt.Y) talk();
+                if (_runtimeData.Player.positionVirt.X == _pnj.positionVirt.X && _runtimeData.Player.positionVirt.Y + 1 == _pnj.positionVirt.Y)
+                {
+                    talk();
+                }
 
-                else if (_runtimeData.Player.positionVirt.X == _pnj.positionVirt.X && _runtimeData.Player.positionVirt.Y - 1 == _pnj.positionVirt.Y) talk();
-
-                else if (_runtimeData.Player.positionVirt.X + 1 == _pnj.positionVirt.X && _runtimeData.Player.positionVirt.Y == _pnj.positionVirt.Y) talk();
-
-                else if (_runtimeData.Player.positionVirt.X - 1 == _pnj.positionVirt.X && _runtimeData.Player.positionVirt.Y == _pnj.positionVirt.Y) talk();
-
+                else if (_runtimeData.Player.positionVirt.X == _pnj.positionVirt.X && _runtimeData.Player.positionVirt.Y - 1 == _pnj.positionVirt.Y)
+                {
+                    talk();
+                }
+                else if (_runtimeData.Player.positionVirt.X + 1 == _pnj.positionVirt.X && _runtimeData.Player.positionVirt.Y == _pnj.positionVirt.Y)
+                {
+                    talk();
+                }
+                else if (_runtimeData.Player.positionVirt.X - 1 == _pnj.positionVirt.X && _runtimeData.Player.positionVirt.Y == _pnj.positionVirt.Y)
+                {
+                    talk();
+                }
                 _saveTime = time.TotalGameTime;
             }
             else if (_saveTime != null && _saveTime <= time.TotalGameTime - new TimeSpan(0, 0, 4)) _saveTime = new TimeSpan(0, 0, 0); 
