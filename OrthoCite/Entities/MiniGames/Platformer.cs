@@ -141,10 +141,7 @@ namespace OrthoCite.Entities.MiniGames
 
         public override void Update(GameTime gameTime, KeyboardState keyboardState, Camera2D camera)
         {
-            if(keyboardState.IsKeyDown(Keys.F12))
-            {
-                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
-            }
+            
 
             /* Handle jetpack sound */
             if (keyboardState.IsKeyDown(Keys.Space)) _flyingInstance.Play();

@@ -127,8 +127,7 @@ namespace OrthoCite.Entities
 
         void IEntity.Update(GameTime gameTime, KeyboardState keyboardState, Camera2D camera)
         {
-
-            if(keyboardState.IsKeyDown(Keys.X)) checkDistrict();
+            checkDistrict();
 
 
             var deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -162,6 +161,7 @@ namespace OrthoCite.Entities
         
         void IEntity.Draw(SpriteBatch spriteBatch, Matrix frozenMatrix, Matrix cameraMatrix)
         {
+            
             spriteBatch.Begin(transformMatrix: cameraMatrix);
 
             _upLayer.IsVisible = false;
@@ -268,7 +268,6 @@ namespace OrthoCite.Entities
                 _runtimeData.PNJ[ListPnj.PORTAILBLOCK].spriteFactory(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 1}, isLooping: false));
                 _runtimeData.PNJ[ListPnj.PORTAILBLOCK].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 1 }, isLooping: false));
                 _runtimeData.PNJ[ListPnj.PORTAILBLOCK].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 1 }, isLooping: false));
-                _runtimeData.PNJ[ListPnj.PORTAILBLOCK]._curentTalker = TypeTalkerPNJ.Talk;
                 if (_runtimeData.DataSave.District == 1) _runtimeData.PNJ[ListPnj.PORTAILBLOCK].lookDir = Direction.NONE;
                 else if (_runtimeData.DataSave.District == 2) _runtimeData.PNJ[ListPnj.PORTAILBLOCK].lookDir = Direction.RIGHT;
                 else if (_runtimeData.DataSave.District == 3) _runtimeData.PNJ[ListPnj.PORTAILBLOCK].lookDir = Direction.UP;
@@ -285,8 +284,7 @@ namespace OrthoCite.Entities
             _runtimeData.PNJ[ListPnj.QUARTIER_1_1].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 36, 37, 38}, isLooping: false));
 
             _runtimeData.PNJ[ListPnj.QUARTIER_1_1]._positionSec = new Vector2(126,64);
-
-            _runtimeData.PNJ[ListPnj.QUARTIER_1_1]._curentTalker = TypeTalkerPNJ.AnswerTalk;
+            
             
             _runtimeData.PNJ[ListPnj.QUARTIER_1_1]._talkAndAnswer.Add("Bienvenu sur OrthoCité", new Dictionary<string, bool>());
 
@@ -562,6 +560,7 @@ namespace OrthoCite.Entities
         
         public void checkIfWeLaunchInstance(TiledTile i)
         {
+            //DISTRICT 1
             if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 1165)
             {
                 _runtimeData.gidLast = 1165;
@@ -580,8 +579,83 @@ namespace OrthoCite.Entities
             else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 188)
             {
                 _runtimeData.gidLast = 188;
-                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_BOSS);
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_GUESSGAME);
                
+            }
+            //DISTRICT 2
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 1050)
+            {
+                _runtimeData.gidLast = 1050;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_PLATFORMER);
+
+            }
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 1051)
+            {
+                _runtimeData.gidLast = 1051;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_DOORGAME);
+
+            }
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 1052)
+            {
+                _runtimeData.gidLast = 1052;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_REARRANGER);
+
+            }
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 1053)
+            {
+                _runtimeData.gidLast = 1053;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_BOSS); // LAST GAME A FINIR
+
+            }
+            //DISTRICT 3
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 1329)
+            {
+                _runtimeData.gidLast = 1329;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_PLATFORMER);
+
+            }
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 1330)
+            {
+                _runtimeData.gidLast = 1330;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_DOORGAME);
+
+            }
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 1331)
+            {
+                _runtimeData.gidLast = 1331;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_REARRANGER);
+
+            }
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 1332)
+            {
+                _runtimeData.gidLast = 1332;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_THROWGAME); 
+
+            }
+            //DISTRICT 4
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 1594)
+            {
+                _runtimeData.gidLast = 1594;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_PLATFORMER);
+
+            }
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 1595)
+            {
+                _runtimeData.gidLast = 1595;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_DOORGAME);
+
+            }
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 1596)
+            {
+                _runtimeData.gidLast = 1596;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_REARRANGER);
+
+            }
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 1597)
+            {
+                _runtimeData.gidLast = 1597;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_BOSS);
+
             }
 
         }

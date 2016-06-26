@@ -22,6 +22,12 @@ namespace OrthoCite.Helpers
         MouseState MouseState;
         RuntimeData _runtimeData;
 
+        int Opacity;
+        const int OpacityGo = 0;
+        const int OpacityBasic = 100;
+        bool isClick;
+        bool Inverse;
+
         public delegate void ClickButton(Button button);
         public event ClickButton onClick;
         private void buttonWasClick() { if (onClick != null) onClick(this); }
@@ -32,6 +38,7 @@ namespace OrthoCite.Helpers
             _position = position;
             _textString = texture;
             _runtimeData = runtimedata;
+            Opacity = 100;
         }
 
 
@@ -47,21 +54,33 @@ namespace OrthoCite.Helpers
         }
 
         public void Update(GameTime gameTime, KeyboardState keyboardState, Camera2D camera, float deltaSeconds)
-        {           
-            MouseState = Mouse.GetState();
-            MouseInput = _runtimeData.ViewAdapter.PointToScreen(MouseState.X, MouseState.Y);
+        {   
+            
+                 
+            if(!isClick)
+            {
+                MouseState = Mouse.GetState();
+                MouseInput = _runtimeData.ViewAdapter.PointToScreen(MouseState.X, MouseState.Y);
 
-            if (MouseInput.X < _position.X + _texture.Width &&
-                    MouseInput.X > _position.X &&
-                    MouseInput.Y < _position.Y + _texture.Height &&
-                    MouseInput.Y > _position.Y &&
-                    MouseState.LeftButton == ButtonState.Pressed)
-                buttonWasClick();
+                if (MouseInput.X < _position.X + _texture.Width &&
+                        MouseInput.X > _position.X &&
+                        MouseInput.Y < _position.Y + _texture.Height &&
+                        MouseInput.Y > _position.Y &&
+                        MouseState.LeftButton == ButtonState.Pressed)
+                    isClick = !isClick;
+            }
+            else
+            {
+                if (Opacity > OpacityGo && !Inverse) { Opacity = Opacity - 10; if (Opacity == OpacityGo) Inverse = !Inverse; }
+                else if (Opacity < OpacityBasic && Inverse) { Opacity = Opacity + 10; if (Opacity == OpacityBasic) { Inverse = !Inverse; isClick = !isClick; buttonWasClick(); } }
+            }
+            
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_texture, _position, Color.White);
+            float tmpOpacity = (float)Opacity / 100f;
+            spriteBatch.Draw(_texture, _position, Color.White * tmpOpacity);
         }
 
         
