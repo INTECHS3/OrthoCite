@@ -89,6 +89,7 @@ namespace OrthoCite
 
         public ThrowGame ThrowGame { get; set; }
 
+        public StopGame StopGame { get; set; }
 
 
         public int DistrictActual

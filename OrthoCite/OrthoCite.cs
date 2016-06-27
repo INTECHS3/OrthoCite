@@ -28,7 +28,8 @@ namespace OrthoCite
         MINIGAME_DOORGAME,
         MINIGAME_REARRANGER,
         MINIGAME_GUESSGAME,
-        MINIGAME_THROWGAME
+        MINIGAME_THROWGAME,
+        MINIGAME_STOPGAME
     }
 
 
@@ -39,7 +40,7 @@ namespace OrthoCite
     {
 
 
-        const GameContext STARTING_ENTITY = GameContext.MAP;
+        const GameContext STARTING_ENTITY = GameContext.MINIGAME_STOPGAME;
 
 
 
@@ -283,6 +284,10 @@ namespace OrthoCite
                 case GameContext.MINIGAME_GUESSGAME:
                     Console.WriteLine("GuessGame");
                     _entities.Add(new GuessGame(_runtimeData));
+                    break;
+                case GameContext.MINIGAME_STOPGAME:
+                    Console.WriteLine("StopGame");
+                    _entities.Add(new StopGame(_runtimeData));
                     break;
             }
 
