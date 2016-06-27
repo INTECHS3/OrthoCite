@@ -196,13 +196,13 @@ namespace OrthoCite.Helpers
         {
             if (_saveTime.TotalMilliseconds == 0)
             {
-                if (_runtimeData.Player.positionVirt.X == _pnj.positionVirt.X && _runtimeData.Player.positionVirt.Y + 1 == _pnj.positionVirt.Y) talk();
+                if (_runtimeData.Player.positionVirt.X == _pnj.positionVirt.X && _runtimeData.Player.positionVirt.Y + 1 == _pnj.positionVirt.Y) { lookDir = Direction.UP; talk(); }
 
-                else if (_runtimeData.Player.positionVirt.X == _pnj.positionVirt.X && _runtimeData.Player.positionVirt.Y - 1 == _pnj.positionVirt.Y) talk();
+                else if (_runtimeData.Player.positionVirt.X == _pnj.positionVirt.X && _runtimeData.Player.positionVirt.Y - 1 == _pnj.positionVirt.Y) { lookDir = Direction.DOWN; talk(); }
 
-                else if (_runtimeData.Player.positionVirt.X + 1 == _pnj.positionVirt.X && _runtimeData.Player.positionVirt.Y == _pnj.positionVirt.Y) talk();
+                else if (_runtimeData.Player.positionVirt.X + 1 == _pnj.positionVirt.X && _runtimeData.Player.positionVirt.Y == _pnj.positionVirt.Y) { lookDir = Direction.RIGHT; talk(); }
 
-                else if (_runtimeData.Player.positionVirt.X - 1 == _pnj.positionVirt.X && _runtimeData.Player.positionVirt.Y == _pnj.positionVirt.Y) talk();
+                else if (_runtimeData.Player.positionVirt.X - 1 == _pnj.positionVirt.X && _runtimeData.Player.positionVirt.Y == _pnj.positionVirt.Y) { lookDir = Direction.LEFT; talk(); }
 
                 _saveTime = time.TotalGameTime;
             }
@@ -212,6 +212,7 @@ namespace OrthoCite.Helpers
 
         private void talk()
         {
+
 
                 foreach (KeyValuePair<string, Dictionary<string, bool>> i in _talkAndAnswer)
                 {
