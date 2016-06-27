@@ -45,20 +45,106 @@
   </district>
     <district id="2">
     <sentence>
-      <valid></valid>
-      <invalid></invalid>
+      <valid>Ce carton est vide</valid>
+      <invalid>Se carton est vide</invalid>
     </sentence>
+      <sentence>
+        <valid>La chèvre se sauve toujours</valid>
+        <invalid>La chèvre ce sauve toujours</invalid>
+      </sentence>
+      <sentence>
+        <valid>Il se frotte contre l'arbre</valid>
+        <invalid>Il ce frotte contre l'arbre</invalid>
+      </sentence>
+      <sentence>
+        <valid>Le bois se consume vite</valid>
+        <invalid>Le bois ce consume vite</invalid>
+      </sentence>
+      <sentence>
+        <valid>Porte ce panier</valid>
+        <invalid>Porte se panier</invalid>
+      </sentence>
+      <sentence>
+        <valid>Comme ce chien est beau</valid>
+        <invalid>Comme se chien est beau</invalid>
+      </sentence>
+      <sentence>
+        <valid>Ils se bagarrent toujours</valid>
+        <invalid>ils ce bagarrent toujours</invalid>
+      </sentence>
+      <sentence>
+        <valid>Ce n'est pas bien</valid>
+        <invalid>Se n'est pas bien</invalid>
+      </sentence>
   </district>
 
   <district id="3">
     <sentence>
-      <valid></valid>
-      <invalid></invalid>
+      <valid>Il est content, ses yeux brillent</valid>
+      <invalid>Il est content, ces yeux brillent</invalid>
+    </sentence>
+    <sentence>
+      <valid>Il tend ses bras</valid>
+      <invalid>Il tend ces bras</invalid>
+    </sentence>
+    <sentence>
+      <valid>ces rivières sont poissoneuses</valid>
+      <invalid>ses rivières sont poissoneuses</invalid>
+    </sentence>
+    <sentence>
+      <valid>Il prend ses lunettes pour lire</valid>
+      <invalid>Il prend ces lunettes pour lire</invalid>
+    </sentence>
+    <sentence>
+      <valid>On en trouve dans ces bois là-bas</valid>
+      <invalid>On en trouve dans ses bois là-bas</invalid>
+    </sentence>
+    <sentence>
+      <valid>Il range ses outils</valid>
+      <invalid>Il range ces outils</invalid>
+    </sentence>
+    <sentence>
+      <valid>Ces vagues sont furieuses</valid>
+      <invalid>Ses vagues sont furieuses</invalid>
+    </sentence>
+    <sentence>
+      <valid>Il brosse ses vêtements</valid>
+      <invalid>Il brosse ces vêtements</invalid>
     </sentence>
   </district>
 
   <district id="4">
     <sentence>
+      <valid>Cet animal est beau</valid>
+      <invalid>Cette animal est beau</invalid>
+    </sentence>
+    <sentence>
+      <valid>Cette fleur est jolie</valid>
+      <invalid>Cet fleur est jolie</invalid>
+    </sentence>
+    <sentence>
+      <valid>Cet arbre est haut</valid>
+      <invalid>Cette arbre est haut</invalid>
+    </sentence>
+    <sentence>
+      <valid>Cette machine est chère</valid>
+      <invalid>Cette machine est chère</invalid>
+    </sentence>
+    <sentence>
+      <valid>Cette femme est grande</valid>
+      <invalid>Cet femme est grande</invalid>
+    </sentence>
+    <sentence>
+      <valid>Cet homme se lève</valid>
+      <invalid>Cette homme se lève</invalid>
+    </sentence>
+    <sentence>
+      <valid>Cette tasse est cassée</valid>
+      <invalid>Cet tasse est cassée</invalid>
+    </sentence>
+    <sentence>
+      <valid>Cette plante a besoin d'eau</valid>
+      <invalid>Cet plante a besoin d'eau</invalid>
     </sentence>
   </district>
 </dictionary>

@@ -125,6 +125,12 @@
     <sentence>
       <valid>tu fabriques</valid>
     </sentence>
+    <sentence>
+      <valid>ils volent</valid>
+    </sentence>
+    <sentence>
+      <invalid>je vend</invalid>
+    </sentence>
 
     
   </district>

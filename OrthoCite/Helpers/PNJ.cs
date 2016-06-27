@@ -24,12 +24,24 @@ namespace OrthoCite.Helpers
         QUARTIER_1_2,
         QUARTIER_1_3,
         QUARTIER_1_4,
+        QUARTIER_1_5,
+        QUARTIER_1_6,
         QUARTIER_2_1,
         QUARTIER_2_2,
         QUARTIER_2_3,
         QUARTIER_2_4,
-        QUARTIER_3,
-        QUARTIER_4,
+        QUARTIER_3_1,
+        QUARTIER_3_2,
+        QUARTIER_3_3,
+        QUARTIER_3_4,
+        QUARTIER_3_5,
+        QUARTIER_3_6,
+        QUARTIER_4_1,
+        QUARTIER_4_2,
+        QUARTIER_4_3,
+        QUARTIER_4_4,
+        QUARTIER_4_5,
+        QUARTIER_4_6,
         THROWGAME,
         PORTAILBLOCK
     }
@@ -52,6 +64,19 @@ namespace OrthoCite.Helpers
 
     }
     
+    public struct PnjDialog
+    {
+        public readonly string ask;
+        public readonly Dictionary<string, bool> answer;
+         
+        public PnjDialog(string theAsk, Dictionary<string, bool> theAnswer)
+        {
+            ask = theAsk;
+            answer = theAnswer;
+        }
+
+    }
+
     public class PNJ
     {
 
@@ -69,6 +94,8 @@ namespace OrthoCite.Helpers
         List<ItemList> _item;
 
         public Dictionary<string, Dictionary<string, bool>> _talkAndAnswer { get; set; }
+        public Queue<PnjDialog> _talkAndAnswerQueue { get; set;  }
+        bool inTalk; 
 
         const int timeTalk = 100;
 
@@ -87,8 +114,7 @@ namespace OrthoCite.Helpers
 
         public Direction lookDir { get; set; }
         
-
-        //TALKABLE, TEXT, NEDD LESS PARAMS CONTRUCTOR
+        
 
         public PNJ(TypePNJ type, Vector2 positionSpawn, List<ItemList> item, RuntimeData runtimeData, string texture)
         {
@@ -108,6 +134,8 @@ namespace OrthoCite.Helpers
             _runtimeData.AnswerBox.heAnswerGood += UpLifeOfPlayer;
 
             playerAttack += goAttack;
+
+            _talkAndAnswerQueue = new Queue<PnjDialog>();
 
         }
         
@@ -136,7 +164,7 @@ namespace OrthoCite.Helpers
                 iaMovePnj(gameTime);
                 _pnj.checkMove(keyboardState);
             }
-            else _pnj.heroAnimations.Play(lookDir.ToString());
+            else { _pnj.heroAnimations.Play(lookDir.ToString()); _pnj.lastDir = lookDir; }
             
             _pnj.heroAnimations.Update(deltaSeconds);
             _pnj.heroSprite.Position = new Vector2(_pnj.position.X + _pnj.tileWidth / 2, _pnj.position.Y + _pnj.tileHeight / 2);
@@ -203,7 +231,7 @@ namespace OrthoCite.Helpers
                 else if (_runtimeData.Player.positionVirt.X + 1 == _pnj.positionVirt.X && _runtimeData.Player.positionVirt.Y == _pnj.positionVirt.Y) { lookDir = Direction.RIGHT; talk(); }
 
                 else if (_runtimeData.Player.positionVirt.X - 1 == _pnj.positionVirt.X && _runtimeData.Player.positionVirt.Y == _pnj.positionVirt.Y) { lookDir = Direction.LEFT; talk(); }
-
+                
                 _saveTime = time.TotalGameTime;
             }
             else if (_saveTime != null && _saveTime <= time.TotalGameTime - new TimeSpan(0, 0, 4)) _saveTime = new TimeSpan(0, 0, 0); 
