@@ -137,6 +137,10 @@ namespace OrthoCite.Helpers
             position = new Vector2(positionVirt.X * tileWidth, positionVirt.Y * tileHeight);
         }
 
+        public void UpdateThePosition()
+        {
+            position = new Vector2(positionVirt.X * tileWidth, positionVirt.Y * tileHeight);
+        }
        
         public void Draw(SpriteBatch spriteBatch)
         {
@@ -144,7 +148,7 @@ namespace OrthoCite.Helpers
             {
                 if (lastDir == Direction.LEFT || lastDir == Direction.ATTACK_LEFT) heroSprite.Effect = SpriteEffects.FlipHorizontally;
                 else heroSprite.Effect = SpriteEffects.None;
-
+                
                 spriteBatch.Draw(heroSprite);
             }
             else if(typePlayer == TypePlayer.WithTexture2D)
@@ -184,7 +188,7 @@ namespace OrthoCite.Helpers
 
         public void checkMove(KeyboardState keyboardState)
         {
-
+            
 
             if (_runtimeData.AnswerBox.isVisible) return;
 

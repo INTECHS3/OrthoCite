@@ -40,9 +40,11 @@ namespace OrthoCite.Helpers
         Vector2 _cursorPosition;
         string _cursorSelect;
 
-        public delegate void eventAnswerBox(RuntimeData runtimeData);
-        public event eventAnswerBox heAnswerGood;
-        public event eventAnswerBox heAnswerFalse;
+        PNJ _pnj;
+
+        public delegate void eventAnswerBox(RuntimeData runtimeData, bool Answer);
+        public event eventAnswerBox heAnswerGoodOrFalse;
+        
         
 
         public AnswerBox(RuntimeData runtimeData)
@@ -53,8 +55,9 @@ namespace OrthoCite.Helpers
             _PositionAnswer = new Dictionary<string, Vector2>();
         }
 
-        public AnswerBox Run()
+        public AnswerBox Run(PNJ pnj = null)
         {
+            _pnj = pnj;
             if(_ask != "" && _ask != null && _Answer.Count != 0)_isVisible = true;
             return this;
         }
@@ -66,8 +69,8 @@ namespace OrthoCite.Helpers
 
             _font = content.Load<SpriteFont>("dialogbox/font");
 
-            heAnswerFalse += HideAndClear;
-            heAnswerGood += HideAndClear;
+            heAnswerGoodOrFalse += HideAndClear;
+            
         }
 
         public bool isVisible
@@ -75,15 +78,21 @@ namespace OrthoCite.Helpers
             get { return _isVisible; }
         }
 
-        private void HideAndClear(RuntimeData runtimeData)
+        private void HideAndClear(RuntimeData runtimeData, bool answer)
         {
-
+            
             _runtimeData.DialogBox.Hide();
             _isVisible = false;
             _ask = null;
             _PositionAnswer.Clear();
-            _Answer.Clear();
             _firstUpdate = true;
+
+            if (_pnj != null)
+            {
+                _pnj.finishTalk();
+                _pnj.playerAnswerToPnjRequest(runtimeData, answer);
+            }
+            _pnj = null;
 
         }
 
@@ -126,8 +135,7 @@ namespace OrthoCite.Helpers
 
         private void lookAnswer()
         {
-            if (_Answer[_cursorSelect]) heAnswerGood(_runtimeData);
-            else heAnswerFalse(_runtimeData);
+            heAnswerGoodOrFalse(_runtimeData, _Answer[_cursorSelect]);
         }
 
         private void tryDownCursor()

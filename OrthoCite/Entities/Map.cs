@@ -128,9 +128,18 @@ namespace OrthoCite.Entities
         void IEntity.Update(GameTime gameTime, KeyboardState keyboardState, Camera2D camera)
         {
             checkDistrict();
-
-
             var deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+
+            bool tmpCheckTalk = false;
+            foreach(KeyValuePair<ListPnj, PNJ> i in _runtimeData.PNJ)
+            {
+                i.Value.Update(gameTime, keyboardState, camera, deltaSeconds);
+                if (i.Value.inTalk) tmpCheckTalk = true;
+            }
+            if (tmpCheckTalk) return;
+
+            
            
 
             if (_firstUpdate)
@@ -141,14 +150,10 @@ namespace OrthoCite.Entities
             }
 
             _player.checkMove(keyboardState);
-
             _player.heroAnimations.Update(deltaSeconds);
             _player.heroSprite.Position = new Vector2(_player.position.X + textMap.TileWidth / 2, _player.position.Y + textMap.TileHeight / 2);
 
-            foreach(KeyValuePair<ListPnj, PNJ> i in _runtimeData.PNJ)
-            {
-                i.Value.Update(gameTime, keyboardState, camera, deltaSeconds);
-            }
+            
 
 
             checkCamera(camera);
@@ -232,7 +237,7 @@ namespace OrthoCite.Entities
 
         private void addAllPnj(ContentManager content, GraphicsDevice graphicsDevice)
         {
-            Dictionary<string, bool> tmpAnswer = new Dictionary<string, bool>();
+
             _runtimeData.PNJ = new Dictionary<ListPnj, PNJ>();
             _runtimeData.PNJ.Add(ListPnj.QUARTIER_1_1, new PNJ(TypePNJ.Dynamique, new Vector2(120, 59), new List<ItemList>(), _runtimeData, "map/pnj"));
             _runtimeData.PNJ.Add(ListPnj.QUARTIER_1_2, new PNJ(TypePNJ.Static, new Vector2(69, 47), new List<ItemList>(), _runtimeData, "map/actor"));
@@ -272,15 +277,18 @@ namespace OrthoCite.Entities
                 if (_runtimeData.DataSave.District == 1) _runtimeData.PNJ[ListPnj.PORTAILBLOCK].lookDir = Direction.NONE;
                 else if (_runtimeData.DataSave.District == 2) _runtimeData.PNJ[ListPnj.PORTAILBLOCK].lookDir = Direction.RIGHT;
                 else if (_runtimeData.DataSave.District == 3) _runtimeData.PNJ[ListPnj.PORTAILBLOCK].lookDir = Direction.UP;
-                tmpAnswer.Clear();
-                tmpAnswer.Add("Oui", true);
-                tmpAnswer.Add("Non", false);
 
-                _runtimeData.pnj[ListPnj.PORTAILBLOCK]._talkAndAnswerQueue.Enqueue(new PnjDialog($"Désolé tu n'as pas fini les mini jeux du quartier {_runtimeData.DataSave.District}, tu ne peux pas avancer !", tmpAnswer));
+
+                _runtimeData.pnj[ListPnj.PORTAILBLOCK]._talkAndAnswer.Add(new PnjDialog($"Désolé tu n'as pas fini les mini jeux du quartier {_runtimeData.DataSave.District}, tu ne peux pas avancer !", new Dictionary<string, bool>()));
+                _runtimeData.pnj[ListPnj.PORTAILBLOCK]._talkAndAnswer.Add(new PnjDialog($"Avou tu voudrai rentré ????", new Dictionary<string, bool>() { { "Oui", false }, { "Non", true} }));
+                
+
+                _runtimeData.pnj[ListPnj.PORTAILBLOCK].playerAnswerToPnj += ActionToAnswerPnjPortailBlock; //Action Celon la reponse voir methode d'exemple en dessous LOIN ! ^^ 
+
                 //_runtimeData.PNJ[ListPnj.PORTAILBLOCK]._talkAndAnswer.Add($"Désolé tu n'as pas fini les mini jeux du quartier {_runtimeData.DataSave.District}, tu ne peux pas avancer !", new Dictionary<string, bool>());
                 //_runtimeData.PNJ[ListPnj.PORTAILBLOCK]._talkAndAnswer.Add($"Fini et reviens me voir après ! ", new Dictionary<string, bool>());
 
-                tmpAnswer.Clear();
+
             }
 
             
@@ -294,16 +302,16 @@ namespace OrthoCite.Entities
             _runtimeData.PNJ[ListPnj.QUARTIER_1_1]._positionSec = new Vector2(126,64);
             
             
-            //_runtimeData.PNJ[ListPnj.QUARTIER_1_1]._talkAndAnswer.Add("Bienvenu sur OrthoCité", new Dictionary<string, bool>());
+            _runtimeData.PNJ[ListPnj.QUARTIER_1_1]._talkAndAnswer.Add(new PnjDialog("Bienvenu sur OrthoCité", new Dictionary<string, bool>()));
 
             _runtimeData.PNJ[ListPnj.QUARTIER_1_2].spriteFactory(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 58 }));
             _runtimeData.PNJ[ListPnj.QUARTIER_1_2].spriteFactory(Helpers.Direction.DOWN, new SpriteSheetAnimationData(new[] { 58}, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_1_2].spriteFactory(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 70 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_1_2].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 82 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_1_2].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 94 }, isLooping: false));
-            //_runtimeData.PNJ[ListPnj.QUARTIER_1_2]._talkAndAnswer.Add($"Si tout va mal dans cette ville c'est à cause de Lyrik !", new Dictionary<string, bool>());
-            //_runtimeData.PNJ[ListPnj.QUARTIER_1_2]._talkAndAnswer.Add($"Il a volé les lettres sacrées et les utilisent pour tout chambouler ! ", new Dictionary<string, bool>());
-            //_runtimeData.PNJ[ListPnj.QUARTIER_1_2]._talkAndAnswer.Add($"il faut que quelqu'un nous sauve ! ", new Dictionary<string, bool>());
+            _runtimeData.PNJ[ListPnj.QUARTIER_1_2]._talkAndAnswer.Add(new PnjDialog($"Si tout va mal dans cette ville c'est à cause de Lyrik !", new Dictionary<string, bool>()));
+            _runtimeData.PNJ[ListPnj.QUARTIER_1_2]._talkAndAnswer.Add(new PnjDialog($"Il a volé les lettres sacrées et les utilisent pour tout chambouler ! ", new Dictionary<string, bool>()));
+            _runtimeData.PNJ[ListPnj.QUARTIER_1_2]._talkAndAnswer.Add(new PnjDialog($"il faut que quelqu'un nous sauve ! ", new Dictionary<string, bool>()));
             _runtimeData.PNJ[ListPnj.QUARTIER_1_2].lookDir = Direction.DOWN;
 
             _runtimeData.PNJ[ListPnj.QUARTIER_1_3].spriteFactory(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 1 }));
@@ -311,8 +319,8 @@ namespace OrthoCite.Entities
             _runtimeData.PNJ[ListPnj.QUARTIER_1_3].spriteFactory(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 24, 25, 26 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_1_3].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 24, 25, 26 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_1_3].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 58 }, isLooping: false));
-            _runtimeData.PNJ[ListPnj.QUARTIER_1_3]._positionSec = new Vector2(73, 60);
-            //_runtimeData.PNJ[ListPnj.QUARTIER_1_3]._talkAndAnswer.Add($"Il fait beau aujourd'hui !", new Dictionary<string, bool>());
+            _runtimeData.PNJ[ListPnj.QUARTIER_1_3]._positionSec = new Vector2(73, 59);
+            _runtimeData.PNJ[ListPnj.QUARTIER_1_3]._talkAndAnswer.Add(new PnjDialog($"Il fait beau aujourd'hui !", new Dictionary<string, bool>()));
             
 
             _runtimeData.PNJ[ListPnj.QUARTIER_1_4].spriteFactory(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 16 }));
@@ -321,9 +329,9 @@ namespace OrthoCite.Entities
             _runtimeData.PNJ[ListPnj.QUARTIER_1_4].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 24, 25, 26 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_1_4].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 58 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_1_4].lookDir = Direction.LEFT;
-            //_runtimeData.PNJ[ListPnj.QUARTIER_1_4]._talkAndAnswer.Add($"Tu sais que pour savoir si tu dois écrire 'a' ou 'à' dans une phrase", new Dictionary<string, bool>());
-            //_runtimeData.PNJ[ListPnj.QUARTIER_1_4]._talkAndAnswer.Add($"tu n'as qu'à remplacer le 'a' par 'avait' et si ça fonctionne c'est qu'il ne faut pas mettre d'accent ! ", new Dictionary<string, bool>());
-           // _runtimeData.PNJ[ListPnj.QUARTIER_1_4]._talkAndAnswer.Add($"Sinon il faudra écrire 'à' !", new Dictionary<string, bool>());
+            _runtimeData.PNJ[ListPnj.QUARTIER_1_4]._talkAndAnswer.Add(new PnjDialog($"Tu sais que pour savoir si tu dois écrire 'a' ou 'à' dans une phrase", new Dictionary<string, bool>()));
+            _runtimeData.PNJ[ListPnj.QUARTIER_1_4]._talkAndAnswer.Add(new PnjDialog($"tu n'as qu'à remplacer le 'a' par 'avait' et si ça fonctionne c'est qu'il ne faut pas mettre d'accent ! ", new Dictionary<string, bool>()));
+            _runtimeData.PNJ[ListPnj.QUARTIER_1_4]._talkAndAnswer.Add(new PnjDialog($"Sinon il faudra écrire 'à' !", new Dictionary<string, bool>()));
 
             _runtimeData.PNJ[ListPnj.QUARTIER_1_5].spriteFactory(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 10 }));
             _runtimeData.PNJ[ListPnj.QUARTIER_1_5].spriteFactory(Helpers.Direction.DOWN, new SpriteSheetAnimationData(new[] { 9, 10, 11 }, isLooping: false));
@@ -331,26 +339,26 @@ namespace OrthoCite.Entities
             _runtimeData.PNJ[ListPnj.QUARTIER_1_5].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 33,34,35 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_1_5].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 45, 46, 47 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_1_5]._positionSec = new Vector2(78, 63);
-            //_runtimeData.PNJ[ListPnj.QUARTIER_1_5]._talkAndAnswer.Add($"L'orthographe nous permet de bien nous comprendre entre nous", new Dictionary<string, bool>());
-            //_runtimeData.PNJ[ListPnj.QUARTIER_1_5]._talkAndAnswer.Add($"c'est super important ! ", new Dictionary<string, bool>());
+            _runtimeData.PNJ[ListPnj.QUARTIER_1_5]._talkAndAnswer.Add(new PnjDialog($"L'orthographe nous permet de bien nous comprendre entre nous", new Dictionary<string, bool>()));
+            _runtimeData.PNJ[ListPnj.QUARTIER_1_5]._talkAndAnswer.Add(new PnjDialog($"c'est super important ! ", new Dictionary<string, bool>()));
 
             _runtimeData.PNJ[ListPnj.QUARTIER_1_6].spriteFactory(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 85 }));
             _runtimeData.PNJ[ListPnj.QUARTIER_1_6].spriteFactory(Helpers.Direction.DOWN, new SpriteSheetAnimationData(new[] { 49 }, isLooping: false));
-            _runtimeData.PNJ[ListPnj.QUARTIER_1_6].spriteFactory(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 61 }, isLooping: false));
-            _runtimeData.PNJ[ListPnj.QUARTIER_1_6].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 61 }, isLooping: false));
+            _runtimeData.PNJ[ListPnj.QUARTIER_1_6].spriteFactory(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 73 }, isLooping: false));
+            _runtimeData.PNJ[ListPnj.QUARTIER_1_6].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] {  73}, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_1_6].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 85 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_1_6].lookDir = Direction.UP;
-            //_runtimeData.PNJ[ListPnj.QUARTIER_1_6]._talkAndAnswer.Add($"Avant il y avait beaucoup de gens en ville", new Dictionary<string, bool>());
-            //_runtimeData.PNJ[ListPnj.QUARTIER_1_6]._talkAndAnswer.Add($"mais Lyrik les a tous fait fuir ! ", new Dictionary<string, bool>());
+            _runtimeData.PNJ[ListPnj.QUARTIER_1_6]._talkAndAnswer.Add(new PnjDialog($"Avant il y avait beaucoup de gens en ville", new Dictionary<string, bool>()));
+            _runtimeData.PNJ[ListPnj.QUARTIER_1_6]._talkAndAnswer.Add(new PnjDialog($"mais Lyrik les a tous fait fuir ! ", new Dictionary<string, bool>()));
 
             _runtimeData.PNJ[ListPnj.QUARTIER_2_1].spriteFactory(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 52 }));
             _runtimeData.PNJ[ListPnj.QUARTIER_2_1].spriteFactory(Helpers.Direction.DOWN, new SpriteSheetAnimationData(new[] { 52 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_2_1].spriteFactory(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 64 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_2_1].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 76 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_2_1].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 88 }, isLooping: false));
-            //_runtimeData.PNJ[ListPnj.QUARTIER_2_1]._talkAndAnswer.Add($"Dis moi, tu savais que pour savoir si il faut écrire 'ou' ou 'où'", new Dictionary<string, bool>());
-            //_runtimeData.PNJ[ListPnj.QUARTIER_2_1]._talkAndAnswer.Add($"il suffit de le remplacer par 'ou bien' et si ça fonctionne ", new Dictionary<string, bool>());
-            //_runtimeData.PNJ[ListPnj.QUARTIER_2_1]._talkAndAnswer.Add($"c'est qu'il faut écrire 'ou'. C'est dingue ! ", new Dictionary<string, bool>());
+            _runtimeData.PNJ[ListPnj.QUARTIER_2_1]._talkAndAnswer.Add(new PnjDialog($"Dis moi, tu savais que pour savoir si il faut écrire 'ou' ou 'où'", new Dictionary<string, bool>()));
+            _runtimeData.PNJ[ListPnj.QUARTIER_2_1]._talkAndAnswer.Add(new PnjDialog($"il suffit de le remplacer par 'ou bien' et si ça fonctionne ", new Dictionary<string, bool>()));
+            _runtimeData.PNJ[ListPnj.QUARTIER_2_1]._talkAndAnswer.Add(new PnjDialog($"c'est qu'il faut écrire 'ou'. C'est dingue ! ", new Dictionary<string, bool>()));
             _runtimeData.PNJ[ListPnj.QUARTIER_2_1].lookDir = Direction.DOWN;
 
             _runtimeData.PNJ[ListPnj.QUARTIER_2_2].spriteFactory(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 10 }));
@@ -359,15 +367,15 @@ namespace OrthoCite.Entities
             _runtimeData.PNJ[ListPnj.QUARTIER_2_2].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 33, 34, 35 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_2_2].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 55, 56, 57 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_2_2]._positionSec = new Vector2(76, 7);
-            //_runtimeData.PNJ[ListPnj.QUARTIER_2_2]._talkAndAnswer.Add($"Ils ont volé toutes les lettres sacrées !", new Dictionary<string, bool>());
-            //_runtimeData.PNJ[ListPnj.QUARTIER_2_2]._talkAndAnswer.Add($"J'espère que tu pourras les récupérer, on compte tous sur toi. ", new Dictionary<string, bool>());
+            _runtimeData.PNJ[ListPnj.QUARTIER_2_2]._talkAndAnswer.Add(new PnjDialog($"Ils ont volé toutes les lettres sacrées !", new Dictionary<string, bool>()));
+            _runtimeData.PNJ[ListPnj.QUARTIER_2_2]._talkAndAnswer.Add(new PnjDialog($"J'espère que tu pourras les récupérer, on compte tous sur toi. ", new Dictionary<string, bool>()));
 
             _runtimeData.PNJ[ListPnj.QUARTIER_2_3].spriteFactory(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 43 }));
             _runtimeData.PNJ[ListPnj.QUARTIER_2_3].spriteFactory(Helpers.Direction.DOWN, new SpriteSheetAnimationData(new[] { 7 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_2_3].spriteFactory(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 19 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_2_3].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 31 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_2_3].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 43 }, isLooping: false));
-            //_runtimeData.PNJ[ListPnj.QUARTIER_2_3]._talkAndAnswer.Add($"J'espère que toutes ces épreuves ne sont pas trop dures pour toi.", new Dictionary<string, bool>());
+            _runtimeData.PNJ[ListPnj.QUARTIER_2_3]._talkAndAnswer.Add(new PnjDialog($"J'espère que toutes ces épreuves ne sont pas trop dures pour toi.", new Dictionary<string, bool>()));
             _runtimeData.PNJ[ListPnj.QUARTIER_2_3].lookDir = Direction.LEFT;
 
             _runtimeData.PNJ[ListPnj.QUARTIER_2_4].spriteFactory(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 67 }));
@@ -375,7 +383,7 @@ namespace OrthoCite.Entities
             _runtimeData.PNJ[ListPnj.QUARTIER_2_4].spriteFactory(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 67 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_2_4].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 79 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_2_4].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 91 }, isLooping: false));
-            //_runtimeData.PNJ[ListPnj.QUARTIER_2_4]._talkAndAnswer.Add($"tu n'é pas assez for pour attindre Lyrik ! ", new Dictionary<string, bool>());
+            _runtimeData.PNJ[ListPnj.QUARTIER_2_4]._talkAndAnswer.Add(new PnjDialog($"tu n'é pas assez for pour attindre Lyrik ! ", new Dictionary<string, bool>()));
             _runtimeData.PNJ[ListPnj.QUARTIER_2_4].lookDir = Direction.LEFT;
 
             _runtimeData.PNJ[ListPnj.QUARTIER_3_1].spriteFactory(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 7 }));
@@ -383,9 +391,9 @@ namespace OrthoCite.Entities
             _runtimeData.PNJ[ListPnj.QUARTIER_3_1].spriteFactory(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 19 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_3_1].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 31 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_3_1].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 43 }, isLooping: false));
-            //_runtimeData.PNJ[ListPnj.QUARTIER_3_1]._talkAndAnswer.Add($"Pour savoir si tu dois écrire 'se' ou 'ce' ", new Dictionary<string, bool>());
-            //_runtimeData.PNJ[ListPnj.QUARTIER_3_1]._talkAndAnswer.Add($"remplace le par 'cela', si ça fonctionne, c'est qu'il faut écrire 'ce' ", new Dictionary<string, bool>());
-            //_runtimeData.PNJ[ListPnj.QUARTIER_3_1]._talkAndAnswer.Add($"sinon tu devras l'écrire 'se' ", new Dictionary<string, bool>());
+            _runtimeData.PNJ[ListPnj.QUARTIER_3_1]._talkAndAnswer.Add(new PnjDialog($"Pour savoir si tu dois écrire 'se' ou 'ce' ", new Dictionary<string, bool>()));
+            _runtimeData.PNJ[ListPnj.QUARTIER_3_1]._talkAndAnswer.Add(new PnjDialog($"remplace le par 'cela', si ça fonctionne, c'est qu'il faut écrire 'ce' ", new Dictionary<string, bool>()));
+            _runtimeData.PNJ[ListPnj.QUARTIER_3_1]._talkAndAnswer.Add(new PnjDialog($"sinon tu devras l'écrire 'se' ", new Dictionary<string, bool>()));
             _runtimeData.PNJ[ListPnj.QUARTIER_3_1].lookDir = Direction.DOWN;
 
             _runtimeData.PNJ[ListPnj.QUARTIER_3_2].spriteFactory(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 85 }));
@@ -393,7 +401,7 @@ namespace OrthoCite.Entities
             _runtimeData.PNJ[ListPnj.QUARTIER_3_2].spriteFactory(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 61 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_3_2].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 73 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_3_2].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 85 }, isLooping: false));
-            //_runtimeData.PNJ[ListPnj.QUARTIER_3_2]._talkAndAnswer.Add($"Toute fasson l'orthografe cé nul !", new Dictionary<string, bool>());
+            _runtimeData.PNJ[ListPnj.QUARTIER_3_2]._talkAndAnswer.Add(new PnjDialog($"Toute fasson l'orthografe cé nul !", new Dictionary<string, bool>()));
             _runtimeData.PNJ[ListPnj.QUARTIER_3_2].lookDir = Direction.UP;
 
             _runtimeData.PNJ[ListPnj.QUARTIER_3_3].spriteFactory(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 88 }));
@@ -401,8 +409,8 @@ namespace OrthoCite.Entities
             _runtimeData.PNJ[ListPnj.QUARTIER_3_3].spriteFactory(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 64 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_3_3].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 76 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_3_3].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 88 }, isLooping: false));
-           // _runtimeData.PNJ[ListPnj.QUARTIER_3_3]._talkAndAnswer.Add($"Tu savais qu'avant l'écriture n'existait pas ?", new Dictionary<string, bool>());
-           // _runtimeData.PNJ[ListPnj.QUARTIER_3_3]._talkAndAnswer.Add($"Tout était raconté à l'oral ! ", new Dictionary<string, bool>());
+            _runtimeData.PNJ[ListPnj.QUARTIER_3_3]._talkAndAnswer.Add(new PnjDialog($"Tu savais qu'avant l'écriture n'existait pas ?", new Dictionary<string, bool>()));
+            _runtimeData.PNJ[ListPnj.QUARTIER_3_3]._talkAndAnswer.Add(new PnjDialog($"Tout était raconté à l'oral ! ", new Dictionary<string, bool>()));
             _runtimeData.PNJ[ListPnj.QUARTIER_3_3].lookDir = Direction.UP;
 
             _runtimeData.PNJ[ListPnj.QUARTIER_3_4].spriteFactory(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 49 }));
@@ -411,16 +419,16 @@ namespace OrthoCite.Entities
             _runtimeData.PNJ[ListPnj.QUARTIER_3_4].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 72, 73, 74 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_3_4].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 84, 85, 86 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_3_4]._positionSec = new Vector2(44, 23);
-            //_runtimeData.PNJ[ListPnj.QUARTIER_3_4]._talkAndAnswer.Add($"Tu es là pour nous sauver ?", new Dictionary<string, bool>());
-            //_runtimeData.PNJ[ListPnj.QUARTIER_3_4]._talkAndAnswer.Add($"Merci beaucoup de ton aide !", new Dictionary<string, bool>());
+            _runtimeData.PNJ[ListPnj.QUARTIER_3_4]._talkAndAnswer.Add(new PnjDialog($"Tu es là pour nous sauver ?", new Dictionary<string, bool>()));
+            _runtimeData.PNJ[ListPnj.QUARTIER_3_4]._talkAndAnswer.Add(new PnjDialog($"Merci beaucoup de ton aide !", new Dictionary<string, bool>()));
 
             _runtimeData.PNJ[ListPnj.QUARTIER_3_5].spriteFactory(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 4 }));
             _runtimeData.PNJ[ListPnj.QUARTIER_3_5].spriteFactory(Helpers.Direction.DOWN, new SpriteSheetAnimationData(new[] { 4 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_3_5].spriteFactory(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 16 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_3_5].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 28 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_3_5].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 40 }, isLooping: false));
-           // _runtimeData.PNJ[ListPnj.QUARTIER_3_5]._talkAndAnswer.Add($"Ce quartier, c'est mon préféré", new Dictionary<string, bool>());
-            //_runtimeData.PNJ[ListPnj.QUARTIER_3_5]._talkAndAnswer.Add($"C'est le plus beau ! ", new Dictionary<string, bool>());
+            _runtimeData.PNJ[ListPnj.QUARTIER_3_5]._talkAndAnswer.Add(new PnjDialog($"Ce quartier, c'est mon préféré", new Dictionary<string, bool>()));
+            _runtimeData.PNJ[ListPnj.QUARTIER_3_5]._talkAndAnswer.Add(new PnjDialog($"C'est le plus beau ! ", new Dictionary<string, bool>()));
             _runtimeData.PNJ[ListPnj.QUARTIER_3_5].lookDir = Direction.DOWN;
 
             _runtimeData.PNJ[ListPnj.QUARTIER_3_6].spriteFactory(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 1 }));
@@ -429,16 +437,16 @@ namespace OrthoCite.Entities
             _runtimeData.PNJ[ListPnj.QUARTIER_3_6].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 24, 25, 26 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_3_6].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 36, 37, 38 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_3_6]._positionSec = new Vector2(48, 5);
-            //_runtimeData.PNJ[ListPnj.QUARTIER_3_6]._talkAndAnswer.Add($"Je viens de comprendre quand je dois écrire 'tous' ou tout'", new Dictionary<string, bool>());
-            //_runtimeData.PNJ[ListPnj.QUARTIER_3_6]._talkAndAnswer.Add($"Quand ce qui suit est au singulier j'écris 'tout' ! Par exemple : tout le village. ", new Dictionary<string, bool>());
-            //_runtimeData.PNJ[ListPnj.QUARTIER_3_6]._talkAndAnswer.Add($"Quand ce qui suit est au pluriel j'écris 'tous' ! Par exemple : tous les matins. ", new Dictionary<string, bool>());
+            _runtimeData.PNJ[ListPnj.QUARTIER_3_6]._talkAndAnswer.Add(new PnjDialog($"Je viens de comprendre quand je dois écrire 'tous' ou tout'", new Dictionary<string, bool>()));
+            _runtimeData.PNJ[ListPnj.QUARTIER_3_6]._talkAndAnswer.Add(new PnjDialog($"Quand ce qui suit est au singulier j'écris 'tout' ! Par exemple : tout le village. ", new Dictionary<string, bool>()));
+            _runtimeData.PNJ[ListPnj.QUARTIER_3_6]._talkAndAnswer.Add(new PnjDialog($"Quand ce qui suit est au pluriel j'écris 'tous' ! Par exemple : tous les matins. ", new Dictionary<string, bool>()));
 
             _runtimeData.PNJ[ListPnj.QUARTIER_4_1].spriteFactory(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 22 }));
             _runtimeData.PNJ[ListPnj.QUARTIER_4_1].spriteFactory(Helpers.Direction.DOWN, new SpriteSheetAnimationData(new[] { 10 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_4_1].spriteFactory(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 22 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_4_1].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 34 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_4_1].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 46 }, isLooping: false));
-            //_runtimeData.PNJ[ListPnj.QUARTIER_4_1]._talkAndAnswer.Add($"Tu dois être vraiment fort pour être arrivé jusqu'ici !", new Dictionary<string, bool>());
+            _runtimeData.PNJ[ListPnj.QUARTIER_4_1]._talkAndAnswer.Add(new PnjDialog($"Tu dois être vraiment fort pour être arrivé jusqu'ici !", new Dictionary<string, bool>()));
             _runtimeData.PNJ[ListPnj.QUARTIER_4_1].lookDir = Direction.LEFT;
 
             _runtimeData.PNJ[ListPnj.QUARTIER_4_2].spriteFactory(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 43 }));
@@ -446,9 +454,9 @@ namespace OrthoCite.Entities
             _runtimeData.PNJ[ListPnj.QUARTIER_4_2].spriteFactory(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 19 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_4_2].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 31 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_4_2].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 43 }, isLooping: false));
-            //_runtimeData.PNJ[ListPnj.QUARTIER_4_2]._talkAndAnswer.Add($"Je sais quand mettre 'là' ou 'la' dans une phrase ! ", new Dictionary<string, bool>());
-            //_runtimeData.PNJ[ListPnj.QUARTIER_4_2]._talkAndAnswer.Add($"Si tu peux le remplacer par 'par ici' tu devras l'écrire 'là' ! par exemple : Reste là ! ", new Dictionary<string, bool>());
-            //_runtimeData.PNJ[ListPnj.QUARTIER_4_2]._talkAndAnswer.Add($"Sinon tu devras l'écrire 'la'. ", new Dictionary<string, bool>());
+            _runtimeData.PNJ[ListPnj.QUARTIER_4_2]._talkAndAnswer.Add(new PnjDialog($"Je sais quand mettre 'là' ou 'la' dans une phrase ! ", new Dictionary<string, bool>()));
+            _runtimeData.PNJ[ListPnj.QUARTIER_4_2]._talkAndAnswer.Add(new PnjDialog($"Si tu peux le remplacer par 'par ici' tu devras l'écrire 'là' ! par exemple : Reste là ! ", new Dictionary<string, bool>()));
+            _runtimeData.PNJ[ListPnj.QUARTIER_4_2]._talkAndAnswer.Add(new PnjDialog($"Sinon tu devras l'écrire 'la'. ", new Dictionary<string, bool>()));
             _runtimeData.PNJ[ListPnj.QUARTIER_4_2].lookDir = Direction.UP;
 
             _runtimeData.PNJ[ListPnj.QUARTIER_4_3].spriteFactory(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 28 }));
@@ -456,8 +464,8 @@ namespace OrthoCite.Entities
             _runtimeData.PNJ[ListPnj.QUARTIER_4_3].spriteFactory(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 16 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_4_3].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 28 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_4_3].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 40 }, isLooping: false));
-           // _runtimeData.PNJ[ListPnj.QUARTIER_4_3]._talkAndAnswer.Add($"Lyrik essaie d'instaurer le chaos dans le monde", new Dictionary<string, bool>());
-           // _runtimeData.PNJ[ListPnj.QUARTIER_4_3]._talkAndAnswer.Add($"mais par chance, tu vas l'en empêcher ! ", new Dictionary<string, bool>());
+            _runtimeData.PNJ[ListPnj.QUARTIER_4_3]._talkAndAnswer.Add(new PnjDialog($"Lyrik essaie d'instaurer le chaos dans le monde", new Dictionary<string, bool>()));
+            _runtimeData.PNJ[ListPnj.QUARTIER_4_3]._talkAndAnswer.Add(new PnjDialog($"mais par chance, tu vas l'en empêcher ! ", new Dictionary<string, bool>()));
             _runtimeData.PNJ[ListPnj.QUARTIER_4_3].lookDir = Direction.RIGHT;
 
             _runtimeData.PNJ[ListPnj.QUARTIER_4_4].spriteFactory(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 82 }));
@@ -465,7 +473,7 @@ namespace OrthoCite.Entities
             _runtimeData.PNJ[ListPnj.QUARTIER_4_4].spriteFactory(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 70 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_4_4].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 82 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_4_4].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 94 }, isLooping: false));
-            //_runtimeData.PNJ[ListPnj.QUARTIER_4_4]._talkAndAnswer.Add($"je komprend pas pourkoi on écrit alor kon peu parler...", new Dictionary<string, bool>());
+            _runtimeData.PNJ[ListPnj.QUARTIER_4_4]._talkAndAnswer.Add(new PnjDialog($"je komprend pas pourkoi on écrit alor kon peu parler...", new Dictionary<string, bool>()));
             _runtimeData.PNJ[ListPnj.QUARTIER_4_4].lookDir = Direction.RIGHT;
 
             _runtimeData.PNJ[ListPnj.QUARTIER_4_5].spriteFactory(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 49 }));
@@ -473,8 +481,8 @@ namespace OrthoCite.Entities
             _runtimeData.PNJ[ListPnj.QUARTIER_4_5].spriteFactory(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 61 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_4_5].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 73 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_4_5].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 85 }, isLooping: false));
-           // _runtimeData.PNJ[ListPnj.QUARTIER_4_5]._talkAndAnswer.Add($"Je prie pour qu'on récupère nos lettres sacrées !", new Dictionary<string, bool>());
-           // _runtimeData.PNJ[ListPnj.QUARTIER_4_5]._talkAndAnswer.Add($"De plus en en plus de gens commencent à écrire n'importe comment et à dire n'importe quoi ! ", new Dictionary<string, bool>());
+            _runtimeData.PNJ[ListPnj.QUARTIER_4_5]._talkAndAnswer.Add(new PnjDialog($"Je prie pour qu'on récupère nos lettres sacrées !", new Dictionary<string, bool>()));
+            _runtimeData.PNJ[ListPnj.QUARTIER_4_5]._talkAndAnswer.Add(new PnjDialog($"De plus en en plus de gens commencent à écrire n'importe comment et à dire n'importe quoi ! ", new Dictionary<string, bool>()));
             _runtimeData.PNJ[ListPnj.QUARTIER_4_5].lookDir = Direction.DOWN;
 
             _runtimeData.PNJ[ListPnj.QUARTIER_4_6].spriteFactory(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 10 }));
@@ -482,8 +490,8 @@ namespace OrthoCite.Entities
             _runtimeData.PNJ[ListPnj.QUARTIER_4_6].spriteFactory(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 22 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_4_6].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 34 }, isLooping: false));
             _runtimeData.PNJ[ListPnj.QUARTIER_4_6].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 46 }, isLooping: false));
-           // _runtimeData.PNJ[ListPnj.QUARTIER_4_6]._talkAndAnswer.Add($"Prépare toi bien avant d'entrer !", new Dictionary<string, bool>());
-            //_runtimeData.PNJ[ListPnj.QUARTIER_4_6]._talkAndAnswer.Add($"ça ne va pas être facile. ", new Dictionary<string, bool>());
+            _runtimeData.PNJ[ListPnj.QUARTIER_4_6]._talkAndAnswer.Add(new PnjDialog($"Prépare toi bien avant d'entrer !", new Dictionary<string, bool>()));
+            _runtimeData.PNJ[ListPnj.QUARTIER_4_6]._talkAndAnswer.Add(new PnjDialog($"ça ne va pas être facile. ", new Dictionary<string, bool>()));
             _runtimeData.PNJ[ListPnj.QUARTIER_4_6].lookDir = Direction.DOWN;
 
 
@@ -501,6 +509,20 @@ namespace OrthoCite.Entities
                 i.Value.PNJPlayer.heroSprite.Scale = new Vector2(0.8f);
             }
             
+        }
+
+        private void ActionToAnswerPnjPortailBlock(RuntimeData r, bool TrueOrFalseAnswer)
+        {
+            if (TrueOrFalseAnswer)
+            {
+                r.GainLive();
+                _runtimeData.DialogBox.AddDialog("Bien Joué, tu n'est pas tombé dans mon piège !", 3).Show();
+            }
+            else
+            {
+                r.LooseLive();
+                _runtimeData.DialogBox.AddDialog("Je t'es eu, tu n'auras jamais notre chef Lyrick !!!", 3).Show();
+            }
         }
 
         private void checkCamera(Camera2D camera)
@@ -543,6 +565,7 @@ namespace OrthoCite.Entities
         public void MoveTo(Vector2 vec)
         {
             _player.positionVirt = vec;
+            _player.UpdateThePosition();
         }
         
         public void checkIfWeLaunchInstance(TiledTile i)
