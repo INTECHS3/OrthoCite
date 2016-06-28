@@ -39,12 +39,8 @@ namespace OrthoCite
     public class OrthoCite : Game
     {
 
-
         const GameContext STARTING_ENTITY = GameContext.MINIGAME_STOPGAME;
-
-
-
-
+        
         BoxingViewportAdapter _viewportAdapter;
         Camera2D _camera;
         RuntimeData _runtimeData;
@@ -60,19 +56,16 @@ namespace OrthoCite
         GameContext _gameContext;
         public bool _gameContextChanged;
         GameQueue _queue;
-
-
+        
         public static void writeSpacerConsole() => System.Console.WriteLine("===========================================");
         
-
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool AllocConsole();
 
         public OrthoCite()
         {
-            
-            
+                    
             _runtimeData = new RuntimeData();
             _runtimeData.OrthoCite = this;
             _runtimeData.DataSave = new DataSave(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\datasaves");
