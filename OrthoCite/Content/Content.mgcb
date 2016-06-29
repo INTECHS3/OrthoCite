@@ -1060,18 +1060,6 @@
 /processorParam:Quality=Best
 /build:minigames/Rearranger/success.ogg
 
-#begin menuingame/leave.jpg
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:menuingame/leave.jpg
-
 #begin minigames/boss/music.ogg
 /importer:OggImporter
 /processor:SongProcessor
@@ -1295,4 +1283,28 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:minigames/Home/zelda.png
+
+#begin menuingame/leave.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:menuingame/leave.png
+
+#begin menuingame/clear.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:menuingame/clear.png
 

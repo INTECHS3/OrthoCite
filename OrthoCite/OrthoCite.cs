@@ -40,7 +40,7 @@ namespace OrthoCite
     public class OrthoCite : Game
     {
 
-        const GameContext STARTING_ENTITY = GameContext.INTRO;
+        const GameContext STARTING_ENTITY = GameContext.MAP;
 
 
         BoxingViewportAdapter _viewportAdapter;
@@ -60,6 +60,7 @@ namespace OrthoCite
         GameQueue _queue;
         
         public static void writeSpacerConsole() => System.Console.WriteLine("===========================================");
+
         
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -353,6 +354,14 @@ namespace OrthoCite
             Console.WriteLine("Exit");
             Exit();
           
+        }
+        internal void ClearSave(Button button)
+        {
+            Console.WriteLine("Clear Save");
+            _runtimeData.DataSave.Clear();
+            _runtimeData.DataSave.Save();
+            Console.WriteLine("Reload");
+            ChangeGameContext(GameContext.MAP);
         }
 
         private bool okToGoInBoss(int nbDistrict)

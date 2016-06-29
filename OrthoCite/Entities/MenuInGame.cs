@@ -36,11 +36,13 @@ namespace OrthoCite.Entities
         }
         void IEntity.LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
         {
-            _leaveButton = new Button(new Vector2(700, 50), "menuingame/leave", _runtimeData);
+            _leaveButton = new Button(new Vector2(700, 130), "menuingame/leave", _runtimeData);
             _leaveButton.LoadContent(content, graphicsDevice);
             _leaveButton.onClick += _runtimeData.OrthoCite.Leave;
 
-            
+            _clearSaveButton = new Button(new Vector2(700, 50), "menuingame/clear", _runtimeData);
+            _clearSaveButton.LoadContent(content, graphicsDevice);
+            _clearSaveButton.onClick += _runtimeData.OrthoCite.ClearSave;
 
 
             _tileMap = content.Load<TiledMap>("map/Map");
@@ -78,7 +80,9 @@ namespace OrthoCite.Entities
             else if (_saveTime.TotalMilliseconds <= gameTime.TotalGameTime.TotalMilliseconds - 400) _saveTime = new TimeSpan(0, 0, 0);
 
             if (_isVisible)
-            { _leaveButton.Update(gameTime, keyboardState, camera, 0f); }
+            { _leaveButton.Update(gameTime, keyboardState, camera, 0f);
+                _clearSaveButton.Update(gameTime, keyboardState, camera, 0f);
+            }
             
         }
 
@@ -91,6 +95,7 @@ namespace OrthoCite.Entities
             {
                 spriteBatch.Draw(_bgRectangle, _rec, Color.White * 0.7f);
                 _leaveButton.Draw(spriteBatch);
+                _clearSaveButton.Draw(spriteBatch);
             }
             spriteBatch.End();
 
