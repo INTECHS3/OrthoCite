@@ -42,6 +42,18 @@ namespace OrthoCite.Helpers
         QUARTIER_4_4,
         QUARTIER_4_5,
         QUARTIER_4_6,
+        HOME_1,
+        HOME_2,
+        HOME_3,
+        HOME_4,
+        HOME_5,
+        HOME_6,
+        HOME_7,
+        HOME_8,
+        HOME_9,
+        HOME_10,
+        HOME_11,
+        HOME_12,
         THROWGAME,
         PORTAILBLOCK
     }

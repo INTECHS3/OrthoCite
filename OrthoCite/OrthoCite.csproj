@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="DataSave.cs" />
     <Compile Include="Entities\MiniGames\Boss\StopGame.cs" />
+    <Compile Include="Entities\MiniGames\Home.cs" />
     <Compile Include="Entities\Rules.cs" />
     <Compile Include="Entities\MiniGames\Boss\ThrowGame.cs" />
     <Compile Include="Entities\LostScreen.cs" />
