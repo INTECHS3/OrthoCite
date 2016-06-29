@@ -38,6 +38,7 @@ namespace OrthoCite.Entities
         public TiledMap textMap;
         TiledTileLayer _upLayer;
         Helpers.Player _player;
+        Song _music;
   
         int _gidStart;
         const int _gidSpawn = 1151;
@@ -76,6 +77,7 @@ namespace OrthoCite.Entities
         void IEntity.LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
         {
             textMap = content.Load<TiledMap>("map/Map");
+            _music = content.Load<Song>("map/music");
 
             foreach (TiledTileLayer e in textMap.TileLayers)
             {
@@ -118,6 +120,7 @@ namespace OrthoCite.Entities
             _district.Add(new District(3, new Vector2(0, 0), new Vector2(0, 33), new Vector2(51,0), new Vector2(51, 33)));
             _district.Add(new District(4, new Vector2(0, 40), new Vector2(0, textMap.Height), new Vector2(46 , 40), new Vector2(46, textMap.Height)));
             
+            
         }
 
         void IEntity.UnloadContent()
@@ -144,6 +147,8 @@ namespace OrthoCite.Entities
 
             if (_firstUpdate)
             {
+                MediaPlayer.IsRepeating = true;
+                MediaPlayer.Play(_music);
                 camera.Zoom = _zoom;
                 _player.position = new Vector2(_player.positionVirt.X * textMap.TileWidth, _player.positionVirt.Y * textMap.TileHeight);
                 _firstUpdate = !_firstUpdate;
@@ -298,15 +303,8 @@ namespace OrthoCite.Entities
                 else if (_runtimeData.DataSave.District == 2) _runtimeData.PNJ[ListPnj.PORTAILBLOCK].lookDir = Direction.RIGHT;
                 else if (_runtimeData.DataSave.District == 3) _runtimeData.PNJ[ListPnj.PORTAILBLOCK].lookDir = Direction.UP;
 
-
-                _runtimeData.pnj[ListPnj.PORTAILBLOCK]._talkAndAnswer.Add(new PnjDialog($"Désolé tu n'as pas fini les mini jeux du quartier {_runtimeData.DataSave.District}, tu ne peux pas avancer !", new Dictionary<string, bool>()));
-                _runtimeData.pnj[ListPnj.PORTAILBLOCK]._talkAndAnswer.Add(new PnjDialog($"Avou tu voudrai rentré ????", new Dictionary<string, bool>() { { "Oui", false }, { "Non", true} }));
-                
-
-                _runtimeData.pnj[ListPnj.PORTAILBLOCK].playerAnswerToPnj += ActionToAnswerPnjPortailBlock; //Action Celon la reponse voir methode d'exemple en dessous LOIN ! ^^ 
-
-                //_runtimeData.PNJ[ListPnj.PORTAILBLOCK]._talkAndAnswer.Add($"Désolé tu n'as pas fini les mini jeux du quartier {_runtimeData.DataSave.District}, tu ne peux pas avancer !", new Dictionary<string, bool>());
-                //_runtimeData.PNJ[ListPnj.PORTAILBLOCK]._talkAndAnswer.Add($"Fini et reviens me voir après ! ", new Dictionary<string, bool>());
+                _runtimeData.PNJ[ListPnj.PORTAILBLOCK]._talkAndAnswer.Add(new PnjDialog($"Désolé tu n'as pas fini les mini jeux du quartier {_runtimeData.DataSave.District}, tu ne peux pas avancer !", new Dictionary<string, bool>()));
+                _runtimeData.PNJ[ListPnj.PORTAILBLOCK]._talkAndAnswer.Add(new PnjDialog($"Fini et reviens me voir après ! ", new Dictionary<string, bool>()));
 
 
             }
