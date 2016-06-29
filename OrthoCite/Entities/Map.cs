@@ -235,6 +235,20 @@ namespace OrthoCite.Entities
                     try { _runtimeData.DialogBox.AddDialog("SetEmpty", 2).Show(); }
                     catch { Console.WriteLine("use : error"); }
                     break;
+                case "setLife":
+                    try { if (Int32.Parse(param[1]) < _runtimeData.Lives)
+                        {
+                            int liveTmp = _runtimeData.Lives - Int32.Parse(param[1]);
+                            _runtimeData.LooseLive(liveTmp);
+                        }
+                         else
+                        {
+                            int liveTmp = Int32.Parse(param[1]) - _runtimeData.Lives;
+                            _runtimeData.GainLive(liveTmp);
+                        }
+                    }
+                    catch { Console.WriteLine("use : error"); }
+                    break;
                 default:
                     Console.WriteLine("Can't find method to invoke in Map Class");
                     break;
