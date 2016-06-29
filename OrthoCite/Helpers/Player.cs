@@ -111,14 +111,12 @@ namespace OrthoCite.Helpers
                 HeroWalkingFactory.Add(Direction.LEFT.ToString(), spriteFactory[Direction.LEFT]);
                 HeroWalkingFactory.Add(Direction.RIGHT.ToString(), spriteFactory[Direction.RIGHT]);
                 HeroWalkingFactory.Add(Direction.UP.ToString(), spriteFactory[Direction.UP]);
-                try
-                {
-                    HeroWalkingFactory.Add(Direction.ATTACK_TOP.ToString(), spriteFactory[Direction.ATTACK_TOP]);
-                    HeroWalkingFactory.Add(Direction.ATTACK_DOWN.ToString(), spriteFactory[Direction.ATTACK_DOWN]);
-                    HeroWalkingFactory.Add(Direction.ATTACK_LEFT.ToString(), spriteFactory[Direction.ATTACK_LEFT]);
-                    HeroWalkingFactory.Add(Direction.ATTACK_RIGHT.ToString(), spriteFactory[Direction.ATTACK_RIGHT]);
-                }
-                catch { Console.WriteLine("No Attack"); }
+
+                if (spriteFactory.ContainsKey(Direction.ATTACK_TOP)) HeroWalkingFactory.Add(Direction.ATTACK_TOP.ToString(), spriteFactory[Direction.ATTACK_TOP]);
+                if (spriteFactory.ContainsKey(Direction.ATTACK_DOWN)) HeroWalkingFactory.Add(Direction.ATTACK_DOWN.ToString(), spriteFactory[Direction.ATTACK_DOWN]);
+                if (spriteFactory.ContainsKey(Direction.ATTACK_LEFT)) HeroWalkingFactory.Add(Direction.ATTACK_LEFT.ToString(), spriteFactory[Direction.ATTACK_LEFT]);
+                if (spriteFactory.ContainsKey(Direction.ATTACK_RIGHT)) HeroWalkingFactory.Add(Direction.ATTACK_RIGHT.ToString(), spriteFactory[Direction.ATTACK_RIGHT]);
+                
                
 
                 heroAnimations = new SpriteSheetAnimator(HeroWalkingFactory);
@@ -321,7 +319,7 @@ namespace OrthoCite.Helpers
                 if (_runtimeData.DoorGame != null && _runtimeData.DoorGame.CheckColUp(i)) return true;
                 if (_runtimeData.Rearranger != null && _runtimeData.Rearranger.CheckColUp(i)) return true;
                 if (_runtimeData.ThrowGame != null) _runtimeData.ThrowGame.CheckBadTile(i);
-
+                if (_runtimeData.StopGame != null && _runtimeData.StopGame.CheckColUp(i)) return true;
 
             }
 
@@ -343,6 +341,7 @@ namespace OrthoCite.Helpers
                 if (i.X == positionVirt.X && i.Y == positionVirt.Y + 1 && i.Id == gidCol) return true;
                 if (_runtimeData.Player != null && _runtimeData.Player != this && _runtimeData.Player.positionVirt.X == positionVirt.X && _runtimeData.Player.positionVirt.Y == positionVirt.Y + 1) return true;
                 if (_runtimeData.ThrowGame != null) _runtimeData.ThrowGame.CheckBadTile(i);
+                if (_runtimeData.StopGame != null && _runtimeData.StopGame.CheckColDown(i)) return true;
             }
             foreach (KeyValuePair<ListPnj, PNJ> i in _runtimeData.PNJ)
             {
@@ -378,6 +377,7 @@ namespace OrthoCite.Helpers
                 if (_runtimeData.Player != null && _runtimeData.Player != this && _runtimeData.Player.positionVirt.X == positionVirt.X + 1 && _runtimeData.Player.positionVirt.Y == positionVirt.Y) return true;
                 if (_runtimeData.ThrowGame != null) _runtimeData.ThrowGame.CheckBadTile(i);
                 if (_runtimeData.DoorGame != null && _runtimeData.DoorGame.CheckColRight(i)) return true;
+                if (_runtimeData.StopGame != null && _runtimeData.StopGame.CheckColRight(i)) return true;
 
             }
             foreach (KeyValuePair<ListPnj, PNJ> i in _runtimeData.PNJ)

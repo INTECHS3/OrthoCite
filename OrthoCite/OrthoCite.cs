@@ -39,7 +39,7 @@ namespace OrthoCite
     public class OrthoCite : Game
     {
 
-        const GameContext STARTING_ENTITY = GameContext.MINIGAME_STOPGAME;
+        const GameContext STARTING_ENTITY = GameContext.MAP;
         
         BoxingViewportAdapter _viewportAdapter;
         Camera2D _camera;
@@ -109,6 +109,10 @@ namespace OrthoCite
             _camera = new Camera2D(_viewportAdapter);
 
             base.Initialize();
+
+
+           
+            
         }
 
         /// <summary>
@@ -126,6 +130,10 @@ namespace OrthoCite
                 entity.LoadContent(this.Content, this.GraphicsDevice);
             }
             recordConsole(_queue);
+
+
+           
+
         }
 
 
@@ -267,18 +275,42 @@ namespace OrthoCite
                     _entities.Add(rearranger);
                     break;
                 case GameContext.MINIGAME_BOSS:
+                    if (okToGoInBoss(1))
+                    {
+                        _runtimeData.DialogBox.AddDialog("Impossible d'acceder à ce niveaux, tu n'as pas debloquer les niveaux du district !", 4).Show();
+                        _entities.Add(new Map(_runtimeData));
+                        break;
+                    }
                     Console.WriteLine("boss minigame");
                     _entities.Add(new BossGame(_runtimeData));
                     break;
                 case GameContext.MINIGAME_THROWGAME:
+                    if (okToGoInBoss(3))
+                    {
+                        _runtimeData.DialogBox.AddDialog("Impossible d'acceder à ce niveaux, tu n'as pas debloquer les niveaux du district !", 4).Show();
+                        _entities.Add(new Map(_runtimeData));
+                        break;
+                    }
                     Console.WriteLine("ThrowGame");
                     _entities.Add(new ThrowGame(_runtimeData));
                     break;
                 case GameContext.MINIGAME_GUESSGAME:
+                    if (okToGoInBoss(1))
+                    {
+                        _runtimeData.DialogBox.AddDialog("Impossible d'acceder à ce niveaux, tu n'as pas debloquer les niveaux du district !", 4).Show();
+                        _entities.Add(new Map(_runtimeData));
+                        break;
+                    }
                     Console.WriteLine("GuessGame");
                     _entities.Add(new GuessGame(_runtimeData));
                     break;
                 case GameContext.MINIGAME_STOPGAME:
+                    if (okToGoInBoss(2))
+                    {
+                        _runtimeData.DialogBox.AddDialog("Impossible d'acceder à ce niveaux, tu n'as pas debloquer les niveaux du district !", 4).Show();
+                        _entities.Add(new Map(_runtimeData));
+                        break;
+                    }
                     Console.WriteLine("StopGame");
                     _entities.Add(new StopGame(_runtimeData));
                     break;
@@ -317,6 +349,14 @@ namespace OrthoCite
           
         }
 
-        
+        private bool okToGoInBoss(int nbDistrict)
+        {
+
+            if (nbDistrict <= _runtimeData.DataSave.District && _runtimeData.DataSave.MiniGameIsValidated(DataSaveMiniGame.DOORGAME) && _runtimeData.DataSave.MiniGameIsValidated(DataSaveMiniGame.REARRANGER) && _runtimeData.DataSave.MiniGameIsValidated(DataSaveMiniGame.PLATFORMER)) return false;
+
+            
+            return true;
+
+        }
     }
 }

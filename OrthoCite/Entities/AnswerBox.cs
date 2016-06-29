@@ -130,7 +130,7 @@ namespace OrthoCite.Helpers
 
             if (keyboardState.IsKeyDown(Keys.Down)) tryDownCursor();
             else if (keyboardState.IsKeyDown(Keys.Up)) tryUpCursor();
-            else if (keyboardState.IsKeyDown(Keys.Enter)) lookAnswer();
+            else if (keyboardState.IsKeyDown(Keys.E)) lookAnswer();
         }
 
         private void lookAnswer()
