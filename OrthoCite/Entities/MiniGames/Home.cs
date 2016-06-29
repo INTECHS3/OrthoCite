@@ -109,6 +109,10 @@ namespace OrthoCite.Entities.MiniGames
         {
             
             var deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            foreach(TiledTile i in _player.collisionLayer.Tiles )
+            {
+                if(i.Id == 44 && i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y) _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
+            }
             if (_firstUpdate)
             {
 
