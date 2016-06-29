@@ -1296,3 +1296,9 @@
 /processorParam:TextureFormat=Color
 /build:minigames/Home/zelda.png
 
+#begin minigames/throwgame/music.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:minigames/throwgame/music.ogg
+
