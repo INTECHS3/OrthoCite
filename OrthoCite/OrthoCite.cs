@@ -43,6 +43,7 @@ namespace OrthoCite
         const GameContext STARTING_ENTITY = GameContext.MAP;
 
 
+
         BoxingViewportAdapter _viewportAdapter;
         Camera2D _camera;
         RuntimeData _runtimeData;

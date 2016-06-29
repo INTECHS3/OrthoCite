@@ -1308,3 +1308,9 @@
 /processorParam:TextureFormat=Color
 /build:menuingame/clear.png
 
+
+#begin minigames/throwgame/music.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:minigames/throwgame/music.ogg

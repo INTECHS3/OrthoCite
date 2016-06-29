@@ -64,8 +64,8 @@ namespace OrthoCite.Entities
                     break;
                 case GameContext.MINIGAME_DOORGAME:
                     text = String.Join(" \n ",
-                        "Il y a deux portes au fond de chaque salle.",
-                        "Lis les panneaux devant chaque porte, et choisis celle où le mot est bien écrit.",
+                        "Il y a deux ou trois portes au fond de chaque salle.",
+                        "Place toi face à un panneau pour le lire et choisis la bonne porte.",
                         " \n ",
                         "Si tu te trompes de porte, tu perds une vie.",
                         " \n ",
@@ -75,11 +75,12 @@ namespace OrthoCite.Entities
                     break;
                 case GameContext.MINIGAME_REARRANGER:
                     text = String.Join(" \n ",
-                        "Il y a un mot affiché par terre. Les lettres sont mélangées.",
-                        "Replace les lettre dans le bon ordre, en appuyant sur [E] pour déplacer les lettres et [A] pour valider.",
+                        "Il y a un mot affiché sur les tables. Les lettres sont mélangées.",
+                        "Replace les lettre dans le bon ordre, en appuyant sur [E] pour déplacer les lettres sur les tables et [A] pour valider ton mot.",
                         " \n ",
                         "Si tu te trompes dans l'ordre, tu perds une vie.",
                         " \n ",
+                        "Tu as une minute pour trouver chaque mot",
                         " \n ",
                         "Bon courage !"
                     );
@@ -89,13 +90,30 @@ namespace OrthoCite.Entities
                         "Quelqu'un te lance des mots !",
                         "Certains mots sont corrects, d'autres ne le sont pas. Tire sur les mauvais mots avec [E].",
                         " \n ",
-                        "Si tu te tires sur un mot valide ou si tu laisses tomber un mot invalide, tu perds une vie.",
+                        "Si tu tires sur un mot valide ou si tu laisses tomber un mot invalide, tu perds une vie.",
+                        "\n",
+                        "Si tu marches sur une des cases rouge au sol, tu perd une vie",
                         " \n ",
                         " \n ",
                         "Bon courage !"
                     );
                     break;
-                default:
+                    case GameContext.MINIGAME_GUESSGAME:
+                    text = String.Join(" \n ",
+                        "Des verbes conjugués vont apparaître en haut de l'écran. Appuie sur [A] si tu penses que le verbe est valide",
+                        "\n",
+                        "Appuie sur [E] si tu penses que le verbe est invalide. Tu as 15 secondes pour choisir avant de perdre une vie",
+                        "\n",
+                        "Des cases vont apparaître au sol, si tu marches dessus, tu perds une vie",
+                        "\n",
+                        "Pour gagner, tu dois valider 30 mots",
+                        "\n",
+                        "\n",
+                        "Bon courage !"
+                    );
+                    break;
+
+                    default:
                     text = String.Join(" \n ",
                         "Pas de règles."
                     );

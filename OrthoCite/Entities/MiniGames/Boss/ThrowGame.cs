@@ -88,7 +88,7 @@ namespace OrthoCite.Entities.MiniGames
             _textureMap = content.Load<TiledMap>("minigames/throwgame/throwGame");
             _font = content.Load<SpriteFont>("minigames/throwgame/font");
             _fontCompteur = content.Load<SpriteFont>("minigames/throwgame/font_compteur");
-            _music = content.Load<Song>("minigames/DoorGame/music");
+            _music = content.Load<Song>("minigames/throwgame/music");
             _open = content.Load<SoundEffect>("minigames/DoorGame/open");
 
             foreach (TiledTileLayer e in _textureMap.TileLayers)
