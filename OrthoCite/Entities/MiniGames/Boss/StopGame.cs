@@ -18,6 +18,20 @@ using OrthoCite.Helpers;
 
 namespace OrthoCite.Entities.MiniGames
 { 
+    struct saveWordTerminason
+    {
+        public string Word { get; private set; }
+        public string Term { get; private set; }
+        public bool TrueOrFalse { get; private set; }
+
+        public saveWordTerminason(string TheWord, string TheTerm, bool ItsTrueOrFalse)
+        {
+            Word = TheWord;
+            Term = TheTerm;
+            TrueOrFalse = ItsTrueOrFalse;
+        }
+    }
+
     public class StopGame : MiniGame
     {
 
@@ -41,6 +55,8 @@ namespace OrthoCite.Entities.MiniGames
 
         GameTime _saveGameTime;
 
+        Queue<List<saveWordTerminason>> wordsQueue;
+
         
 
         public StopGame(RuntimeData runtimeData)
@@ -51,6 +67,8 @@ namespace OrthoCite.Entities.MiniGames
             _player = new Player(TypePlayer.WithSpriteSheet, _runtimeData, "animations/Walking_V2");
 
             _runtimeData.Player = _player;
+
+            wordsQueue = new Queue<List<saveWordTerminason>>();
 
             if (_runtimeData.Lives == 0) _runtimeData.GainLive(3);
         }
@@ -99,12 +117,13 @@ namespace OrthoCite.Entities.MiniGames
             _player.typeDeplacement = TypeDeplacement.WithKey;
 
             _player.LoadContent(content);
-            
+            LoadAllWords();
 
             Start();
 
 
         }
+
 
         public override void UnloadContent()
         {
@@ -207,7 +226,30 @@ namespace OrthoCite.Entities.MiniGames
             _player.positionVirt = vec;
         }
 
+        private void LoadAllWords()
+        {
+            XmlDocument _saveOfWordXml = new XmlDocument();
 
+            _saveOfWordXml.Load(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\Content\dictionaries\StopGame.xml");
+
+            XmlNode elementWords = _saveOfWordXml.DocumentElement;
+            XmlNode districtElement = elementWords.SelectSingleNode("district");
+
+            foreach (XmlNode group in districtElement.SelectNodes("group"))
+            {
+                List<saveWordTerminason> tmpList = new List<saveWordTerminason>();
+
+                foreach (XmlNode word in group.SelectNodes("word"))
+                {
+                    bool tmpBool = false;
+                    if (word.Attributes["typeWorld"].Value == "true") tmpBool = true;
+
+                    tmpList.Add(new saveWordTerminason(word.InnerText, word.Attributes["term"].Value, tmpBool));
+                }
+
+                wordsQueue.Enqueue(tmpList);
+            }
+        }
     }
 }
 

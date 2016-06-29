@@ -246,7 +246,8 @@ namespace OrthoCite.Entities.MiniGames
 
         internal override void Start()
         {
-
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Play(_music);
         }
 
 
