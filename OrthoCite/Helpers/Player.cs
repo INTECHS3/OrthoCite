@@ -7,7 +7,6 @@ using MonoGame.Extended.Animations.SpriteSheets;
 using MonoGame.Extended.Sprites;
 using MonoGame.Extended.TextureAtlases;
 using System.Collections.Generic;
-using System;
 
 namespace OrthoCite.Helpers
 {

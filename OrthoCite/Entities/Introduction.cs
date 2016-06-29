@@ -8,7 +8,6 @@ using MonoGame.Extended.Animations.Tweens;
 using MonoGame.Extended.Maps.Tiled;
 using MonoGame.Extended.Sprites;
 using MonoGame.Extended.TextureAtlases;
-using System;
 
 namespace OrthoCite.Entities
 {
