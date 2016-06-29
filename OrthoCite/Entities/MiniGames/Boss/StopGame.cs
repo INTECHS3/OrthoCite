@@ -32,13 +32,25 @@ namespace OrthoCite.Entities.MiniGames
         }
     }
 
+    struct  positionOfSaveWordTerminason
+    {
+        public saveWordTerminason saveWordStruct { get; set; }
+        public Vector2 positionOfWord { get; set; }
+
+        public positionOfSaveWordTerminason(saveWordTerminason s, Vector2 pos)
+        {
+            saveWordStruct = s;
+            positionOfWord = pos;
+        }
+    }
+
     public class StopGame : MiniGame
     {
 
         RuntimeData _runtimeData;
         TiledMap _textureMap;
         Player _player;
-
+    
         SpriteFont _font;
         SpriteFont _fontCompteur;
 
@@ -50,21 +62,29 @@ namespace OrthoCite.Entities.MiniGames
         const int ZOOM = 3;
         const int FAST_SPEED_PLAYER = 8;
         const int LOW_SPEED_PLAYER = 13;
-        
+        const int WIDTHHEIGHTTITLE = 32;
+        const int LIMITTOPLAYER = 7;
         const int DISTRICT = 2;
+        const int TIME_INTERVAL_PUSH_BUTTON = 500; //IN MILLISECONDS
+        static readonly int[] BUTTONTILECOL = new int[4] { 153, 154, 155, 156 };
+        
 
         GameTime _saveGameTime;
 
         Queue<List<saveWordTerminason>> wordsQueue;
+        List<saveWordTerminason> actualWords;
+        List<positionOfSaveWordTerminason> actualPositionWords;
+        Vector2[] staticPositionSpawn = new Vector2[4] { new Vector2(22 * WIDTHHEIGHTTITLE,5 * WIDTHHEIGHTTITLE), new Vector2(22 * WIDTHHEIGHTTITLE ,7 * WIDTHHEIGHTTITLE), new Vector2(22 * WIDTHHEIGHTTITLE,9 * WIDTHHEIGHTTITLE), new Vector2(22 * WIDTHHEIGHTTITLE,11 * WIDTHHEIGHTTITLE)};
+        Dictionary<int, Vector2> staticPositionButtonVirt = new Dictionary<int, Vector2>() { { 153, new Vector2(5,5)}, { 154, new Vector2(5,7)}, { 155, new Vector2(5,9)}, { 156, new Vector2(5,11)} };
 
-        
+        TimeSpan _saveTimePressButton;
 
         public StopGame(RuntimeData runtimeData)
         {
             _runtimeData = runtimeData;
             _runtimeData.StopGame = this;
 
-            _player = new Player(TypePlayer.WithSpriteSheet, _runtimeData, "animations/Walking_V2");
+            _player = new Player(TypePlayer.WithSpriteSheet, _runtimeData, "animations/Walking");
 
             _runtimeData.Player = _player;
 
@@ -139,9 +159,9 @@ namespace OrthoCite.Entities.MiniGames
             _saveGameTime = gameTime;
             var deltaSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
             camera.Zoom = ZOOM;
-            
-            
-            
+
+            if(keyboardState.IsKeyDown(Keys.E)) checkButtonPlayer();
+            checkWord();
 
             _player.checkMove(keyboardState);
             _player.heroAnimations.Update(deltaSeconds);
@@ -151,6 +171,39 @@ namespace OrthoCite.Entities.MiniGames
             if (keyboardState.IsKeyDown(Keys.F9)) _player.collisionLayer.IsVisible = !_player.collisionLayer.IsVisible;
         }
 
+        private void checkButtonPlayer()
+        {
+            foreach(KeyValuePair<int, Vector2> i in staticPositionButtonVirt)
+            {
+                if ((i.Value.X == _player.positionVirt.X + 1 && i.Value.Y == _player.positionVirt.Y)) launchDestroyWord(i.Value.Y * WIDTHHEIGHTTITLE);
+            }
+        }
+
+        private void launchDestroyWord(float y)
+        {
+            if (_saveTimePressButton.TotalMilliseconds == 0)
+            {
+                List<positionOfSaveWordTerminason> iTmp = new List<positionOfSaveWordTerminason>();
+
+                _saveTimePressButton = _saveGameTime.TotalGameTime;
+                if (actualPositionWords == null) return;
+                foreach (positionOfSaveWordTerminason i in actualPositionWords)
+                {
+                    if (i.positionOfWord.Y == y) iTmp.Add(i);
+                }
+                foreach(positionOfSaveWordTerminason i in iTmp)
+                {
+                    if (i.saveWordStruct.TrueOrFalse) actionWhenTrueIsDelete();
+                    actualWords.Remove(i.saveWordStruct);
+                    actualPositionWords.Remove(i);
+                }
+            }
+            else if (_saveTimePressButton.TotalMilliseconds < _saveGameTime.TotalGameTime.TotalMilliseconds - TIME_INTERVAL_PUSH_BUTTON) _saveTimePressButton = new TimeSpan(0);
+            
+        }
+
+        
+
         public override void Draw(SpriteBatch spriteBatch, Matrix frozenMatrix, Matrix cameraMatrix)
         {
             spriteBatch.Begin(transformMatrix: cameraMatrix);
@@ -158,6 +211,15 @@ namespace OrthoCite.Entities.MiniGames
             _textureMap.Draw(spriteBatch);
 
             _player.Draw(spriteBatch);
+            if(actualPositionWords != null)
+            {
+                foreach (positionOfSaveWordTerminason i in actualPositionWords)
+                {
+                    spriteBatch.DrawString(_font, i.saveWordStruct.Term, new Vector2(LIMITTOPLAYER * WIDTHHEIGHTTITLE, i.positionOfWord.Y), Color.White);
+                    spriteBatch.DrawString(_font, i.saveWordStruct.Word, i.positionOfWord, Color.White);
+                }
+            }
+            
 
             spriteBatch.End();
 
@@ -182,6 +244,82 @@ namespace OrthoCite.Entities.MiniGames
         internal override void Start()
         {
 
+        }
+
+        private void checkWord()
+        {
+            if(actualWords == null && wordsQueue.Count != 0)
+            {
+                
+                actualWords = wordsQueue.Dequeue();
+                actualPositionWords = new List<positionOfSaveWordTerminason>();
+
+                var count = 0;
+
+                foreach(saveWordTerminason wordStruct in actualWords)
+                {
+                    actualPositionWords.Add(new positionOfSaveWordTerminason(wordStruct, staticPositionSpawn[count++]));
+                }
+            }
+            else if(actualWords != null)
+            {
+                List<positionOfSaveWordTerminason> structToDel = new List<positionOfSaveWordTerminason>();
+
+                foreach(positionOfSaveWordTerminason pair in actualPositionWords)
+                {
+                    if (pair.positionOfWord.X == LIMITTOPLAYER * WIDTHHEIGHTTITLE)
+                    {
+                        structToDel.Add(pair);
+                        if (!pair.saveWordStruct.TrueOrFalse) actionWhenFalsePass();
+                    }
+                }
+
+                foreach(positionOfSaveWordTerminason s in structToDel)
+                {
+                    actualWords.Remove(s.saveWordStruct);
+                    actualPositionWords.Remove(s);
+                }
+
+                if(actualWords.Count == 0)
+                {
+                    actualWords = null;
+                    actualPositionWords = null;
+                    return;
+                }
+
+                for(int i = 0; i < actualPositionWords.Count; i++)
+                {
+                    positionOfSaveWordTerminason tmpVar = actualPositionWords[i];
+                    tmpVar.positionOfWord += new Vector2(-1, 0);
+                    actualPositionWords[i] = tmpVar;
+                }
+                
+
+
+            }
+            else if(wordsQueue.Count == 0)
+            {
+                if (_runtimeData.DistrictActual == DISTRICT && _runtimeData.DataSave.District == DISTRICT)
+                {
+                    _runtimeData.DataSave.District = DISTRICT + 1;
+                    _runtimeData.DataSave.ClearMiniGames();
+                    _runtimeData.DataSave.Save();
+                }
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
+            }
+
+        }
+
+        private void actionWhenFalsePass()
+        {
+            _runtimeData.DialogBox.AddDialog("Une mauvaise terminaison est passé ahahah, Lyrick sera toujour maitre du monde", 3);
+            _runtimeData.LooseLive();
+        }
+
+        private void actionWhenTrueIsDelete()
+        {
+            _runtimeData.DialogBox.AddDialog("Tu as detruit une bonne terminaison, l'orthographe n'existera jamais !", 3);
+            _runtimeData.LooseLive();
         }
 
         private void checkCamera(Camera2D camera)
@@ -249,6 +387,33 @@ namespace OrthoCite.Entities.MiniGames
 
                 wordsQueue.Enqueue(tmpList);
             }
+        }
+
+        internal bool CheckColDown(TiledTile i)
+        {
+            for(int e = 0; e < BUTTONTILECOL.Length; e++)
+            {
+                if (i.Id == BUTTONTILECOL[e] && i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y + 1) return true;
+            }
+            return false;
+        }
+
+        internal bool CheckColUp(TiledTile i)
+        {
+            for (int e = 0; e < BUTTONTILECOL.Length; e++)
+            {
+                if (i.Id == BUTTONTILECOL[e] && i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1) return true;
+            }
+            return false;
+        }
+
+        internal bool CheckColRight(TiledTile i)
+        {
+            for (int e = 0; e < BUTTONTILECOL.Length; e++)
+            {
+                if (i.Id == BUTTONTILECOL[e] && i.X == _player.positionVirt.X + 1 && i.Y == _player.positionVirt.Y) return true;
+            }
+            return false;
         }
     }
 }

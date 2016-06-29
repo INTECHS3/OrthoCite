@@ -47,6 +47,7 @@ namespace OrthoCite.Entities.MiniGames
         const int _gidSpawn = 46;
         const int _fastSpeedPlayer = 8;
         const int _lowSpeedPlayer = 13;
+        const int DISTRICT = 1;
         const int _ligne = 9;
         const int columns = 17;
         const int _zoom = 3;
@@ -295,6 +296,13 @@ namespace OrthoCite.Entities.MiniGames
                 {
                     _success.Play();
                     _runtimeData.DialogBox.AddDialog("Tu as gagné !", 2).Show();
+                    if(_runtimeData.DataSave.District == DISTRICT)
+                    {
+                        _runtimeData.DataSave.District = DISTRICT + 1;
+                        _runtimeData.DataSave.ClearMiniGames();
+                        _runtimeData.DataSave.Save();
+
+                    }
                     _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
                 }
                 instanceWorld();
@@ -322,6 +330,13 @@ namespace OrthoCite.Entities.MiniGames
                 {
                     _success.Play();
                     _runtimeData.DialogBox.AddDialog("Tu as gagné !", 2).Show();
+                    if (_runtimeData.DataSave.District == DISTRICT)
+                    {
+                        _runtimeData.DataSave.District = DISTRICT + 1;
+                        _runtimeData.DataSave.ClearMiniGames();
+                        _runtimeData.DataSave.Save();
+
+                    }
                     _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
                 }
                 instanceWorld();

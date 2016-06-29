@@ -26,6 +26,7 @@ namespace OrthoCite.Entities
         Texture2D _bgRectangle;
         SpriteFont _font;
         Button _leaveButton;
+        Button _clearSaveButton;
 
         Texture2D _textPlayerPosition;
 
@@ -38,6 +39,8 @@ namespace OrthoCite.Entities
             _leaveButton = new Button(new Vector2(700, 50), "menuingame/leave", _runtimeData);
             _leaveButton.LoadContent(content, graphicsDevice);
             _leaveButton.onClick += _runtimeData.OrthoCite.Leave;
+
+            
 
 
             _tileMap = content.Load<TiledMap>("map/Map");

@@ -47,7 +47,7 @@ namespace OrthoCite
         {
             get { return _dataSave.District; }
             set {
-                if (value <= 0 || value > 4) throw new ArgumentException("District must be between 1 and 4", nameof(value));
+                if (value <= 0 || value > 5) throw new ArgumentException("District must be between 1 and 5", nameof(value));
                 _dataSave.District = value;
             }
         }

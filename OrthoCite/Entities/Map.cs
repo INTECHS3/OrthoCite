@@ -614,7 +614,7 @@ namespace OrthoCite.Entities
             else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 1053)
             {
                 _runtimeData.gidLast = 1053;
-                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_BOSS); // LAST GAME A FINIR
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_STOPGAME); 
 
             }
             //DISTRICT 3

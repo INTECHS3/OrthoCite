@@ -168,7 +168,8 @@ namespace OrthoCite.Entities.MiniGames
             {
                 if (_runtimeData.DataSave.District == DISTRICT)
                 {
-                    _runtimeData.DataSave.ValidateMiniGame(DataSaveMiniGame.BOSS);
+                    _runtimeData.DataSave.District = DISTRICT + 1;
+                    _runtimeData.DataSave.ClearMiniGames();
                     _runtimeData.DataSave.Save();
                 }
                 _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);

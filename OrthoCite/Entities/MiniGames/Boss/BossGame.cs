@@ -199,7 +199,8 @@ namespace OrthoCite.Entities.MiniGames
                 _runtimeData.DialogBox.AddDialog("Gagné !", 2).Show();
                 if (_runtimeData.DataSave.District == DISTRICT)
                 {
-                    _runtimeData.DataSave.ValidateMiniGame(DataSaveMiniGame.BOSS);
+                    _runtimeData.DataSave.District = DISTRICT + 1;
+                    _runtimeData.DataSave.ClearMiniGames();
                     _runtimeData.DataSave.Save();
                 }
                 _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
