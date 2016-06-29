@@ -1,18 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrthoCite", "OrthoCite\OrthoCite.csproj", "{C74C40C9-9731-436A-9DA5-6805B35AF605}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrthoCite.Tests", "OrthoCite.Tests\OrthoCite.Tests.csproj", "{D5C1BB48-0049-451F-901A-0F77A0C3E794}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrthoCite.Launcher", "OrthoCite.Launcher\OrthoCite.Launcher.csproj", "{5AA72F49-7B15-4848-8EAC-4766C4CA2906}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0B000D3C-FAE9-429C-82D8-9D34B08449AD}"
-	ProjectSection(SolutionItems) = preProject
-		Class2.cs = Class2.cs
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
