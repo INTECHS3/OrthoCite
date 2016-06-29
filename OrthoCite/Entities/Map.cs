@@ -667,6 +667,78 @@ namespace OrthoCite.Entities
                 _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_BOSS);
 
             }
+            else if(i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 2064)
+            {
+                _runtimeData.gidLast = 2064;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.HOME);
+
+            }
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 2063)
+            {
+                _runtimeData.gidLast = 2063;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.HOME);
+
+            }
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 2062)
+            {
+                _runtimeData.gidLast = 2062;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.HOME);
+
+            }
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 2061)
+            {
+                _runtimeData.gidLast = 2061;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.HOME);
+
+            }
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 2060)
+            {
+                _runtimeData.gidLast = 2060;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.HOME);
+
+            }
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 2059)
+            {
+                _runtimeData.gidLast = 2059;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.HOME);
+
+            }
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 2058)
+            {
+                _runtimeData.gidLast = 2058;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.HOME);
+
+            }
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 2057)
+            {
+                _runtimeData.gidLast = 2057;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.HOME);
+
+            }
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 2056)
+            {
+                _runtimeData.gidLast = 2056;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.HOME);
+
+            }
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 2055)
+            {
+                _runtimeData.gidLast = 2055;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.HOME);
+
+            }
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 2054)
+            {
+                _runtimeData.gidLast = 2054;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.HOME);
+
+            }
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 2053)
+            {
+                _runtimeData.gidLast = 2053;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.HOME);
+
+            }
 
         }
 

@@ -29,7 +29,8 @@ namespace OrthoCite
         MINIGAME_REARRANGER,
         MINIGAME_GUESSGAME,
         MINIGAME_THROWGAME,
-        MINIGAME_STOPGAME
+        MINIGAME_STOPGAME,
+        HOME
     }
 
 
@@ -40,7 +41,8 @@ namespace OrthoCite
     {
 
         const GameContext STARTING_ENTITY = GameContext.MAP;
-        
+
+
         BoxingViewportAdapter _viewportAdapter;
         Camera2D _camera;
         RuntimeData _runtimeData;
@@ -225,7 +227,7 @@ namespace OrthoCite
             }
             else
             {
-                if (_gameContext != GameContext.INTRO && _gameContext != GameContext.LOST_SCREEN && _gameContext != GameContext.MAP && _gameContext != GameContext.RULES)
+                if (_gameContext != GameContext.INTRO && _gameContext != GameContext.LOST_SCREEN && _gameContext != GameContext.MAP && _gameContext != GameContext.RULES && _gameContext != GameContext.HOME)
                 {
                     // if minigame asked and rules not shown
                     _pendingRulesMiniGame = _gameContext;
@@ -313,6 +315,10 @@ namespace OrthoCite
                     }
                     Console.WriteLine("StopGame");
                     _entities.Add(new StopGame(_runtimeData));
+                    break;
+                case GameContext.HOME:
+                    Console.WriteLine("Home");
+                    _entities.Add(new Home(_runtimeData));
                     break;
             }
 
