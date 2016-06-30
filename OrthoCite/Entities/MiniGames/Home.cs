@@ -118,10 +118,13 @@ namespace OrthoCite.Entities.MiniGames
                 _firstUpdate = !_firstUpdate;
             }
 
+            bool tmpCheckTalk = false;
             foreach (KeyValuePair<ListPnj, PNJ> i in _runtimeData.PNJ)
             {
                 i.Value.Update(gameTime, keyboardState, camera, deltaSeconds);
+                if (i.Value.inTalk) tmpCheckTalk = true;
             }
+            if (tmpCheckTalk) return;
             _player.checkMove(keyboardState);
 
             _player.heroAnimations.Update(deltaSeconds);
@@ -300,7 +303,7 @@ namespace OrthoCite.Entities.MiniGames
             }
             else if (_runtimeData.gidLast == 2060)
             {
-                _runtimeData.PNJ.Add(ListPnj.HOME_2, new PNJ(TypePNJ.Static, new Vector2(11, 9), new List<ItemList>(), _runtimeData, "map/pnj"));
+                _runtimeData.PNJ.Add(ListPnj.HOME_5, new PNJ(TypePNJ.Static, new Vector2(11, 9), new List<ItemList>(), _runtimeData, "map/pnj"));
                 _runtimeData.PNJ[ListPnj.HOME_5].spriteFactory(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 73 }));
                 _runtimeData.PNJ[ListPnj.HOME_5].spriteFactory(Helpers.Direction.DOWN, new SpriteSheetAnimationData(new[] { 49 }, isLooping: false));
                 _runtimeData.PNJ[ListPnj.HOME_5].spriteFactory(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 73 }, isLooping: false));

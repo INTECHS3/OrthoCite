@@ -311,7 +311,43 @@ namespace OrthoCite.Entities.MiniGames
 
         public override void Execute(params string[] param)
         {
-
+            switch (param[0])
+            {
+                case "exit":
+                    try
+                    {
+                        _runtimeData.OrthoCite.Exit();
+                    }
+                    catch { Console.WriteLine("Can't Exit"); }
+                    break;
+                case "giveLife":
+                    try { _runtimeData.GainLive(Int32.Parse(param[1])); Console.WriteLine($"You give {param[1]}"); }
+                    catch { Console.WriteLine("use : giveLife {nbLife}"); }
+                    break;
+                case "clearText":
+                    try { _runtimeData.DialogBox.AddDialog("SetEmpty", 2).Show(); }
+                    catch { Console.WriteLine("use : error"); }
+                    break;
+                case "setLife":
+                    try
+                    {
+                        if (Int32.Parse(param[1]) < _runtimeData.Lives)
+                        {
+                            int liveTmp = _runtimeData.Lives - Int32.Parse(param[1]);
+                            _runtimeData.LooseLive(liveTmp);
+                        }
+                        else
+                        {
+                            int liveTmp = Int32.Parse(param[1]) - _runtimeData.Lives;
+                            _runtimeData.GainLive(liveTmp);
+                        }
+                    }
+                    catch { Console.WriteLine("use : error"); }
+                    break;
+                default:
+                    Console.WriteLine($"Can't find method to invoke in {this.ToString()}");
+                    break;
+            }
         }
 
         internal override void Start()
