@@ -228,7 +228,7 @@ namespace OrthoCite.Helpers
             }
             else if (separeFrame != 0)
             {
-
+                
                 if ((separeFrame > actualFrame + 2 && actualFrame == lowFrame) || (separeFrame == fastFrame && separeFrame >= actualFrame))
                 {
                     if (actualDir == Helpers.Direction.DOWN && !ColDown()) MoveDownChamp();

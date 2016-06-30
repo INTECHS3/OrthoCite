@@ -235,8 +235,39 @@ namespace OrthoCite.Entities.MiniGames
                     try { MoveTo(new Vector2(Int32.Parse(param[1]), Int32.Parse(param[2]))); }
                     catch { Console.WriteLine("use : movePlayer {x} {y}"); }
                     break;
+                case "exit":
+                    try
+                    {
+                        _runtimeData.OrthoCite.Exit();
+                    }
+                    catch { Console.WriteLine("Can't Exit"); }
+                    break;
+                case "giveLife":
+                    try { _runtimeData.GainLive(Int32.Parse(param[1])); Console.WriteLine($"You give {param[1]}"); }
+                    catch { Console.WriteLine("use : giveLife {nbLife}"); }
+                    break;
+                case "clearText":
+                    try { _runtimeData.DialogBox.AddDialog("SetEmpty", 2).Show(); }
+                    catch { Console.WriteLine("use : error"); }
+                    break;
+                case "setLife":
+                    try
+                    {
+                        if (Int32.Parse(param[1]) < _runtimeData.Lives)
+                        {
+                            int liveTmp = _runtimeData.Lives - Int32.Parse(param[1]);
+                            _runtimeData.LooseLive(liveTmp);
+                        }
+                        else
+                        {
+                            int liveTmp = Int32.Parse(param[1]) - _runtimeData.Lives;
+                            _runtimeData.GainLive(liveTmp);
+                        }
+                    }
+                    catch { Console.WriteLine("use : error"); }
+                    break;
                 default:
-                    Console.WriteLine("Can't find method to invoke in Map Class");
+                    Console.WriteLine($"Can't find method to invoke in {this.ToString()}");
                     break;
             }
         }
@@ -362,6 +393,7 @@ namespace OrthoCite.Entities.MiniGames
         public void MoveTo(Vector2 vec)
         {
             _player.positionVirt = vec;
+            _player.UpdateThePosition();
         }
 
         private void LoadAllWords()
