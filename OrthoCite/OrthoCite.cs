@@ -30,7 +30,8 @@ namespace OrthoCite
         MINIGAME_GUESSGAME,
         MINIGAME_THROWGAME,
         MINIGAME_STOPGAME,
-        HOME
+        HOME,
+        CREDITS_SCREEN
     }
 
 
@@ -40,7 +41,7 @@ namespace OrthoCite
     public class OrthoCite : Game
     {
 
-        const GameContext STARTING_ENTITY = GameContext.INTRO;
+        const GameContext STARTING_ENTITY = GameContext.CREDITS_SCREEN;
 
 
 
@@ -229,7 +230,7 @@ namespace OrthoCite
             }
             else
             {
-                if (_gameContext != GameContext.INTRO && _gameContext != GameContext.LOST_SCREEN && _gameContext != GameContext.MAP && _gameContext != GameContext.RULES && _gameContext != GameContext.HOME)
+                if (_gameContext != GameContext.CREDITS_SCREEN && _gameContext != GameContext.INTRO && _gameContext != GameContext.LOST_SCREEN && _gameContext != GameContext.MAP && _gameContext != GameContext.RULES && _gameContext != GameContext.HOME)
                 {
                     // if minigame asked and rules not shown
                     _pendingRulesMiniGame = _gameContext;
@@ -281,7 +282,7 @@ namespace OrthoCite
                 case GameContext.MINIGAME_BOSS:
                     if (okToGoInBoss(1))
                     {
-                        _runtimeData.DialogBox.AddDialog("Impossible d'acceder à ce niveaux, tu n'as pas debloquer les niveaux du district !", 4).Show();
+                        _runtimeData.DialogBox.AddDialog("Impossible d'accéder à ce mini-jeu, tu n'as pas terminé les mini-jeux du quartier !", 4).Show();
                         _entities.Add(new Map(_runtimeData));
                         break;
                     }
@@ -291,7 +292,7 @@ namespace OrthoCite
                 case GameContext.MINIGAME_THROWGAME:
                     if (okToGoInBoss(3))
                     {
-                        _runtimeData.DialogBox.AddDialog("Impossible d'acceder à ce niveaux, tu n'as pas debloquer les niveaux du district !", 4).Show();
+                        _runtimeData.DialogBox.AddDialog("Impossible d'accéder à ce mini-jeu, tu n'as pas terminé les mini-jeux du quartier !", 4).Show();
                         _entities.Add(new Map(_runtimeData));
                         break;
                     }
@@ -301,7 +302,7 @@ namespace OrthoCite
                 case GameContext.MINIGAME_GUESSGAME:
                     if (okToGoInBoss(1))
                     {
-                        _runtimeData.DialogBox.AddDialog("Impossible d'acceder à ce niveaux, tu n'as pas debloquer les niveaux du district !", 4).Show();
+                        _runtimeData.DialogBox.AddDialog("Impossible d'accéder à ce mini-jeu, tu n'as pas terminé les mini-jeux du quartier !", 4).Show();
                         _entities.Add(new Map(_runtimeData));
                         break;
                     }
@@ -311,7 +312,7 @@ namespace OrthoCite
                 case GameContext.MINIGAME_STOPGAME:
                     if (okToGoInBoss(2))
                     {
-                        _runtimeData.DialogBox.AddDialog("Impossible d'acceder à ce niveaux, tu n'as pas debloquer les niveaux du district !", 4).Show();
+                        _runtimeData.DialogBox.AddDialog("Impossible d'accéder à ce mini-jeu, tu n'as pas terminé les mini-jeux du quartier !", 4).Show();
                         _entities.Add(new Map(_runtimeData));
                         break;
                     }
@@ -322,11 +323,16 @@ namespace OrthoCite
                     Console.WriteLine("Home");
                     _entities.Add(new Home(_runtimeData));
                     break;
+                case GameContext.CREDITS_SCREEN:
+                    Console.WriteLine("Credits screen");
+                    _entities.Add(new CreditsScreen(_runtimeData));
+                    break;
             }
 
-            if (_gameContext != GameContext.INTRO)
+            if (_gameContext != GameContext.INTRO) _entities.Add(_runtimeData.DialogBox);
+
+            if (_gameContext != GameContext.INTRO && _gameContext != GameContext.CREDITS_SCREEN)
             {
-                _entities.Add(_runtimeData.DialogBox);
                 _entities.Add(new Lives(_runtimeData));
                 _entities.Add(new MenuInGame(_runtimeData));
                 _entities.Add(new AnswerBox(_runtimeData));
