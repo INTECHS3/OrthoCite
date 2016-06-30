@@ -40,7 +40,6 @@ namespace OrthoCite
     /// </summary>
     public class OrthoCite : Game
     {
-
         const GameContext STARTING_ENTITY = GameContext.CREDITS_SCREEN;
 
 
@@ -374,7 +373,8 @@ namespace OrthoCite
         private bool okToGoInBoss(int nbDistrict)
         {
 
-            if (nbDistrict <= _runtimeData.DataSave.District && _runtimeData.DataSave.MiniGameIsValidated(DataSaveMiniGame.DOORGAME) && _runtimeData.DataSave.MiniGameIsValidated(DataSaveMiniGame.REARRANGER) && _runtimeData.DataSave.MiniGameIsValidated(DataSaveMiniGame.PLATFORMER)) return false;
+            if (nbDistrict < _runtimeData.DataSave.District) return false;
+            else if (nbDistrict == _runtimeData.DataSave.District && _runtimeData.DataSave.MiniGameIsValidated(DataSaveMiniGame.DOORGAME) && _runtimeData.DataSave.MiniGameIsValidated(DataSaveMiniGame.REARRANGER) && _runtimeData.DataSave.MiniGameIsValidated(DataSaveMiniGame.PLATFORMER)) return false;
 
             
             return true;

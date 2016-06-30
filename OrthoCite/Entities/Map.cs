@@ -88,10 +88,9 @@ namespace OrthoCite.Entities
             
             if (_gidStart != 0)
             {
-                Console.Write("ok");
                 foreach (TiledTile i in _player.collisionLayer.Tiles)
                 {
-                    if (i.Id == _gidStart) _player.positionVirt = new Vector2(i.X, i.Y + 1); 
+                    if (i.Id == _gidStart) _player.positionVirt = new Vector2(i.X, i.Y + 2); 
                 }
             }
 
@@ -253,6 +252,20 @@ namespace OrthoCite.Entities
                         }
                     }
                     catch { Console.WriteLine("use : error"); }
+                    break;
+                case "unlockAll":
+                    try
+                    {
+                        _runtimeData.DataSave.District = Byte.Parse(param[1]);
+                        _runtimeData.DataSave.ValidateMiniGame(DataSaveMiniGame.DOORGAME);
+                        _runtimeData.DataSave.ValidateMiniGame(DataSaveMiniGame.REARRANGER);
+                        _runtimeData.DataSave.ValidateMiniGame(DataSaveMiniGame.PLATFORMER);
+
+                        _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
+                        Console.WriteLine($"District is change to : {_runtimeData.DataSave.District}");
+                        
+                    }
+                    catch { Console.WriteLine("use : unlockAll {x}"); }
                     break;
                 default:
                     Console.WriteLine("Can't find method to invoke in Map Class");
@@ -604,22 +617,22 @@ namespace OrthoCite.Entities
         {
            
             //DISTRICT 1
-            if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y  && i.Id == 1165)
+            if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y  - 1 && i.Id == 1165)
             {
                 _runtimeData.gidLast = 1165;
                 _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_PLATFORMER, 1);
             }
-            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y  && i.Id == 105)
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 105)
             {
                 _runtimeData.gidLast = 105;
                 _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_DOORGAME, 1);
             }
-            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y  && i.Id == 186)
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y -1 && i.Id == 186)
             {
                 _runtimeData.gidLast = 186;
                 _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_REARRANGER, 1);
             }
-            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y  && i.Id == 188)
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 188)
             {
                 _runtimeData.gidLast = 188;
                 _runtimeData.OrthoCite.ChangeGameContext(GameContext.MINIGAME_GUESSGAME);
@@ -769,6 +782,12 @@ namespace OrthoCite.Entities
             else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 2053)
             {
                 _runtimeData.gidLast = 2053;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.HOME);
+
+            }
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 2051)
+            {
+                _runtimeData.gidLast = 2051;
                 _runtimeData.OrthoCite.ChangeGameContext(GameContext.HOME);
 
             }
