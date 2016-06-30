@@ -7,8 +7,6 @@ using MonoGame.Extended.Maps.Tiled;
 using Microsoft.Xna.Framework.Media;
 using MonoGame.Extended;
 using MonoGame.Extended.Animations.SpriteSheets;
-using MonoGame.Extended.Sprites;
-using MonoGame.Extended.TextureAtlases;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,7 +15,7 @@ using System.Xml;
 using OrthoCite.Helpers;
 
 namespace OrthoCite.Entities.MiniGames
-{ 
+{
     struct saveWordTerminason
     {
         public string Word { get; private set; }

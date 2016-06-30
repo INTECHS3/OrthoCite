@@ -2,18 +2,10 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoGame.Extended.Maps.Tiled;
 using MonoGame.Extended;
-using MonoGame.Extended.Animations;
 using MonoGame.Extended.Animations.SpriteSheets;
-using MonoGame.Extended.BitmapFonts;
-using MonoGame.Extended.Collisions;
-using MonoGame.Extended.Sprites;
-using MonoGame.Extended.TextureAtlases;
-using MonoGame.Extended.ViewportAdapters;
 using System;
 using System.Collections.Generic;
-using System.Collections;
 
 
 namespace OrthoCite.Helpers
@@ -100,7 +92,7 @@ namespace OrthoCite.Helpers
                 changeDirection(j);
         }
         public delegate void AttackEvent(PNJ player);
-        public event AttackEvent playerAttack;
+        //public event AttackEvent playerAttack;
 
         public delegate void AnswerPnjEvent(RuntimeData r, bool TrueOrFalseAnswer);
         public event AnswerPnjEvent playerAnswerToPnj;
@@ -132,7 +124,6 @@ namespace OrthoCite.Helpers
 
 
         TimeSpan _saveTime;
-        TimeSpan _saveTimeDialog;
         TimeSpan _gameTime;
         const int timeToNextDialog = 1; //IN SECOND 
 
@@ -153,7 +144,7 @@ namespace OrthoCite.Helpers
             _talkAndAnswer = new List<PnjDialog>();
             _pnj = new Player(TypePlayer.WithSpriteSheet, positionSpawn ,_runtimeData, texture);
 
-            playerAttack += goAttack;
+            //playerAttack += goAttack;
 
             _talkAndAnswerQueue = new Queue<PnjDialog>();
             inTalk = false;

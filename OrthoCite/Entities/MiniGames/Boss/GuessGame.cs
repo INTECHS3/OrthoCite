@@ -53,7 +53,7 @@ namespace OrthoCite.Entities.MiniGames
         const int _zoom = 3;
         int count = 0;
         const int TIME_FINISH = 10;
-        const int TIMER_POP = 1;
+        const int TIMER_POP = 2;
         const int TIME_INVICIBLE = 2;
         int[] _calculator;
         int _randomNumber;

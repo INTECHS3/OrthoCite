@@ -1,18 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MonoGame.Extended;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended.ViewportAdapters;
 using OrthoCite.Entities;
 using OrthoCite.Entities.MiniGames;
 using OrthoCite.Helpers;
-using MonoGame.Extended.Maps.Tiled;
-using System.IO;
-using System.Reflection;
 
 namespace OrthoCite
 {

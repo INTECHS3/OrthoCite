@@ -16,7 +16,6 @@ using System.IO;
 using System.Reflection;
 using System.Xml;
 using OrthoCite.Helpers;
-using System.Threading;
 namespace OrthoCite.Entities.MiniGames
 {
     public class Rearranger : MiniGame

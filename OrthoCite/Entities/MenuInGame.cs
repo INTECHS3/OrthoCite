@@ -4,12 +4,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Maps.Tiled;
 using MonoGame.Extended;
-using MonoGame.Extended.Animations.SpriteSheets;
-using MonoGame.Extended.Sprites;
-using MonoGame.Extended.TextureAtlases;
 using System;
 using OrthoCite.Helpers;
-using System.Collections.Generic;
 
 namespace OrthoCite.Entities
 {

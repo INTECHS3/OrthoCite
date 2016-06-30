@@ -12,9 +12,6 @@ using MonoGame.Extended.Sprites;
 using MonoGame.Extended.TextureAtlases;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
-using System.Xml;
 using OrthoCite.Helpers;
 
 
@@ -260,8 +257,8 @@ namespace OrthoCite.Entities.MiniGames
                 _runtimeData.PNJ[ListPnj.HOME_1].spriteFactory(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 79 }, isLooping: false));
                 _runtimeData.PNJ[ListPnj.HOME_1].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 79 }, isLooping: false));
                 _runtimeData.PNJ[ListPnj.HOME_1].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 91 }, isLooping: false));
-                _runtimeData.pnj[ListPnj.HOME_1]._talkAndAnswer.Add(new PnjDialog($"J'ai cru entendre que tu venais sauver la ville", new Dictionary<string, bool>()));
-                _runtimeData.pnj[ListPnj.HOME_1]._talkAndAnswer.Add(new PnjDialog($"accepterais-tu ce cadeau ?", new Dictionary<string, bool>() { { "Bien sûr", true }, { "Je ne te fais pas confiance !", false } }));
+                _runtimeData.pnj[ListPnj.HOME_1]._talkAndAnswer.Add(new PnjDialog($"J'ai cru entendre que tu venais sauver la ville.", new Dictionary<string, bool>()));
+                _runtimeData.pnj[ListPnj.HOME_1]._talkAndAnswer.Add(new PnjDialog($"Accepterais-tu ce cadeau ?", new Dictionary<string, bool>() { { "Bien sûr !", true }, { "Je ne te fais pas confiance.", false } }));
                 _runtimeData.PNJ[ListPnj.HOME_1].lookDir = Direction.DOWN;
                 _runtimeData.pnj[ListPnj.HOME_1].playerAnswerToPnj += answerHome_1;
 
@@ -275,7 +272,7 @@ namespace OrthoCite.Entities.MiniGames
                 _runtimeData.PNJ[ListPnj.HOME_2].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 76 }, isLooping: false));
                 _runtimeData.PNJ[ListPnj.HOME_2].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 88 }, isLooping: false));
                 _runtimeData.pnj[ListPnj.HOME_2]._talkAndAnswer.Add(new PnjDialog($"Salut toi !", new Dictionary<string, bool>()));
-                _runtimeData.pnj[ListPnj.HOME_2]._talkAndAnswer.Add(new PnjDialog($"J'ai trouvé cet letre par terre, tu la veux ?", new Dictionary<string, bool>() { { "Oui", false }, { "Non", true } }));
+                _runtimeData.pnj[ListPnj.HOME_2]._talkAndAnswer.Add(new PnjDialog($"J'ai trouvé cet letre par terre, tu la veux ?", new Dictionary<string, bool>() { { "Oui.", false }, { "Non.", true } }));
                 _runtimeData.PNJ[ListPnj.HOME_2].lookDir = Direction.DOWN;
                 _runtimeData.pnj[ListPnj.HOME_2].playerAnswerToPnj += answerHome_2;
             }
@@ -287,7 +284,7 @@ namespace OrthoCite.Entities.MiniGames
                 _runtimeData.PNJ[ListPnj.HOME_3].spriteFactory(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 31 }, isLooping: false));
                 _runtimeData.PNJ[ListPnj.HOME_3].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 31 }, isLooping: false));
                 _runtimeData.PNJ[ListPnj.HOME_3].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 43 }, isLooping: false));
-                _runtimeData.pnj[ListPnj.HOME_3]._talkAndAnswer.Add(new PnjDialog($"Tu veut te reposé un peu ?", new Dictionary<string, bool>() { { "Avec plaisir", false }, { "Tu es louche", true } }));
+                _runtimeData.pnj[ListPnj.HOME_3]._talkAndAnswer.Add(new PnjDialog($"Tu veut te reposé un peu ?", new Dictionary<string, bool>() { { "Avec plaisir !", false }, { "Tu es louche...", true } }));
                 _runtimeData.PNJ[ListPnj.HOME_3].lookDir = Direction.DOWN;
                 _runtimeData.pnj[ListPnj.HOME_3].playerAnswerToPnj += answerHome_3;
             }
@@ -299,8 +296,8 @@ namespace OrthoCite.Entities.MiniGames
                 _runtimeData.PNJ[ListPnj.HOME_4].spriteFactory(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 73 }, isLooping: false));
                 _runtimeData.PNJ[ListPnj.HOME_4].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 73 }, isLooping: false));
                 _runtimeData.PNJ[ListPnj.HOME_4].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 85 }, isLooping: false));
-                _runtimeData.pnj[ListPnj.HOME_4]._talkAndAnswer.Add(new PnjDialog($"Tu m'as l'air louche", new Dictionary<string, bool>()));
-                _runtimeData.pnj[ListPnj.HOME_4]._talkAndAnswer.Add(new PnjDialog($"est-ce que tu es avec Lyrik ?", new Dictionary<string, bool>() { { "Oui", false }, { "Non", true } }));
+                _runtimeData.pnj[ListPnj.HOME_4]._talkAndAnswer.Add(new PnjDialog($"Tu m'as l'air louche...", new Dictionary<string, bool>()));
+                _runtimeData.pnj[ListPnj.HOME_4]._talkAndAnswer.Add(new PnjDialog($"Es-tu avec Lyrik ?", new Dictionary<string, bool>() { { "Oui.", false }, { "Non.", true } }));
                 _runtimeData.PNJ[ListPnj.HOME_4].lookDir = Direction.RIGHT;
                 _runtimeData.pnj[ListPnj.HOME_4].playerAnswerToPnj += answerHome_4;
             }
@@ -313,7 +310,7 @@ namespace OrthoCite.Entities.MiniGames
                 _runtimeData.PNJ[ListPnj.HOME_5].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 73 }, isLooping: false));
                 _runtimeData.PNJ[ListPnj.HOME_5].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 85 }, isLooping: false));
                 _runtimeData.pnj[ListPnj.HOME_5]._talkAndAnswer.Add(new PnjDialog($"Bonjour !", new Dictionary<string, bool>()));
-                _runtimeData.pnj[ListPnj.HOME_5]._talkAndAnswer.Add(new PnjDialog($"Tu pourrais m'aidé rapidment ?", new Dictionary<string, bool>() { { "Bien sûr !", false }, { "Non, je n'ai pas confiance", true } }));
+                _runtimeData.pnj[ListPnj.HOME_5]._talkAndAnswer.Add(new PnjDialog($"Tu pourrais m'aidé rapidment ?", new Dictionary<string, bool>() { { "Bien sûr !", false }, { "Non, je n'ai pas confiance.", true } }));
                 _runtimeData.PNJ[ListPnj.HOME_5].lookDir = Direction.LEFT;
                 _runtimeData.pnj[ListPnj.HOME_5].playerAnswerToPnj += answerHome_5;
             }
@@ -338,8 +335,8 @@ namespace OrthoCite.Entities.MiniGames
                 _runtimeData.PNJ[ListPnj.HOME_7].spriteFactory(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 79 }, isLooping: false));
                 _runtimeData.PNJ[ListPnj.HOME_7].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 79 }, isLooping: false));
                 _runtimeData.PNJ[ListPnj.HOME_7].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 91 }, isLooping: false));
-                _runtimeData.pnj[ListPnj.HOME_7]._talkAndAnswer.Add(new PnjDialog($"Ah j'en ai ma claque de ce Lyrik !", new Dictionary<string, bool>()));
-                _runtimeData.pnj[ListPnj.HOME_7]._talkAndAnswer.Add(new PnjDialog($"Qu'est-ce que tu penses de lui toi ?", new Dictionary<string, bool>() { { "il est vraiment horrible !", true }, { "Il est gentil au fond !", false } }));
+                _runtimeData.pnj[ListPnj.HOME_7]._talkAndAnswer.Add(new PnjDialog($"Ah, j'en ai ma claque de ce Lyrik !", new Dictionary<string, bool>()));
+                _runtimeData.pnj[ListPnj.HOME_7]._talkAndAnswer.Add(new PnjDialog($"Qu'est-ce que tu penses de lui, toi ?", new Dictionary<string, bool>() { { "Il est vraiment horrible !", true }, { "Il est gentil, au fond.", false } }));
                 _runtimeData.PNJ[ListPnj.HOME_7].lookDir = Direction.DOWN;
                 _runtimeData.pnj[ListPnj.HOME_7].playerAnswerToPnj += answerHome_7;
             }
@@ -352,7 +349,7 @@ namespace OrthoCite.Entities.MiniGames
                 _runtimeData.PNJ[ListPnj.HOME_8].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 28 }, isLooping: false));
                 _runtimeData.PNJ[ListPnj.HOME_8].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 40 }, isLooping: false));
                 _runtimeData.pnj[ListPnj.HOME_7]._talkAndAnswer.Add(new PnjDialog($"J'ai déterré ça hier, je pense que ça pourra t'être utile !", new Dictionary<string, bool>()));
-                _runtimeData.pnj[ListPnj.HOME_8]._talkAndAnswer.Add(new PnjDialog($"Il paraît que ça porte malheur de refuser un cadeau", new Dictionary<string, bool>() { { "C'est gentil, je vais le prendre !", true }, { "J'en veux pas !", false } }));
+                _runtimeData.pnj[ListPnj.HOME_8]._talkAndAnswer.Add(new PnjDialog($"Il paraît que ça porte malheur de refuser un cadeau.", new Dictionary<string, bool>() { { "C'est gentil, je vais le prendre.", true }, { "Je n'en veux pas !", false } }));
                 _runtimeData.PNJ[ListPnj.HOME_8].lookDir = Direction.DOWN;
                 _runtimeData.pnj[ListPnj.HOME_8].playerAnswerToPnj += answerHome_8;
             }
@@ -364,8 +361,8 @@ namespace OrthoCite.Entities.MiniGames
                 _runtimeData.PNJ[ListPnj.HOME_9].spriteFactory(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 25 }, isLooping: false));
                 _runtimeData.PNJ[ListPnj.HOME_9].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 25 }, isLooping: false));
                 _runtimeData.PNJ[ListPnj.HOME_9].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 37 }, isLooping: false));
-                _runtimeData.pnj[ListPnj.HOME_9]._talkAndAnswer.Add(new PnjDialog($"Il paraît que tu es venu sauvé la ville ", new Dictionary<string, bool>()));
-                _runtimeData.pnj[ListPnj.HOME_9]._talkAndAnswer.Add(new PnjDialog($"es-ce que c'est vrai ?", new Dictionary<string, bool>() { { "Oui, je vais tous vous sauver !", true }, { "Hein ? euh... non non", true } }));
+                _runtimeData.pnj[ListPnj.HOME_9]._talkAndAnswer.Add(new PnjDialog($"Il paraît que tu es venu sauvé la ville", new Dictionary<string, bool>()));
+                _runtimeData.pnj[ListPnj.HOME_9]._talkAndAnswer.Add(new PnjDialog($"es-ce que c'est vrai ?", new Dictionary<string, bool>() { { "Oui, je vais tous vous sauver !", true }, { "Hein ? Euh... non, non.", true } }));
                 _runtimeData.PNJ[ListPnj.HOME_9].lookDir = Direction.RIGHT;
                 _runtimeData.pnj[ListPnj.HOME_9].playerAnswerToPnj += answerHome_9;
             }
@@ -390,7 +387,7 @@ namespace OrthoCite.Entities.MiniGames
                 _runtimeData.PNJ[ListPnj.HOME_11].spriteFactory(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 79 }, isLooping: false));
                 _runtimeData.PNJ[ListPnj.HOME_11].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 79 }, isLooping: false));
                 _runtimeData.PNJ[ListPnj.HOME_11].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 91 }, isLooping: false));
-                _runtimeData.pnj[ListPnj.HOME_11]._talkAndAnswer.Add(new PnjDialog($"sa te dit de boire un peti peu pour te reposer ?", new Dictionary<string, bool>() { { "Ce serait pas de refus !", false }, { "Je m'en passerai", true } }));
+                _runtimeData.pnj[ListPnj.HOME_11]._talkAndAnswer.Add(new PnjDialog($"sa te dit de boire un peti peu pour te reposer ?", new Dictionary<string, bool>() { { "Ce ne serait pas de refus !", false }, { "Je m'en passerai.", true } }));
                 _runtimeData.PNJ[ListPnj.HOME_11].lookDir = Direction.LEFT;
                 _runtimeData.pnj[ListPnj.HOME_11].playerAnswerToPnj += answerHome_11;
             }
@@ -403,7 +400,7 @@ namespace OrthoCite.Entities.MiniGames
                 _runtimeData.PNJ[ListPnj.HOME_12].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 76 }, isLooping: false));
                 _runtimeData.PNJ[ListPnj.HOME_12].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 88 }, isLooping: false));
                 _runtimeData.pnj[ListPnj.HOME_12]._talkAndAnswer.Add(new PnjDialog($"Bonjour à toi !", new Dictionary<string, bool>()));
-                _runtimeData.pnj[ListPnj.HOME_12]._talkAndAnswer.Add(new PnjDialog($"J'ai retrouvé ça dans un vieux tiroir, ça t'intéresse ?", new Dictionary<string, bool>() { { "Oui", true }, { "Pas du tout", false } }));
+                _runtimeData.pnj[ListPnj.HOME_12]._talkAndAnswer.Add(new PnjDialog($"J'ai retrouvé ça dans un vieux tiroir, ça t'intéresse ?", new Dictionary<string, bool>() { { "Oui.", true }, { "Pas du tout.", false } }));
                 _runtimeData.PNJ[ListPnj.HOME_12].lookDir = Direction.DOWN;
                 _runtimeData.pnj[ListPnj.HOME_12].playerAnswerToPnj += answerHome_12;
             }
@@ -431,13 +428,13 @@ namespace OrthoCite.Entities.MiniGames
             {
                 r.GainLive();
                 _success.Play();
-                _runtimeData.DialogBox.AddDialog("J'espère que tu pourras nous sauver de Lyrik ! ", 3).Show();
+                _runtimeData.DialogBox.AddDialog("J'espère que tu pourras nous sauver de Lyrik !", 3).Show();
             }
             else
             {
                 r.LooseLive();
                 _hurt.Play();
-                _runtimeData.DialogBox.AddDialog("Oups, je pense que tu aurais du accepter !", 3).Show();
+                _runtimeData.DialogBox.AddDialog("Oups, je pense que tu aurais dû accepter !", 3).Show();
                 if (_runtimeData.Lives == 0)
                 {
                     _runtimeData.OrthoCite.ChangeGameContext(GameContext.LOST_SCREEN);
@@ -451,13 +448,13 @@ namespace OrthoCite.Entities.MiniGames
             {
                 r.GainLive();
                 _success.Play();
-                _runtimeData.DialogBox.AddDialog("Arghh tu as deviné que c'était un piège ! ", 3).Show();
+                _runtimeData.DialogBox.AddDialog("Arghh, tu as deviné que c'était un piège !", 3).Show();
             }
             else
             {
                 r.LooseLive();
                 _hurt.Play();
-                _runtimeData.DialogBox.AddDialog(" C'été de l'eau empoisonnée je t'ai bien eu !", 3).Show();
+                _runtimeData.DialogBox.AddDialog("C'été de l'eau empoisonnée, je t'ai bien eu !", 3).Show();
                 if (_runtimeData.Lives == 0)
                 {
                     _runtimeData.OrthoCite.ChangeGameContext(GameContext.LOST_SCREEN);
@@ -471,13 +468,13 @@ namespace OrthoCite.Entities.MiniGames
             {
                 r.GainLive();
                 _success.Play();
-                _runtimeData.DialogBox.AddDialog("Ah, un homme qui a du coeur, prends donc ceci pour t'aider ! ", 3).Show();
+                _runtimeData.DialogBox.AddDialog("Ah, un homme qui a du coeur, prends donc ceci pour t'aider !", 3).Show();
             }
             else
             {
                 r.LooseLive();
                 _hurt.Play();
-                _runtimeData.DialogBox.AddDialog(" Encore un qui ne vient ici que pour la gloire, va-t'en !", 3).Show();
+                _runtimeData.DialogBox.AddDialog("Encore un qui ne vient ici que pour la gloire, va-t'en !", 3).Show();
                 if (_runtimeData.Lives == 0)
                 {
                     _runtimeData.OrthoCite.ChangeGameContext(GameContext.LOST_SCREEN);
@@ -491,13 +488,13 @@ namespace OrthoCite.Entities.MiniGames
             {
                 r.GainLive();
                 _success.Play();
-                _runtimeData.DialogBox.AddDialog("Oh tu es avec nou alors ! Prend sa ", 3).Show();
+                _runtimeData.DialogBox.AddDialog("Oh tu es avec nou alors ! Prend sa", 3).Show();
             }
             else
             {
                 r.LooseLive();
                 _hurt.Play();
-                _runtimeData.DialogBox.AddDialog(" Argh, prend sa du coup et vive Lyrik !", 3).Show();
+                _runtimeData.DialogBox.AddDialog("Argh, prend sa du coup et vive Lyrik !", 3).Show();
                 if (_runtimeData.Lives == 0)
                 {
                     _runtimeData.OrthoCite.ChangeGameContext(GameContext.LOST_SCREEN);
@@ -511,13 +508,13 @@ namespace OrthoCite.Entities.MiniGames
             {
                 r.GainLive();
                 _success.Play();
-                _runtimeData.DialogBox.AddDialog("Tiens, fais bonne route ! ", 3).Show();
+                _runtimeData.DialogBox.AddDialog("Tiens, fais bonne route !", 3).Show();
             }
             else
             {
                 r.LooseLive();
                 _hurt.Play();
-                _runtimeData.DialogBox.AddDialog("Je t'avais pourtant prévenu", 3).Show();
+                _runtimeData.DialogBox.AddDialog("Je t'avais pourtant prévenu...", 3).Show();
                 if (_runtimeData.Lives == 0)
                 {
                     _runtimeData.OrthoCite.ChangeGameContext(GameContext.LOST_SCREEN);
@@ -531,7 +528,7 @@ namespace OrthoCite.Entities.MiniGames
             {
                 r.GainLive();
                 _success.Play();
-                _runtimeData.DialogBox.AddDialog("Au moins, on est bien d'accord là-dessus ! ", 3).Show();
+                _runtimeData.DialogBox.AddDialog("Au moins, on est bien d'accord là-dessus !", 3).Show();
             }
             else
             {
@@ -551,13 +548,13 @@ namespace OrthoCite.Entities.MiniGames
             {
                 r.GainLive();
                 _success.Play();
-                _runtimeData.DialogBox.AddDialog("Tu savai que c'étai empoisonné ! ", 3).Show();
+                _runtimeData.DialogBox.AddDialog("Tu savai que c'étai empoisonné !", 3).Show();
             }
             else
             {
                 r.LooseLive();
                 _hurt.Play();
-                _runtimeData.DialogBox.AddDialog(" La nouriture été empoisonné ! Tu té fait avoir !", 3).Show();
+                _runtimeData.DialogBox.AddDialog("La nouriture été empoisonné ! Tu té fait avoir !", 3).Show();
                 if (_runtimeData.Lives == 0)
                 {
                     _runtimeData.OrthoCite.ChangeGameContext(GameContext.LOST_SCREEN);
@@ -571,13 +568,13 @@ namespace OrthoCite.Entities.MiniGames
             {
                 r.GainLive();
                 _success.Play();
-                _runtimeData.DialogBox.AddDialog("Pffff tu savé que c'était un piège, c'es pas drôle ! ", 3).Show();
+                _runtimeData.DialogBox.AddDialog("Pffff tu savé que c'était un piège, c'es pas drôle !", 3).Show();
             }
             else
             {
                 r.LooseLive();
                 _hurt.Play();
-                _runtimeData.DialogBox.AddDialog(" BAM ! Je té bien eu !", 3).Show();
+                _runtimeData.DialogBox.AddDialog("BAM ! Je té bien eu !", 3).Show();
                 if (_runtimeData.Lives == 0)
                 {
                     _runtimeData.OrthoCite.ChangeGameContext(GameContext.LOST_SCREEN);
@@ -591,13 +588,13 @@ namespace OrthoCite.Entities.MiniGames
             {
                 r.GainLive();
                 _success.Play();
-                _runtimeData.DialogBox.AddDialog("Tout va bien alors, prends donc ceci ! ", 3).Show();
+                _runtimeData.DialogBox.AddDialog("Tout va bien alors, prends donc ceci !", 3).Show();
             }
             else
             {
                 r.LooseLive();
                 _hurt.Play();
-                _runtimeData.DialogBox.AddDialog("Ah mécréant, sors tout de suite de chez moi !", 3).Show();
+                _runtimeData.DialogBox.AddDialog("Ah, mécréant, sors tout de suite de chez moi !", 3).Show();
                 if (_runtimeData.Lives == 0)
                 {
                     _runtimeData.OrthoCite.ChangeGameContext(GameContext.LOST_SCREEN);
@@ -611,7 +608,7 @@ namespace OrthoCite.Entities.MiniGames
             {
                 r.GainLive();
                 _success.Play();
-                _runtimeData.DialogBox.AddDialog("Tu as deviner que j'étais avec Lyrick ? Tu es for ! ", 3).Show();
+                _runtimeData.DialogBox.AddDialog("Tu as deviner que j'étais avec Lyrik ? Tu es for !", 3).Show();
             }
             else
             {
@@ -631,7 +628,7 @@ namespace OrthoCite.Entities.MiniGames
             {
                 r.GainLive();
                 _success.Play();
-                _runtimeData.DialogBox.AddDialog("Grrrr, coment tu as su que c'était un piège ? ", 3).Show();
+                _runtimeData.DialogBox.AddDialog("Grrrr, coment tu as su que c'était un piège ?", 3).Show();
             }
             else
             {
