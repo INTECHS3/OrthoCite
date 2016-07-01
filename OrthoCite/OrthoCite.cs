@@ -40,7 +40,7 @@ namespace OrthoCite
     public class OrthoCite : Game
     {
 
-        const GameContext STARTING_ENTITY = GameContext.MAP;
+        const GameContext STARTING_ENTITY = GameContext.MINIGAME_STOPGAME;
 
 
 
@@ -291,9 +291,9 @@ namespace OrthoCite
                 case GameContext.MINIGAME_THROWGAME:
                     if (okToGoInBoss(3))
                     {
-                        _runtimeData.DialogBox.AddDialog("Impossible d'acceder à ce niveaux, tu n'as pas debloquer les niveaux du district !", 4).Show();
-                        _entities.Add(new Map(_runtimeData));
-                        break;
+                        //_runtimeData.DialogBox.AddDialog("Impossible d'acceder à ce niveaux, tu n'as pas debloquer les niveaux du district !", 4).Show();
+                        //_entities.Add(new Map(_runtimeData));
+                        //break;
                     }
                     Console.WriteLine("ThrowGame");
                     _entities.Add(new ThrowGame(_runtimeData));
