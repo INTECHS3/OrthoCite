@@ -404,6 +404,19 @@ namespace OrthoCite.Entities.MiniGames
                 _runtimeData.PNJ[ListPnj.HOME_12].lookDir = Direction.DOWN;
                 _runtimeData.pnj[ListPnj.HOME_12].playerAnswerToPnj += answerHome_12;
             }
+            else if (_runtimeData.gidLast == 2051)
+            {
+                _runtimeData.PNJ.Add(ListPnj.HOME_13, new PNJ(TypePNJ.Static, new Vector2(11, 7), new List<ItemList>(), _runtimeData, "map/pnj"));
+                _runtimeData.PNJ[ListPnj.HOME_13].spriteFactory(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 52 }));
+                _runtimeData.PNJ[ListPnj.HOME_13].spriteFactory(Helpers.Direction.DOWN, new SpriteSheetAnimationData(new[] { 52 }, isLooping: false));
+                _runtimeData.PNJ[ListPnj.HOME_13].spriteFactory(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 76 }, isLooping: false));
+                _runtimeData.PNJ[ListPnj.HOME_13].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 76 }, isLooping: false));
+                _runtimeData.PNJ[ListPnj.HOME_13].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 88 }, isLooping: false));
+                _runtimeData.pnj[ListPnj.HOME_13]._talkAndAnswer.Add(new PnjDialog($"Bonjour à toi !", new Dictionary<string, bool>()));
+                _runtimeData.pnj[ListPnj.HOME_13]._talkAndAnswer.Add(new PnjDialog($"Tu es là pour te battre contre Lyrik ?", new Dictionary<string, bool>() { { "Oui.", true }, { "Pas du tout.", false } }));
+                _runtimeData.PNJ[ListPnj.HOME_13].lookDir = Direction.DOWN;
+                _runtimeData.pnj[ListPnj.HOME_13].playerAnswerToPnj += answerHome_13;
+            }
 
             foreach (KeyValuePair<ListPnj, PNJ> i in _runtimeData.PNJ)
             {
@@ -420,6 +433,26 @@ namespace OrthoCite.Entities.MiniGames
             }
 
 
+        }
+
+        private void answerHome_13(RuntimeData r, bool TrueOrFalseAnswer)
+        {
+            if (TrueOrFalseAnswer)
+            {
+                r.GainLive();
+                _success.Play();
+                _runtimeData.DialogBox.AddDialog("Parfait, ceci va t'aider !", 3).Show();
+            }
+            else
+            {
+                r.LooseLive();
+                _hurt.Play();
+                _runtimeData.DialogBox.AddDialog("Traître, va-t'en !", 3).Show();
+                if (_runtimeData.Lives == 0)
+                {
+                    _runtimeData.OrthoCite.ChangeGameContext(GameContext.LOST_SCREEN);
+                }
+            }
         }
 
         private void answerHome_12(RuntimeData r, bool TrueOrFalseAnswer)

@@ -785,6 +785,12 @@ namespace OrthoCite.Entities
                 _runtimeData.OrthoCite.ChangeGameContext(GameContext.HOME);
 
             }
+            else if (i.X == _player.positionVirt.X && i.Y == _player.positionVirt.Y - 1 && i.Id == 2051)
+            {
+                _runtimeData.gidLast = 2051;
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.HOME);
+
+            }
 
         }
 

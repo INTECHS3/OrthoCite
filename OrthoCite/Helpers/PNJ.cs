@@ -46,6 +46,7 @@ namespace OrthoCite.Helpers
         HOME_10,
         HOME_11,
         HOME_12,
+        HOME_13,
         THROWGAME,
         PORTAILBLOCK
     }
