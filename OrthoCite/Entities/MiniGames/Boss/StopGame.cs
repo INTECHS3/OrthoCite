@@ -331,6 +331,7 @@ namespace OrthoCite.Entities.MiniGames
                     _runtimeData.DataSave.ClearMiniGames();
                     _runtimeData.DataSave.Save();
                 }
+                _runtimeData.DialogBox.AddDialog("Arggggh, tu m'as battu.", 4);
                 _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
             }
 
