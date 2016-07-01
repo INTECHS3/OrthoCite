@@ -57,7 +57,7 @@ namespace OrthoCite.Entities.MiniGames
         Song _music;
 
         const int GID_SPAWN = 16;
-        const int ZOOM = 3;
+        const int ZOOM = 2;
         const int FAST_SPEED_PLAYER = 8;
         const int LOW_SPEED_PLAYER = 13;
         const int WIDTHHEIGHTTITLE = 32;

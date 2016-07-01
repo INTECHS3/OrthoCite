@@ -4,58 +4,58 @@
     <!-- 5 rounds, 5 words per round -->
     <!-- class -->
     <group>
-      <word typeWorld="true" term="is" >Tu eta</word>
-      <word typeWorld="true" term="is" >Tu eta</word>
-      <word typeWorld="true" term="is" >Tu eta</word>
-      <word typeWorld="true" term="is" >Tu eta</word>
+      <word typeWorld="true" term="ais" >Tu et</word>
+      <word typeWorld="true" term="ai" >Je ser</word>
+      <word typeWorld="false" term="it" >Tu roug</word>
+      <word typeWorld="true" term="ions" >Nous sour</word>
     </group>
     <group>
-      <word typeWorld="true" term="is" >Tu eta</word>
-      <word typeWorld="true" term="is" >Tu eta</word>
-      <word typeWorld="true" term="is" >Tu eta</word>
-      <word typeWorld="true" term="is" >Tu eta</word>
+      <word typeWorld="true" term="es" >Tu cass</word>
+      <word typeWorld="true" term="e" >Il saut</word>
+      <word typeWorld="true" term="ez" >Vous jet</word>
+      <word typeWorld="false" term="e" >Ils tond</word>
     </group>
     <group>
-      <word typeWorld="true" term="is" >Tu eta</word>
-      <word typeWorld="true" term="is" >Tu eta</word>
-      <word typeWorld="true" term="is" >Tu eta</word>
-      <word typeWorld="true" term="is" >Tu eta</word>
+      <word typeWorld="true" term="e" >Je rang</word>
+      <word typeWorld="true" term="ais" >Je mani</word>
+      <word typeWorld="true" term="s" >Je mord</word>
+      <word typeWorld="false" term="e" >Tu mâch</word>
     </group>
     <group>
-      <word typeWorld="true" term="is" >Tu eta</word>
-      <word typeWorld="true" term="is" >Tu eta</word>
-      <word typeWorld="true" term="is" >Tu eta</word>
-      <word typeWorld="true" term="is" >Tu eta</word>
+      <word typeWorld="true" term="eais" >Tu rong</word>
+      <word typeWorld="false" term="e" >ils ment</word>
+      <word typeWorld="true" term="ez" >Vous nomm</word>
+      <word typeWorld="true" term="e" >Il ordonn</word>
     </group>
     <group>
-      <word typeWorld="true" term="is" >Tu eta</word>
-      <word typeWorld="true" term="is" >Tu eta</word>
-      <word typeWorld="true" term="is" >Tu eta</word>
-      <word typeWorld="true" term="is" >Tu eta</word>
+      <word typeWorld="true" term="ez" >Vous grignot</word>
+      <word typeWorld="true" term="ent" >Ils forg</word>
+      <word typeWorld="false" term="e" >Tu fouett</word>
+      <word typeWorld="true" term="s" >Je fui</word>
     </group>
     <group>
-      <word typeWorld="true" term="is" >Tu eta</word>
-      <word typeWorld="true" term="is" >Tu eta</word>
-      <word typeWorld="true" term="is" >Tu eta</word>
-      <word typeWorld="true" term="is" >Tu eta</word>
+      <word typeWorld="false" term="es" >Je gèl</word>
+      <word typeWorld="true" term="es" >Tu gard</word>
+      <word typeWorld="true" term="e" >Il chauff</word>
+      <word typeWorld="true" term="d" >Il tor</word>
     </group>
     <group>
-      <word typeWorld="true" term="is" >Tu eta</word>
-      <word typeWorld="true" term="is" >Tu eta</word>
-      <word typeWorld="true" term="is" >Tu eta</word>
-      <word typeWorld="true" term="is" >Tu eta</word>
+      <word typeWorld="true" term="ons" >Nous désir</word>
+      <word typeWorld="true" term="aient" >Ils chant</word>
+      <word typeWorld="false" term="ai" >Je discut</word>
+      <word typeWorld="true" term="ez" >Vous déplac</word>
     </group>
     <group>
-      <word typeWorld="true" term="is" >Tu eta</word>
-      <word typeWorld="true" term="is" >Tu eta</word>
-      <word typeWorld="true" term="is" >Tu eta</word>
-      <word typeWorld="true" term="is" >Tu eta</word>
+      <word typeWorld="true" term="es" >Tu cach</word>
+      <word typeWorld="true" term="ont" >Ils échanger</word>
+      <word typeWorld="true" term="ais" >Je coup</word>
+      <word typeWorld="false" term="ont" >Nous coiffer</word>
     </group>
     <group>
-      <word typeWorld="true" term="is" >Tu eta</word>
-      <word typeWorld="true" term="is" >Tu eta</word>
-      <word typeWorld="true" term="is" >Tu eta</word>
-      <word typeWorld="true" term="is" >Tu eta</word>
+      <word typeWorld="true" term="es" >Tu command</word>
+      <word typeWorld="true" term="e" >Il divorc</word>
+      <word typeWorld="false" term="ais" >Vous génér</word>
+      <word typeWorld="true" term="ent" >Ils grossiss</word>
     </group>
   </district>
 </dictionary>
