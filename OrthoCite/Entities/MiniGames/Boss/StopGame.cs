@@ -63,6 +63,7 @@ namespace OrthoCite.Entities.MiniGames
         const int WIDTHHEIGHTTITLE = 32;
         const int LIMITTOPLAYER = 7;
         const int DISTRICT = 2;
+        const int CAMERA_DECAL = 250;
         const int TIME_INTERVAL_PUSH_BUTTON = 500; //IN MILLISECONDS
         static readonly int[] BUTTONTILECOL = new int[4] { 153, 154, 155, 156 };
         
@@ -114,18 +115,14 @@ namespace OrthoCite.Entities.MiniGames
                     if (i.Id == GID_SPAWN) _player.positionVirt = new Vector2(i.X, i.Y);
                 }
             }
-           
 
             _player.gidCol = 633;
             _player.spriteFactory.Add(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 0 }));
-            _player.spriteFactory.Add(Helpers.Direction.DOWN, new SpriteSheetAnimationData(new[] { 27, 28, 29, 30 }, isLooping: false));
-            _player.spriteFactory.Add(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 1, 2, 3, 0 }, isLooping: false));
-            _player.spriteFactory.Add(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 1, 2, 3, 0 }, isLooping: false));
-            _player.spriteFactory.Add(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 13, 15, 17, 18 }, isLooping: false));
-            _player.spriteFactory.Add(Helpers.Direction.ATTACK_TOP, new SpriteSheetAnimationData(new[] { 19, 20, 13 }, isLooping: false));
-            _player.spriteFactory.Add(Helpers.Direction.ATTACK_DOWN, new SpriteSheetAnimationData(new[] { 32, 33, 26 }, isLooping: false));
-            _player.spriteFactory.Add(Helpers.Direction.ATTACK_LEFT, new SpriteSheetAnimationData(new[] { 5, 6, 0 }, isLooping: false));
-            _player.spriteFactory.Add(Helpers.Direction.ATTACK_RIGHT, new SpriteSheetAnimationData(new[] { 5, 6, 0 }, isLooping: false));
+            _player.spriteFactory.Add(Helpers.Direction.DOWN, new SpriteSheetAnimationData(new[] { 5, 10 }, isLooping: false));
+            _player.spriteFactory.Add(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 32, 26, 37, 26 }, isLooping: false));
+            _player.spriteFactory.Add(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 32, 26, 37, 26 }, isLooping: false));
+            _player.spriteFactory.Add(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 19, 13, 24, 13 }, isLooping: false));
+
 
 
 
@@ -334,6 +331,7 @@ namespace OrthoCite.Entities.MiniGames
                     _runtimeData.DataSave.ClearMiniGames();
                     _runtimeData.DataSave.Save();
                 }
+                _runtimeData.DialogBox.AddDialog("Arggggh, tu m'as battu.", 4);
                 _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
             }
 
@@ -353,20 +351,9 @@ namespace OrthoCite.Entities.MiniGames
 
         private void checkCamera(Camera2D camera)
         {
-            camera.LookAt(new Vector2(_player.position.X, _player.position.Y));
-            if (OutOfScreenTop(camera)) camera.LookAt(new Vector2(_player.position.X, -_runtimeData.Scene.Height / ZOOM + _runtimeData.Scene.Height / 2));
-            if (OutOfScreenLeft(camera)) camera.LookAt(new Vector2(-_runtimeData.Scene.Width / ZOOM + _runtimeData.Scene.Width / 2, _player.position.Y));
-            if (OutOfScreenRight(camera)) camera.LookAt(new Vector2(_textureMap.WidthInPixels - (_runtimeData.Scene.Width / ZOOM) * 2 + _runtimeData.Scene.Width / 2, _player.position.Y));
-            if (OutOfScreenBottom(camera)) camera.LookAt(new Vector2(_player.position.X, _textureMap.HeightInPixels - (_runtimeData.Scene.Height / ZOOM) * 2 + _runtimeData.Scene.Height / 2));
-
-            if (OutOfScreenLeft(camera) && OutOfScreenBottom(camera)) camera.LookAt(new Vector2(-_runtimeData.Scene.Width / ZOOM + _runtimeData.Scene.Width / 2, _textureMap.HeightInPixels - (_runtimeData.Scene.Height / ZOOM) * 2 + _runtimeData.Scene.Height / 2));
-            if (OutOfScreenLeft(camera) && OutOfScreenTop(camera)) camera.LookAt(new Vector2(-_runtimeData.Scene.Width / ZOOM + _runtimeData.Scene.Width / 2, -_runtimeData.Scene.Height / ZOOM + _runtimeData.Scene.Height / 2));
-
-            if (OutOfScreenRight(camera) && OutOfScreenTop(camera)) camera.LookAt(new Vector2(_textureMap.WidthInPixels - (_runtimeData.Scene.Width / ZOOM) * 2 + _runtimeData.Scene.Width / 2, -_runtimeData.Scene.Height / ZOOM + _runtimeData.Scene.Height / 2));
-            if (OutOfScreenRight(camera) && OutOfScreenBottom(camera)) camera.LookAt(new Vector2(_textureMap.WidthInPixels - (_runtimeData.Scene.Width / ZOOM) * 2 + _runtimeData.Scene.Width / 2, _textureMap.HeightInPixels - (_runtimeData.Scene.Height / ZOOM) * 2 + _runtimeData.Scene.Height / 2));
+            camera.LookAt(new Vector2(_player.position.X + CAMERA_DECAL, _player.position.Y));
 
         }
-
         private bool OutOfScreenTop(Camera2D camera)
         {
             if (camera.Position.Y < -_runtimeData.Scene.Height / ZOOM) return true;
