@@ -260,7 +260,8 @@ namespace OrthoCite.Entities.MiniGames
                 _runtimeData.pnj[ListPnj.HOME_1]._talkAndAnswer.Add(new PnjDialog($"J'ai cru entendre que tu venais sauver la ville.", new Dictionary<string, bool>()));
                 _runtimeData.pnj[ListPnj.HOME_1]._talkAndAnswer.Add(new PnjDialog($"Accepterais-tu ce cadeau ?", new Dictionary<string, bool>() { { "Bien sûr !", true }, { "Je ne te fais pas confiance.", false } }));
                 _runtimeData.PNJ[ListPnj.HOME_1].lookDir = Direction.DOWN;
-                _runtimeData.pnj[ListPnj.HOME_1].playerAnswerToPnj += answerHome_1;
+                _runtimeData.PNJ[ListPnj.HOME_1].playerAnswerToPnj += answerHome_1;
+               
 
             }
             else if(_runtimeData.gidLast == 2063)
@@ -275,6 +276,7 @@ namespace OrthoCite.Entities.MiniGames
                 _runtimeData.pnj[ListPnj.HOME_2]._talkAndAnswer.Add(new PnjDialog($"J'ai trouvé cet letre par terre, tu la veux ?", new Dictionary<string, bool>() { { "Oui.", false }, { "Non.", true } }));
                 _runtimeData.PNJ[ListPnj.HOME_2].lookDir = Direction.DOWN;
                 _runtimeData.pnj[ListPnj.HOME_2].playerAnswerToPnj += answerHome_2;
+             
             }
             else if (_runtimeData.gidLast == 2062)
             {
@@ -287,6 +289,7 @@ namespace OrthoCite.Entities.MiniGames
                 _runtimeData.pnj[ListPnj.HOME_3]._talkAndAnswer.Add(new PnjDialog($"Tu veut te reposé un peu ?", new Dictionary<string, bool>() { { "Avec plaisir !", false }, { "Tu es louche...", true } }));
                 _runtimeData.PNJ[ListPnj.HOME_3].lookDir = Direction.DOWN;
                 _runtimeData.pnj[ListPnj.HOME_3].playerAnswerToPnj += answerHome_3;
+               
             }
             else if (_runtimeData.gidLast == 2061)
             {
@@ -300,6 +303,7 @@ namespace OrthoCite.Entities.MiniGames
                 _runtimeData.pnj[ListPnj.HOME_4]._talkAndAnswer.Add(new PnjDialog($"Es-tu avec Lyrik ?", new Dictionary<string, bool>() { { "Oui.", false }, { "Non.", true } }));
                 _runtimeData.PNJ[ListPnj.HOME_4].lookDir = Direction.RIGHT;
                 _runtimeData.pnj[ListPnj.HOME_4].playerAnswerToPnj += answerHome_4;
+                
             }
             else if (_runtimeData.gidLast == 2060)
             {
@@ -313,6 +317,7 @@ namespace OrthoCite.Entities.MiniGames
                 _runtimeData.pnj[ListPnj.HOME_5]._talkAndAnswer.Add(new PnjDialog($"Tu pourrais m'aidé rapidment ?", new Dictionary<string, bool>() { { "Bien sûr !", false }, { "Non, je n'ai pas confiance.", true } }));
                 _runtimeData.PNJ[ListPnj.HOME_5].lookDir = Direction.LEFT;
                 _runtimeData.pnj[ListPnj.HOME_5].playerAnswerToPnj += answerHome_5;
+               
             }
             else if (_runtimeData.gidLast == 2059)
             {
@@ -326,6 +331,7 @@ namespace OrthoCite.Entities.MiniGames
                 _runtimeData.pnj[ListPnj.HOME_6]._talkAndAnswer.Add(new PnjDialog($"tu veux manger un bou avec moi ?", new Dictionary<string, bool>() { { "Ah, un bon repas !", false }, { "Sans façon !", true } }));
                 _runtimeData.PNJ[ListPnj.HOME_6].lookDir = Direction.RIGHT;
                 _runtimeData.pnj[ListPnj.HOME_6].playerAnswerToPnj += answerHome_6;
+                
             }
             else if (_runtimeData.gidLast == 2058)
             {
@@ -339,6 +345,7 @@ namespace OrthoCite.Entities.MiniGames
                 _runtimeData.pnj[ListPnj.HOME_7]._talkAndAnswer.Add(new PnjDialog($"Qu'est-ce que tu penses de lui, toi ?", new Dictionary<string, bool>() { { "Il est vraiment horrible !", true }, { "Il est gentil, au fond.", false } }));
                 _runtimeData.PNJ[ListPnj.HOME_7].lookDir = Direction.DOWN;
                 _runtimeData.pnj[ListPnj.HOME_7].playerAnswerToPnj += answerHome_7;
+               
             }
             else if (_runtimeData.gidLast == 2057)
             {
@@ -352,6 +359,7 @@ namespace OrthoCite.Entities.MiniGames
                 _runtimeData.pnj[ListPnj.HOME_8]._talkAndAnswer.Add(new PnjDialog($"Il paraît que ça porte malheur de refuser un cadeau.", new Dictionary<string, bool>() { { "C'est gentil, je vais le prendre.", true }, { "Je n'en veux pas !", false } }));
                 _runtimeData.PNJ[ListPnj.HOME_8].lookDir = Direction.DOWN;
                 _runtimeData.pnj[ListPnj.HOME_8].playerAnswerToPnj += answerHome_8;
+               
             }
             else if (_runtimeData.gidLast == 2056)
             {
@@ -365,6 +373,7 @@ namespace OrthoCite.Entities.MiniGames
                 _runtimeData.pnj[ListPnj.HOME_9]._talkAndAnswer.Add(new PnjDialog($"es-ce que c'est vrai ?", new Dictionary<string, bool>() { { "Oui, je vais tous vous sauver !", true }, { "Hein ? Euh... non, non.", true } }));
                 _runtimeData.PNJ[ListPnj.HOME_9].lookDir = Direction.RIGHT;
                 _runtimeData.pnj[ListPnj.HOME_9].playerAnswerToPnj += answerHome_9;
+                
             }
             else if (_runtimeData.gidLast == 2055)
             {
@@ -378,6 +387,7 @@ namespace OrthoCite.Entities.MiniGames
                 _runtimeData.pnj[ListPnj.HOME_10]._talkAndAnswer.Add(new PnjDialog($"Je peux compter sur toi pour nous sauver ?", new Dictionary<string, bool>() { { "Sans problèmes !", true }, { "Absolument pas !", false } }));
                 _runtimeData.PNJ[ListPnj.HOME_10].lookDir = Direction.RIGHT;
                 _runtimeData.pnj[ListPnj.HOME_10].playerAnswerToPnj += answerHome_10;
+               
             }
             else if (_runtimeData.gidLast == 2054)
             {
@@ -390,6 +400,7 @@ namespace OrthoCite.Entities.MiniGames
                 _runtimeData.pnj[ListPnj.HOME_11]._talkAndAnswer.Add(new PnjDialog($"sa te dit de boire un peti peu pour te reposer ?", new Dictionary<string, bool>() { { "Ce ne serait pas de refus !", false }, { "Je m'en passerai.", true } }));
                 _runtimeData.PNJ[ListPnj.HOME_11].lookDir = Direction.LEFT;
                 _runtimeData.pnj[ListPnj.HOME_11].playerAnswerToPnj += answerHome_11;
+               
             }
             else if (_runtimeData.gidLast == 2053)
             {
@@ -403,6 +414,7 @@ namespace OrthoCite.Entities.MiniGames
                 _runtimeData.pnj[ListPnj.HOME_12]._talkAndAnswer.Add(new PnjDialog($"J'ai retrouvé ça dans un vieux tiroir, ça t'intéresse ?", new Dictionary<string, bool>() { { "Oui.", true }, { "Pas du tout.", false } }));
                 _runtimeData.PNJ[ListPnj.HOME_12].lookDir = Direction.DOWN;
                 _runtimeData.pnj[ListPnj.HOME_12].playerAnswerToPnj += answerHome_12;
+                
             }
             else if (_runtimeData.gidLast == 2051)
             {
@@ -416,6 +428,7 @@ namespace OrthoCite.Entities.MiniGames
                 _runtimeData.pnj[ListPnj.HOME_13]._talkAndAnswer.Add(new PnjDialog($"Tu es là pour te battre contre Lyrik ?", new Dictionary<string, bool>() { { "Oui.", true }, { "Pas du tout.", false } }));
                 _runtimeData.PNJ[ListPnj.HOME_13].lookDir = Direction.DOWN;
                 _runtimeData.pnj[ListPnj.HOME_13].playerAnswerToPnj += answerHome_13;
+                
             }
 
             foreach (KeyValuePair<ListPnj, PNJ> i in _runtimeData.PNJ)
@@ -437,11 +450,24 @@ namespace OrthoCite.Entities.MiniGames
 
         private void answerHome_13(RuntimeData r, bool TrueOrFalseAnswer)
         {
-            if (TrueOrFalseAnswer)
+            bool talkOrNot = true;
+            foreach(ListPnj i in _runtimeData.listPnjInHomeNotSend)
             {
-                r.GainLive();
+                if(i == ListPnj.HOME_13)
+                {
+                    talkOrNot = false;
+                }
+            }
+            _runtimeData.listPnjInHomeNotSend.Add(ListPnj.HOME_13);
+            if (TrueOrFalseAnswer)
+            { 
                 _success.Play();
-                _runtimeData.DialogBox.AddDialog("Parfait, ceci va t'aider !", 3).Show();
+                if (talkOrNot)
+                {
+                    r.GainLive();
+                    _runtimeData.DialogBox.AddDialog("Parfait, ceci va t'aider !", 3).Show();
+                }
+                else _runtimeData.DialogBox.AddDialog("Parfait, mais je t'es déjâ aidé", 3).Show();
             }
             else
             {
@@ -457,11 +483,24 @@ namespace OrthoCite.Entities.MiniGames
 
         private void answerHome_12(RuntimeData r, bool TrueOrFalseAnswer)
         {
+            bool talkOrNot = true;
+            foreach (ListPnj i in _runtimeData.listPnjInHomeNotSend)
+            {
+                if (i == ListPnj.HOME_12)
+                {
+                    talkOrNot = false;
+                }
+            }
+            _runtimeData.listPnjInHomeNotSend.Add(ListPnj.HOME_12);
             if (TrueOrFalseAnswer)
             {
-                r.GainLive();
                 _success.Play();
-                _runtimeData.DialogBox.AddDialog("J'espère que tu pourras nous sauver de Lyrik !", 3).Show();
+                if (talkOrNot)
+                {
+                    r.GainLive();
+                    _runtimeData.DialogBox.AddDialog("J'espère que tu pourras nous sauver de Lyrik !", 3).Show();
+                }
+                else _runtimeData.DialogBox.AddDialog("Je t'es déjâ aidé, mais bien joué !", 3).Show();
             }
             else
             {
@@ -477,11 +516,24 @@ namespace OrthoCite.Entities.MiniGames
 
         private void answerHome_11(RuntimeData r, bool TrueOrFalseAnswer)
         {
+            bool talkOrNot = true;
+            foreach (ListPnj i in _runtimeData.listPnjInHomeNotSend)
+            {
+                if (i == ListPnj.HOME_11)
+                {
+                    talkOrNot = false;
+                }
+            }
+            _runtimeData.listPnjInHomeNotSend.Add(ListPnj.HOME_11);
             if (TrueOrFalseAnswer)
             {
-                r.GainLive();
                 _success.Play();
-                _runtimeData.DialogBox.AddDialog("Arghh, tu as deviné que c'était un piège !", 3).Show();
+                if (talkOrNot)
+                {
+                    r.GainLive();
+                    _runtimeData.DialogBox.AddDialog("Arghh, tu as deviné que c'était un piège !", 3).Show();
+                }
+                else _runtimeData.DialogBox.AddDialog(" Je suis triste, mes pièges ne marchent plus !", 3).Show();
             }
             else
             {
@@ -497,11 +549,24 @@ namespace OrthoCite.Entities.MiniGames
 
         private void answerHome_10(RuntimeData r, bool TrueOrFalseAnswer)
         {
+            bool talkOrNot = true;
+            foreach (ListPnj i in _runtimeData.listPnjInHomeNotSend)
+            {
+                if (i == ListPnj.HOME_10)
+                {
+                    talkOrNot = false;
+                }
+            }
+            _runtimeData.listPnjInHomeNotSend.Add(ListPnj.HOME_10);
             if (TrueOrFalseAnswer)
             {
-                r.GainLive();
                 _success.Play();
-                _runtimeData.DialogBox.AddDialog("Ah, un homme qui a du coeur, prends donc ceci pour t'aider !", 3).Show();
+                if (talkOrNot)
+                {
+                    r.GainLive();
+                    _runtimeData.DialogBox.AddDialog("Ah, un homme qui a du coeur, prends donc ceci pour t'aider !", 3).Show();
+                }
+                else _runtimeData.DialogBox.AddDialog("Je t'es déjâ aidé, mais tu es un homme qui a du coeur !", 3).Show();
             }
             else
             {
@@ -517,11 +582,24 @@ namespace OrthoCite.Entities.MiniGames
 
         private void answerHome_9(RuntimeData r, bool TrueOrFalseAnswer)
         {
+            bool talkOrNot = true;
+            foreach (ListPnj i in _runtimeData.listPnjInHomeNotSend)
+            {
+                if (i == ListPnj.HOME_9)
+                {
+                    talkOrNot = false;
+                }
+            }
+            _runtimeData.listPnjInHomeNotSend.Add(ListPnj.HOME_9);
             if (TrueOrFalseAnswer)
             {
-                r.GainLive();
                 _success.Play();
-                _runtimeData.DialogBox.AddDialog("Oh tu es avec nou alors ! Prend sa", 3).Show();
+                if (talkOrNot)
+                {
+                    r.GainLive();
+                    _runtimeData.DialogBox.AddDialog("Oh tu es avec nous alors ! Prend sa", 3).Show();
+                }
+                else _runtimeData.DialogBox.AddDialog("Oh tu es avec nous alors, mais je n'es plus rien à te donner !", 3).Show();
             }
             else
             {
@@ -537,11 +615,24 @@ namespace OrthoCite.Entities.MiniGames
 
         private void answerHome_8(RuntimeData r, bool TrueOrFalseAnswer)
         {
+            bool talkOrNot = true;
+            foreach (ListPnj i in _runtimeData.listPnjInHomeNotSend)
+            {
+                if (i == ListPnj.HOME_8)
+                {
+                    talkOrNot = false;
+                }
+            }
+            _runtimeData.listPnjInHomeNotSend.Add(ListPnj.HOME_8);
             if (TrueOrFalseAnswer)
             {
-                r.GainLive();
                 _success.Play();
-                _runtimeData.DialogBox.AddDialog("Tiens, fais bonne route !", 3).Show();
+                if (talkOrNot)
+                {
+                    r.GainLive();
+                    _runtimeData.DialogBox.AddDialog("Tiens, fais bonne route !", 3).Show();
+                }
+                else _runtimeData.DialogBox.AddDialog("Je t'es déjâ aidé, mais fais bonne route !", 3).Show();
             }
             else
             {
@@ -557,11 +648,24 @@ namespace OrthoCite.Entities.MiniGames
 
         private void answerHome_7(RuntimeData r, bool TrueOrFalseAnswer)
         {
+            bool talkOrNot = true;
+            foreach (ListPnj i in _runtimeData.listPnjInHomeNotSend)
+            {
+                if (i == ListPnj.HOME_7)
+                {
+                    talkOrNot = false;
+                }
+            }
+            _runtimeData.listPnjInHomeNotSend.Add(ListPnj.HOME_7);
             if (TrueOrFalseAnswer)
             {
-                r.GainLive();
                 _success.Play();
-                _runtimeData.DialogBox.AddDialog("Au moins, on est bien d'accord là-dessus !", 3).Show();
+                if (talkOrNot)
+                {
+                    r.GainLive();
+                    _runtimeData.DialogBox.AddDialog("Au moins, on est bien d'accord là-dessus !", 3).Show();
+                }
+                else _runtimeData.DialogBox.AddDialog("On est bien d'accord là-dessus, mais je n'es plus rien à te donner ! ", 3).Show();
             }
             else
             {
@@ -577,11 +681,24 @@ namespace OrthoCite.Entities.MiniGames
 
         private void answerHome_6(RuntimeData r, bool TrueOrFalseAnswer)
         {
+            bool talkOrNot = true;
+            foreach (ListPnj i in _runtimeData.listPnjInHomeNotSend)
+            {
+                if (i == ListPnj.HOME_6)
+                {
+                    talkOrNot = false;
+                }
+            }
+            _runtimeData.listPnjInHomeNotSend.Add(ListPnj.HOME_6);
             if (TrueOrFalseAnswer)
             {
-                r.GainLive();
                 _success.Play();
-                _runtimeData.DialogBox.AddDialog("Tu savai que c'étai empoisonné !", 3).Show();
+                if (talkOrNot)
+                {
+                    r.GainLive();
+                    _runtimeData.DialogBox.AddDialog("Tu savai que c'étai empoisonné !", 3).Show();
+                }
+                else _runtimeData.DialogBox.AddDialog("Grrrrr", 3).Show();
             }
             else
             {
@@ -597,11 +714,24 @@ namespace OrthoCite.Entities.MiniGames
 
         private void answerHome_5(RuntimeData r, bool TrueOrFalseAnswer)
         {
+            bool talkOrNot = true;
+            foreach (ListPnj i in _runtimeData.listPnjInHomeNotSend)
+            {
+                if (i == ListPnj.HOME_5)
+                {
+                    talkOrNot = false;
+                }
+            }
+            _runtimeData.listPnjInHomeNotSend.Add(ListPnj.HOME_5);
             if (TrueOrFalseAnswer)
             {
-                r.GainLive();
                 _success.Play();
-                _runtimeData.DialogBox.AddDialog("Pffff tu savé que c'était un piège, c'es pas drôle !", 3).Show();
+                if (talkOrNot)
+                {
+                    r.GainLive();
+                    _runtimeData.DialogBox.AddDialog("Pffff tu savé que c'était un piège, c'es pas drôle !", 3).Show();
+                }
+                else _runtimeData.DialogBox.AddDialog("Même si tu savais que c'était un piège, je ne te redonnerais plus rien !", 3).Show();
             }
             else
             {
@@ -617,11 +747,24 @@ namespace OrthoCite.Entities.MiniGames
 
         private void answerHome_4(RuntimeData r, bool TrueOrFalseAnswer)
         {
+            bool talkOrNot = true;
+            foreach (ListPnj i in _runtimeData.listPnjInHomeNotSend)
+            {
+                if (i == ListPnj.HOME_4)
+                {
+                    talkOrNot = false;
+                }
+            }
+            _runtimeData.listPnjInHomeNotSend.Add(ListPnj.HOME_4);
             if (TrueOrFalseAnswer)
             {
-                r.GainLive();
                 _success.Play();
-                _runtimeData.DialogBox.AddDialog("Tout va bien alors, prends donc ceci !", 3).Show();
+                if (talkOrNot)
+                {
+                    r.GainLive();
+                    _runtimeData.DialogBox.AddDialog("Tout va bien alors, prends donc ceci !", 3).Show();
+                }
+                else _runtimeData.DialogBox.AddDialog("Je t'es déjâ aidé, mais tu es un bon garçon !", 3).Show();
             }
             else
             {
@@ -637,11 +780,25 @@ namespace OrthoCite.Entities.MiniGames
 
         private void answerHome_3(RuntimeData r, bool TrueOrFalseAnswer)
         {
+            bool talkOrNot = true;
+            foreach (ListPnj i in _runtimeData.listPnjInHomeNotSend)
+            {
+                if (i == ListPnj.HOME_3)
+                {
+                    talkOrNot = false;
+                }
+            }
+            _runtimeData.listPnjInHomeNotSend.Add(ListPnj.HOME_3);
+
             if (TrueOrFalseAnswer)
             {
-                r.GainLive();
                 _success.Play();
-                _runtimeData.DialogBox.AddDialog("Tu as deviner que j'étais avec Lyrik ? Tu es for !", 3).Show();
+                if (talkOrNot)
+                {
+                    r.GainLive();
+                    _runtimeData.DialogBox.AddDialog("Tu as deviner que j'étais avec Lyrik ? Tu es for !", 3).Show();
+                }
+                else _runtimeData.DialogBox.AddDialog("Tu as déjâ deviné avant, tu ne peux pas te redonner une récompense", 3).Show();
             }
             else
             {
@@ -657,11 +814,24 @@ namespace OrthoCite.Entities.MiniGames
 
         private void answerHome_2(RuntimeData r, bool TrueOrFalseAnswer)
         {
+            bool talkOrNot = true;
+            foreach (ListPnj i in _runtimeData.listPnjInHomeNotSend)
+            {
+                if (i == ListPnj.HOME_2)
+                {
+                    talkOrNot = false;
+                }
+            }
+            _runtimeData.listPnjInHomeNotSend.Add(ListPnj.HOME_2);
             if (TrueOrFalseAnswer)
             {
-                r.GainLive();
                 _success.Play();
-                _runtimeData.DialogBox.AddDialog("Grrrr, coment tu as su que c'était un piège ?", 3).Show();
+                if (talkOrNot)
+                {
+                    r.GainLive();
+                    _runtimeData.DialogBox.AddDialog("Grrrr, comment tu as su que c'était un piège ?", 3).Show();
+                }
+                else _runtimeData.DialogBox.AddDialog("Je t'es déjâ donné ce que j'avais, mais comment tu as su que c'était un piège ?", 3).Show();
             }
             else
             {
@@ -677,11 +847,24 @@ namespace OrthoCite.Entities.MiniGames
 
         private void answerHome_1(RuntimeData r, bool TrueOrFalseAnswer)
         {
+            bool talkOrNot = true;
+            foreach (ListPnj i in _runtimeData.listPnjInHomeNotSend)
+            {
+                if (i == ListPnj.HOME_1)
+                {
+                    talkOrNot = false;
+                }
+            }
+            _runtimeData.listPnjInHomeNotSend.Add(ListPnj.HOME_1);
             if (TrueOrFalseAnswer)
             {
-                r.GainLive();
                 _success.Play();
-                _runtimeData.DialogBox.AddDialog("Tiens, bon courage pour la suite de ta quête !", 3).Show();
+                if (talkOrNot)
+                {
+                    r.GainLive();
+                    _runtimeData.DialogBox.AddDialog("Tiens, bon courage pour la suite de ta quête !", 3).Show();
+                }
+                else _runtimeData.DialogBox.AddDialog("Je t'es déjâ aidé, mais bon courage pour la suite de ta quête !", 3).Show();
             }
             else
             {

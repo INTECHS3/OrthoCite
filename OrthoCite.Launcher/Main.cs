@@ -4,17 +4,19 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace OrthoCite.Launcher
 {
     public partial class Main : Form
     {
         DataSave _dataSave;
+        Introduction_Generic formSecon;
 
         public Main()
         {
             InitializeComponent();
-
+           
             _dataSave = new DataSave(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\datasaves");
             _dataSave.Clear();
         }
@@ -80,6 +82,21 @@ namespace OrthoCite.Launcher
                 File.Move(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\datasaves\" + ListDatasaves.SelectedValue + ".oct", Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\datasaves\datasave.oct");
             }
 
+
+            _dataSave.Load("datasave");
+
+            if(_dataSave.District == 1 && !_dataSave.MiniGameIsValidated(DataSaveMiniGame.REARRANGER) && !_dataSave.MiniGameIsValidated(DataSaveMiniGame.PLATFORMER) && !_dataSave.MiniGameIsValidated(DataSaveMiniGame.DOORGAME))
+            {
+                try
+                {
+                    formSecon = new Introduction_Generic(this);
+                    formSecon.ShowDialog();
+
+                }
+                catch { MessageBox.Show("We have a bug ..."); }
+            }
+            
+
             var p = new Process();
             p.StartInfo.FileName = "OrthoCité.exe";
             p.Start();
@@ -90,5 +107,6 @@ namespace OrthoCite.Launcher
         {
             this.Close();
         }
+
     }
 }
