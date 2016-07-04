@@ -16,8 +16,6 @@ OrthoCité est un jeu français ayant pour objectif de faire travailler l'orthog
 
 - Téléchargez la solution et lancez-la avec Visual Studio
 - Restaurez les packages NuGet
-- Télécharger l'introduction : [LIEN DRIVE](https://drive.google.com/file/d/0B4qPBKlD4H-VZVloQjZldE1ONEU/view?usp=sharing)
-- Placer le fichier SWV à la racine du dossier :  OrthoCie.Launcher
 - Regénérez la solution
 - Démarrez
 

@@ -27,7 +27,7 @@ namespace OrthoCite.Launcher
             InitializeComponent();
             FormBorderStyle = FormBorderStyle.None;
             WindowState = FormWindowState.Maximized;
-            playerBrowser.Navigate(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\orthocite_intro_final.swf");
+            playerBrowser.Navigate(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\orthocite_intro_final_final.swf");
             CountVideo.Start();
 
         }
