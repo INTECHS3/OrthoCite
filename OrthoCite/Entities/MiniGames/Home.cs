@@ -342,13 +342,13 @@ namespace OrthoCite.Entities.MiniGames
             }
             else if (_runtimeData.gidLast == 2057)
             {
-                _runtimeData.PNJ.Add(ListPnj.HOME_8, new PNJ(TypePNJ.Static, new Vector2(11, 6), new List<ItemList>(), _runtimeData, "map/pnj"));
+                _runtimeData.PNJ.Add(ListPnj.HOME_8, new PNJ(TypePNJ.Static, new Vector2(11, 7), new List<ItemList>(), _runtimeData, "map/pnj"));
                 _runtimeData.PNJ[ListPnj.HOME_8].spriteFactory(Helpers.Direction.NONE, new SpriteSheetAnimationData(new[] { 4 }));
                 _runtimeData.PNJ[ListPnj.HOME_8].spriteFactory(Helpers.Direction.DOWN, new SpriteSheetAnimationData(new[] { 4 }, isLooping: false));
                 _runtimeData.PNJ[ListPnj.HOME_8].spriteFactory(Helpers.Direction.LEFT, new SpriteSheetAnimationData(new[] { 28 }, isLooping: false));
                 _runtimeData.PNJ[ListPnj.HOME_8].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 28 }, isLooping: false));
                 _runtimeData.PNJ[ListPnj.HOME_8].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 40 }, isLooping: false));
-                _runtimeData.pnj[ListPnj.HOME_7]._talkAndAnswer.Add(new PnjDialog($"J'ai déterré ça hier, je pense que ça pourra t'être utile !", new Dictionary<string, bool>()));
+                _runtimeData.pnj[ListPnj.HOME_8]._talkAndAnswer.Add(new PnjDialog($"J'ai déterré ça hier, je pense que ça pourra t'être utile !", new Dictionary<string, bool>()));
                 _runtimeData.pnj[ListPnj.HOME_8]._talkAndAnswer.Add(new PnjDialog($"Il paraît que ça porte malheur de refuser un cadeau.", new Dictionary<string, bool>() { { "C'est gentil, je vais le prendre.", true }, { "Je n'en veux pas !", false } }));
                 _runtimeData.PNJ[ListPnj.HOME_8].lookDir = Direction.DOWN;
                 _runtimeData.pnj[ListPnj.HOME_8].playerAnswerToPnj += answerHome_8;
