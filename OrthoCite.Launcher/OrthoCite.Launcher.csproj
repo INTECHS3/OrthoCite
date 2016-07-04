@@ -126,7 +126,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icon.ico" />
-    <Content Include="orthocite_intro_final.swf">
+    <Content Include="orthocite_intro_final_final.swf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
