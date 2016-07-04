@@ -353,7 +353,7 @@ namespace OrthoCite.Entities.MiniGames
                         if (e.Position.X < i.Value.X + _font.MeasureString(i.Key.World).X &&
                            e.Position.X > i.Value.X &&
                            e.Position.Y < i.Value.Y + _font.MeasureString(i.Key.World).Y &&
-                            e.Position.Y > i.Value.Y) 
+                            e.Position.Y > i.Value.Y - _textureMap.TileHeight) 
                         {
                             shootToDel.Add(e);
                             clearDico = true;
