@@ -15,6 +15,7 @@ namespace OrthoCite
         ViewportAdapter _viewAdapter;
         DialogBox _dialogBox;
         OrthoCite _orthoCite;
+        
         int _district = 1;
 
         public GameTime GameTime { set; get; }
@@ -22,6 +23,7 @@ namespace OrthoCite
         Map map;
 
         public Dictionary<ListPnj, PNJ> pnj = new Dictionary<ListPnj, Helpers.PNJ>();
+        public List<ListPnj> listPnjInHomeNotSend = new List<ListPnj>();
 
         public RuntimeData()
         {
