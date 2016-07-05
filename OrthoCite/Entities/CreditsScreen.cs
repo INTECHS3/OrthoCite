@@ -68,6 +68,8 @@ namespace OrthoCite.Entities
         {
             if (_moveCameraTo != 0 && !_cameraMoved)
             {
+                camera.Position = new Vector2(0, 0);
+                camera.Zoom = 1f;
                 camera.CreateTweenGroup(Done).MoveTo(new Vector2(0, _moveCameraTo), SCROLL_TIME, EasingFunctions.Linear);
                 _cameraMoved = true;
                 MediaPlayer.Play(_music);
@@ -87,6 +89,12 @@ namespace OrthoCite.Entities
 
             _currentY = 0;
             DrawSprite(spriteBatch, _logoTexture, (uint)_runtimeData.Scene.Height);
+
+            DrawText(spriteBatch, _fontBig, "TU AS SAUVE LA VILLE", 50);
+            DrawText(spriteBatch, _fontLittle, "Grace a toi, l'orthographe est conservee !", 10);
+            DrawText(spriteBatch, _fontLittle, "Lyrik est maintenant enferme a l'autre bout de la planete.", 20);
+            DrawText(spriteBatch, _fontLittle, "Il ne reviendra plus jamais !", 20);
+            DrawText(spriteBatch, _fontLittle, "Merci. Merci pour tout...", 10);
 
             DrawText(spriteBatch, _fontBig, "CHEF DE PROJET", 50);
             DrawText(spriteBatch, _fontLittle, "Valentin Gauthey", 20);

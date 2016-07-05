@@ -85,14 +85,14 @@ namespace OrthoCite
 #if DEBUG
             _graphics.PreferredBackBufferWidth = 928;
             _graphics.PreferredBackBufferHeight = 512;
-            AllocConsole();
-            System.Console.WriteLine("=== OrthoCite debug console ===");
 #else
             _graphics.PreferredBackBufferWidth = SCENE_WIDTH;
             _graphics.PreferredBackBufferHeight = SCENE_HEIGHT;
             _graphics.IsFullScreen = true;
 #endif
-
+            AllocConsole();
+            Console.Title = "OCT Debug";
+            System.Console.WriteLine("=== OrthoCite debug console ===");
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
             Window.AllowUserResizing = true;
@@ -115,9 +115,6 @@ namespace OrthoCite
             _camera = new Camera2D(_viewportAdapter);
 
             base.Initialize();
-
-
-           
             
         }
 
