@@ -86,6 +86,7 @@ namespace OrthoCite
             _graphics.PreferredBackBufferWidth = 928;
             _graphics.PreferredBackBufferHeight = 512;
             AllocConsole();
+            Console.Title = "OCT Debug";
             System.Console.WriteLine("=== OrthoCite debug console ===");
 #else
             _graphics.PreferredBackBufferWidth = SCENE_WIDTH;
