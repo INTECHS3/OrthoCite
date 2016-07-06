@@ -6,7 +6,7 @@ using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 using System.Xml;
-using System.Xml.Linq;
+using System.Text;
 using System.Threading;
 using System.Runtime.InteropServices;
 
@@ -147,7 +147,10 @@ namespace OrthoCite.Launcher
                 foreach (KeyValuePair<string, string> i in differentXmlWithUrl)
                 {
                     XmlDocument xml = new XmlDocument();
-                    xml.LoadXml(new WebClient().DownloadString(baseUrl + i.Value));
+                    WebClient wc = new WebClient();
+                    wc.Encoding = Encoding.UTF8;
+
+                    xml.LoadXml(wc.DownloadString(baseUrl + i.Value));
                     xml.Save(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\Content\dictionaries\" + i.Key + ".xml");
                     xmlLoad.PerformStep();
                 }
