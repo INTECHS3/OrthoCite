@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <dictionary>
-  <district id="1"> <!-- 5 rounds, 5 words per round -->
-    <!-- class -->
+  <district>
     <sentence>
       <valid>je prends</valid>
     </sentence>
@@ -131,23 +130,6 @@
     <sentence>
       <invalid>je vend</invalid>
     </sentence>
-
-    
-  </district>
-    <district id="2">
-    <sentence>
-      <valid></valid>
-    </sentence>
   </district>
 
-  <district id="3">
-    <sentence>
-      <valid></valid>
-    </sentence>
-  </district>
-
-  <district id="4">
-    <sentence>
-    </sentence>
-  </district>
 </dictionary>
