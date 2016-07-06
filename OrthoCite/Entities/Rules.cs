@@ -64,7 +64,7 @@ namespace OrthoCite.Entities
                 case GameContext.MINIGAME_DOORGAME:
                     text = String.Join(" \n ",
                         "Il y a deux ou trois portes au fond de chaque salle.",
-                        "Place toi face à un panneau pour le lire et choisis la bonne porte.",
+                        "Place-toi face à un panneau pour le lire et choisis la bonne porte.",
                         " \n ",
                         "Si tu te trompes de porte, tu perds une vie.",
                         " \n ",
@@ -75,11 +75,11 @@ namespace OrthoCite.Entities
                 case GameContext.MINIGAME_REARRANGER:
                     text = String.Join(" \n ",
                         "Il y a un mot affiché sur les tables. Les lettres sont mélangées.",
-                        "Replace les lettre dans le bon ordre, en appuyant sur [E] pour déplacer les lettres sur les tables et [A] pour valider ton mot.",
+                        "Replace les lettres dans le bon ordre, en appuyant sur [E] pour déplacer les lettres sur les tables et [A] pour valider ton mot.",
                         " \n ",
                         "Si tu te trompes dans l'ordre, tu perds une vie.",
                         " \n ",
-                        "Tu as une minute pour trouver chaque mot",
+                        "Tu as une minute pour trouver chaque mot.",
                         " \n ",
                         "Bon courage !"
                     );
@@ -91,28 +91,39 @@ namespace OrthoCite.Entities
                         " \n ",
                         "Si tu tires sur un mot valide ou si tu laisses tomber un mot invalide, tu perds une vie.",
                         "\n",
-                        "Si tu marches sur une des cases rouge au sol, tu perd une vie",
+                        "Si tu marches sur une des cases rouges au sol, tu perds une vie.",
                         " \n ",
                         " \n ",
                         "Bon courage !"
                     );
                     break;
-                    case GameContext.MINIGAME_GUESSGAME:
+                case GameContext.MINIGAME_GUESSGAME:
                     text = String.Join(" \n ",
-                        "Des verbes conjugués vont apparaître en haut de l'écran. Appuie sur [A] si tu penses que le verbe est valide",
+                        "Des verbes conjugués vont apparaître en haut de l'écran. Appuie sur [A] si tu penses que le verbe est valide.",
                         "\n",
-                        "Appuie sur [E] si tu penses que le verbe est invalide. Tu as 15 secondes pour choisir avant de perdre une vie",
+                        "Appuie sur [E] si tu penses que le verbe est invalide. Tu as 15 secondes pour choisir avant de perdre une vie.",
                         "\n",
-                        "Des cases vont apparaître au sol, si tu marches dessus, tu perds une vie",
+                        "Des cases vont apparaître au sol. Si tu marches dessus, tu perds une vie.",
                         "\n",
-                        "Pour gagner, tu dois valider 30 mots",
+                        "Pour gagner, tu dois valider 30 mots.",
                         "\n",
                         "\n",
                         "Bon courage !"
                     );
                     break;
-
-                    default:
+                case GameContext.MINIGAME_STOPGAME:
+                    text = String.Join(" \n ",
+                        "Des radicaux vont venir de la droite.",
+                        "\n",
+                        "Appuie sur [E] devant un bouton si la terminaison correspondante ne va pas avec le radical.",
+                        "\n",
+                        "Si tu ne vas pas assez vite, ou si tu te trompes, tu perds une vie.",
+                        "\n",
+                        "\n",
+                        "Bon courage !"
+                    );
+                    break;
+                default:
                     text = String.Join(" \n ",
                         "Pas de règles."
                     );

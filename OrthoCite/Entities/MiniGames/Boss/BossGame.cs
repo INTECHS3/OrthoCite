@@ -204,7 +204,7 @@ namespace OrthoCite.Entities.MiniGames
                     _runtimeData.DataSave.ClearMiniGames();
                     _runtimeData.DataSave.Save();
                 }
-                _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
+                _runtimeData.OrthoCite.ChangeGameContext(GameContext.CREDITS_SCREEN);
             }
         }
 

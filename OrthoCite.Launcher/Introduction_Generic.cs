@@ -41,7 +41,7 @@ namespace OrthoCite.Launcher
         
         private void Introduction_Generic_FormClosing(object sender, FormClosingEventArgs e)
         {
-            e.Cancel = true;
+            //if (Compteur < totalSecond) e.Cancel = true;
         }
     }
 }

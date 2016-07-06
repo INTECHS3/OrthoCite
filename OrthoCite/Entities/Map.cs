@@ -236,7 +236,7 @@ namespace OrthoCite.Entities
                     catch { Console.WriteLine("use : error"); }
                     break;
                 case "clearText":
-                    try { _runtimeData.DialogBox.AddDialog("SetEmpty", 2).Show(); }
+                    try { _runtimeData.DialogBox.Hide();  }
                     catch { Console.WriteLine("use : error"); }
                     break;
                 case "setLife":
