@@ -563,7 +563,7 @@ namespace OrthoCite.Entities.MiniGames
             document = new XmlDocument();
             document.Load(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\Content\dictionaries\GuessGame.xml");
             XmlNode root = document.DocumentElement;
-            XmlNode district = root.SelectSingleNode("district[@id='" + _district + "']");
+            XmlNode district = root.SelectSingleNode("district");
 
             foreach (XmlNode sentence in district.SelectNodes("sentence"))
             {
