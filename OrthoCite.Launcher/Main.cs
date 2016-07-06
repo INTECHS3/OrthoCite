@@ -17,7 +17,7 @@ namespace OrthoCite.Launcher
         DataSave _dataSave;
         Introduction_Generic formSecon;
 
-        string baseUrl = @"http://localhost/OrthoCite/index.php?page=generateXML&name=";
+        string baseUrl = @"http://10.8.111.6/OrthoCite/index.php?page=generateXML&name=";
         Dictionary<string, string> differentXmlWithUrl = new Dictionary<string, string>()
         {
             { "boss", "superboss" },
