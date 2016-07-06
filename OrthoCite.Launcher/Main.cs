@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Net;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
+using System.Xml;
+using System.Xml.Linq;
 using System.Threading;
+using System.Runtime.InteropServices;
 
 namespace OrthoCite.Launcher
 {
@@ -13,12 +17,31 @@ namespace OrthoCite.Launcher
         DataSave _dataSave;
         Introduction_Generic formSecon;
 
+        string baseUrl = @"http://localhost/OrthoCite/index.php?page=generateXML&name=";
+        Dictionary<string, string> differentXmlWithUrl = new Dictionary<string, string>()
+        {
+            { "boss", "superboss" },
+            { "DoorGame", "doorgame_1" },
+            { "DoorGame2", "doorgame_2" },
+            { "GuessGame", "guessgame" },
+            { "platformer", "platformer" },
+            { "Rearranger", "rearranger" },
+            { "StopGame", "stopgame" },
+            { "ThrowGame", "throwgame" }
+        };
+
         public Main()
         {
             InitializeComponent();
            
             _dataSave = new DataSave(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\datasaves");
             _dataSave.Clear();
+            xmlLoad.Maximum = 8;
+            xmlLoad.Minimum = 0;
+            xmlLoad.Step = 1;
+            messageUpdate.Text = "Jeu à jour !";
+            if (!UpdateXML()) MessageBox.Show("Erreur lors de la mise à jour");
+            
         }
 
         private void Main_Load(object sender, EventArgs e)
@@ -108,5 +131,43 @@ namespace OrthoCite.Launcher
             this.Close();
         }
 
+        private bool UpdateXML()
+        {
+            
+            messageUpdate.Visible = false; 
+            xmlLoad.Value = 0;
+
+            BtnAdd.Enabled = false;
+            BtnLoad.Enabled = false;
+            BtnDelete.Enabled = false;
+            pictureBox1.Enabled = false;
+
+            try
+            {
+                foreach (KeyValuePair<string, string> i in differentXmlWithUrl)
+                {
+                    XmlDocument xml = new XmlDocument();
+                    xml.LoadXml(new WebClient().DownloadString(baseUrl + i.Value));
+                    xml.Save(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\Content\dictionaries\" + i.Key + ".xml");
+                    xmlLoad.PerformStep();
+                }
+            }
+            catch { return false; }
+            
+            messageUpdate.Visible = true;
+            BtnAdd.Enabled = true;
+            BtnLoad.Enabled = true;
+            BtnDelete.Enabled = true;
+            pictureBox1.Enabled = true;
+            return true;
+        }
+
+        private void updateButton_Click(object sender, EventArgs e)
+        {
+            UpdateXML();
+        }
+
+        
     }
+
 }
