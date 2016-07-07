@@ -69,7 +69,6 @@ namespace OrthoCite.Entities.MiniGames
         
 
         GameTime _saveGameTime;
-
         Queue<List<saveWordTerminason>> wordsQueue;
         List<saveWordTerminason> actualWords;
         List<positionOfSaveWordTerminason> actualPositionWords;
@@ -280,8 +279,8 @@ namespace OrthoCite.Entities.MiniGames
                 actualWords = wordsQueue.Dequeue();
                 actualPositionWords = new List<positionOfSaveWordTerminason>();
 
-                var count = 0;
-
+                int count = 0;
+                new Random().Shuffle(staticPositionSpawn);
                 foreach(saveWordTerminason wordStruct in actualWords)
                 {
                     actualPositionWords.Add(new positionOfSaveWordTerminason(wordStruct, staticPositionSpawn[count++]));
@@ -431,6 +430,20 @@ namespace OrthoCite.Entities.MiniGames
                 if (i.Id == BUTTONTILECOL[e] && i.X == _player.positionVirt.X + 1 && i.Y == _player.positionVirt.Y) return true;
             }
             return false;
+        }
+    }
+    static class RandomExtensions
+    {
+        public static void Shuffle<T>(this Random rng, T[] array)
+        {
+            int n = array.Length;
+            while (n > 1)
+            {
+                int k = rng.Next(n--);
+                T temp = array[n];
+                array[n] = array[k];
+                array[k] = temp;
+            }
         }
     }
 }
