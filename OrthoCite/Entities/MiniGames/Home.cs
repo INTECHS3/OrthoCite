@@ -370,7 +370,7 @@ namespace OrthoCite.Entities.MiniGames
                 _runtimeData.PNJ[ListPnj.HOME_9].spriteFactory(Helpers.Direction.RIGHT, new SpriteSheetAnimationData(new[] { 25 }, isLooping: false));
                 _runtimeData.PNJ[ListPnj.HOME_9].spriteFactory(Helpers.Direction.UP, new SpriteSheetAnimationData(new[] { 37 }, isLooping: false));
                 _runtimeData.pnj[ListPnj.HOME_9]._talkAndAnswer.Add(new PnjDialog($"Il paraît que tu es venu sauvé la ville", new Dictionary<string, bool>()));
-                _runtimeData.pnj[ListPnj.HOME_9]._talkAndAnswer.Add(new PnjDialog($"es-ce que c'est vrai ?", new Dictionary<string, bool>() { { "Oui, je vais tous vous sauver !", true }, { "Hein ? Euh... non, non.", true } }));
+                _runtimeData.pnj[ListPnj.HOME_9]._talkAndAnswer.Add(new PnjDialog($"es-ce que c'est vrai ?", new Dictionary<string, bool>() { { "Oui, je vais tous vous sauver !", false }, { "Hein ? Euh... non, non.", true } }));
                 _runtimeData.PNJ[ListPnj.HOME_9].lookDir = Direction.RIGHT;
                 _runtimeData.pnj[ListPnj.HOME_9].playerAnswerToPnj += answerHome_9;
                 

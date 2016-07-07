@@ -112,7 +112,7 @@ namespace OrthoCite.Entities.MiniGames
 
         public override void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
         {
-            _background = content.Load<Texture2D>("minigames/platformer/background2");
+            _background = content.Load<Texture2D>("minigames/platformer/background");
             _platform = content.Load<Texture2D>("minigames/platformer/platform");
             _playerJump = content.Load<Texture2D>("minigames/platformer/player-jump");
             _playerStraight = content.Load<Texture2D>("minigames/platformer/player-straight");
