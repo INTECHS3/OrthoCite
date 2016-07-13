@@ -86,9 +86,10 @@ namespace OrthoCite
             _graphics.PreferredBackBufferWidth = 928;
             _graphics.PreferredBackBufferHeight = 512;
 #else
-            _graphics.PreferredBackBufferWidth = SCENE_WIDTH;
-            _graphics.PreferredBackBufferHeight = SCENE_HEIGHT;
-            _graphics.IsFullScreen = true;
+            _graphics.PreferredBackBufferWidth = 1920;
+            _graphics.PreferredBackBufferHeight = 1080;
+            //_graphics.IsFullScreen = true;
+            Window.IsBorderless = true; //fix problem on fullscreen to console
 #endif
             AllocConsole();
             Console.Title = "OCT Debug";

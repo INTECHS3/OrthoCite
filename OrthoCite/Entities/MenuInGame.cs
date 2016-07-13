@@ -95,7 +95,7 @@ namespace OrthoCite.Entities
             }
             spriteBatch.End();
 
-            frozenMatrix.Scale = new Vector3(0.1f);
+            frozenMatrix.Scale = new Vector3(0.2f);
            
            
             spriteBatch.Begin(transformMatrix: frozenMatrix);

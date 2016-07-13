@@ -54,6 +54,7 @@ namespace OrthoCite.Entities.MiniGames
 
 
         SoundEffect _open;
+        SoundEffect _hurt;
         Song _music;
 
         const int GID_SPAWN = 16;
@@ -99,6 +100,7 @@ namespace OrthoCite.Entities.MiniGames
             _fontCompteur = content.Load<SpriteFont>("minigames/throwgame/font_compteur");
             _music = content.Load<Song>("minigames/DoorGame/music");
             _open = content.Load<SoundEffect>("minigames/DoorGame/open");
+            _hurt = content.Load<SoundEffect>("minigames/GuessGame/hurt");
 
             foreach (TiledTileLayer e in _textureMap.TileLayers)
             {
@@ -340,12 +342,14 @@ namespace OrthoCite.Entities.MiniGames
         {
             _runtimeData.DialogBox.AddDialog("Une mauvaise terminaison est passé ahahah, Lyrick sera toujour maitre du monde", 3);
             _runtimeData.LooseLive();
+            _hurt.Play();
         }
 
         private void actionWhenTrueIsDelete()
         {
             _runtimeData.DialogBox.AddDialog("Tu as detruit une bonne terminaison, l'orthographe n'existera jamais !", 3);
             _runtimeData.LooseLive();
+            _hurt.Play();
         }
 
         private void checkCamera(Camera2D camera)
