@@ -9,10 +9,9 @@ using MonoGame.Extended.ViewportAdapters;
 using System.Runtime.InteropServices;
 using System;
 using MonoGame.Extended.Animations;
-using System.IO;
-using System.Reflection;
 using OrthoCite.Helpers;
 using System.Threading.Tasks;
+using static System.Environment;
 
 namespace OrthoCite
 {
@@ -74,7 +73,7 @@ namespace OrthoCite
                     
             _runtimeData = new RuntimeData();
             _runtimeData.OrthoCite = this;
-            _runtimeData.DataSave = new DataSave(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\datasaves");
+            _runtimeData.DataSave = new DataSave(Environment.GetFolderPath(SpecialFolder.ApplicationData) + @"\OrthoCite\datasaves");
             _graphics = new GraphicsDeviceManager(this);
             _queue = new GameQueue();
 
@@ -91,7 +90,7 @@ namespace OrthoCite
             //_graphics.IsFullScreen = true;
             Window.IsBorderless = true; //fix problem on fullscreen to console
 #endif
-            AllocConsole();
+            //AllocConsole();
             Console.Title = "OCT Debug";
             System.Console.WriteLine("=== OrthoCite debug console ===");
             Content.RootDirectory = "Content";

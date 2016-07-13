@@ -10,7 +10,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OrthoCite</RootNamespace>
-    <AssemblyName>OrthoCité</AssemblyName>
+    <AssemblyName>OrthoCite</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MonoGamePlatform>Windows</MonoGamePlatform>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>

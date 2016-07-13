@@ -7,8 +7,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using System.Xml;
 using System.Text;
-using System.Threading;
-using System.Runtime.InteropServices;
+using static System.Environment;
 
 namespace OrthoCite.Launcher
 {
@@ -33,8 +32,8 @@ namespace OrthoCite.Launcher
         public Main()
         {
             InitializeComponent();
-           
-            _dataSave = new DataSave(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\datasaves");
+
+            _dataSave = new DataSave(Environment.GetFolderPath(SpecialFolder.ApplicationData) + @"\OrthoCite\datasaves");
             _dataSave.Clear();
             xmlLoad.Maximum = 8;
             xmlLoad.Minimum = 0;
@@ -87,7 +86,7 @@ namespace OrthoCite.Launcher
 
         private void BtnDelete_Click(object sender, EventArgs e)
         {
-            File.Delete(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\datasaves\" + ListDatasaves.SelectedValue + ".oct");
+            File.Delete(Environment.GetFolderPath(SpecialFolder.ApplicationData) + @"\OrthoCite\datasaves" + ListDatasaves.SelectedValue + ".oct");
             LoadDatasavesIntoList();
         }
 
@@ -95,14 +94,14 @@ namespace OrthoCite.Launcher
         {
             if ((string)ListDatasaves.SelectedValue != "datasave")
             {
-                if (File.Exists(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\datasaves\datasave.oct"))
+                if (File.Exists((Environment.GetFolderPath(SpecialFolder.ApplicationData) + @"\OrthoCite\datasaves\datasave.oct")))
                 {
                     _dataSave.Load("datasave");
                     _dataSave.Save(false);
-                    File.Delete(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\datasaves\datasave.oct");
+                    File.Delete(Environment.GetFolderPath(SpecialFolder.ApplicationData) + @"\OrthoCite\datasaves\datasave.oct");
                 }
 
-                File.Move(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\datasaves\" + ListDatasaves.SelectedValue + ".oct", Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\datasaves\datasave.oct");
+                File.Move(Environment.GetFolderPath(SpecialFolder.ApplicationData) + @"\OrthoCite\datasaves\" + ListDatasaves.SelectedValue + ".oct", Environment.GetFolderPath(SpecialFolder.ApplicationData) + @"\OrthoCite\datasaves\datasave.oct");
             }
 
 
@@ -121,7 +120,7 @@ namespace OrthoCite.Launcher
             
 
             var p = new Process();
-            p.StartInfo.FileName = "OrthoCité.exe";
+            p.StartInfo.FileName = "OrthoCite.exe";
             p.Start();
             Close();
         }
