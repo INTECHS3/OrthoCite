@@ -86,7 +86,7 @@ namespace OrthoCite.Launcher
 
         private void BtnDelete_Click(object sender, EventArgs e)
         {
-            File.Delete(Environment.GetFolderPath(SpecialFolder.ApplicationData) + @"\OrthoCite\datasaves" + ListDatasaves.SelectedValue + ".oct");
+            File.Delete(Environment.GetFolderPath(SpecialFolder.ApplicationData) + @"\OrthoCite\datasaves\" + ListDatasaves.SelectedValue + ".oct");
             LoadDatasavesIntoList();
         }
 

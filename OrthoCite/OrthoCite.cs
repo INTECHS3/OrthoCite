@@ -90,7 +90,7 @@ namespace OrthoCite
             //_graphics.IsFullScreen = true;
             Window.IsBorderless = true; //fix problem on fullscreen to console
 #endif
-            //AllocConsole();
+            AllocConsole();
             Console.Title = "OCT Debug";
             System.Console.WriteLine("=== OrthoCite debug console ===");
             Content.RootDirectory = "Content";
