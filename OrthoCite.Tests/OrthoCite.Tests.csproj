@@ -70,6 +70,7 @@
   <ItemGroup>
     <Compile Include="DataSaveTest.cs" />
     <Compile Include="DialogBoxTest.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
