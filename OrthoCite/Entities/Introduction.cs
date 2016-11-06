@@ -141,7 +141,9 @@ namespace OrthoCite.Entities
         public void Draw(SpriteBatch spriteBatch, Matrix frozenMatrix, Matrix cameraMatrix)
         {
             spriteBatch.Begin(transformMatrix: cameraMatrix);
-            spriteBatch.Draw(_map);
+            _map.Draw(cameraMatrix);
+            //spriteBatch.Draw(_map);
+           
             spriteBatch.End();
 
             spriteBatch.Begin(transformMatrix: frozenMatrix);

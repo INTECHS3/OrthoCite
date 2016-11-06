@@ -90,8 +90,8 @@
     <Compile Include="Helpers\TextHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="MonoGame.Extended, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MonoGame.Extended.0.5.283-beta\lib\MonoGame.Extended.dll</HintPath>
+    <Reference Include="MonoGame.Extended, Version=0.6.19.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MonoGame.Extended.0.6.19-beta\lib\MonoGame.Extended.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="MonoGame.Framework, Version=3.5.1.1679, Culture=neutral, processorArchitecture=MSIL">

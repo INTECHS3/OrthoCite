@@ -102,7 +102,7 @@ namespace OrthoCite.Entities
             if (_isVisible)
             {
                 spriteBatch.Draw(_bgRectangleContour, _recContourMap, Color.Aqua);
-                _tileMap.Draw(spriteBatch, new Rectangle(500,500, 1, 1), gameTime: _runtimeData.GameTime);
+                _tileMap.Draw(frozenMatrix);
                 if (_runtimeData.Player != null) spriteBatch.Draw(_textPlayerPosition, new Rectangle((int)_runtimeData.Player.position.X, (int)_runtimeData.Player.position.Y, 75 ,75 ), Color.White);
             }
             spriteBatch.End();

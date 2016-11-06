@@ -143,7 +143,8 @@ namespace OrthoCite.Entities.MiniGames
         {
             spriteBatch.Begin(transformMatrix: cameraMatrix);
 
-            spriteBatch.Draw(actualTextMap, gameTime: _runtimeData.GameTime);
+            //spriteBatch.Draw(actualTextMap, gameTime: _runtimeData.GameTime);
+            actualTextMap.Draw(cameraMatrix);
             _player.Draw(spriteBatch);
 
             foreach (KeyValuePair<ListPnj, PNJ> i in _runtimeData.PNJ)

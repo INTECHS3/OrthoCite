@@ -46,7 +46,7 @@ namespace OrthoCite.Entities
             
             if (keyboardState.IsKeyDown(Keys.F4) && isDrawable()) _itVisible = !_itVisible;
 
-            _fpsCounter.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+            _fpsCounter.Update(gameTime);
             _camera = camera;
             var mouseState = Mouse.GetState();
             _mousePosition = _runtimeData.ViewAdapter.PointToScreen(mouseState.X, mouseState.Y);
@@ -69,8 +69,8 @@ namespace OrthoCite.Entities
             {
                 spriteBatch.Begin(transformMatrix: frozenMatrix);
                 spriteBatch.Draw(_bgRectangle, _rectangleBg, Color.White);
-                spriteBatch.Draw(_bgRectangle, _rectangleBgPosition, Color.White);
-                spriteBatch.DrawString(_font, $"Debug mode - FPS: {_fpsCounter.CurrentFramesPerSecond:0}", new Vector2(10, 10), Color.White);
+                spriteBatch.Draw(_bgRectangle, _rectangleBgPosition, Color.White); 
+                spriteBatch.DrawString(_font, $"Debug mode - FPS: {_fpsCounter.FramesPerSecond:0}", new Vector2(10, 10), Color.White);
                 spriteBatch.DrawString(_font, $"Debug mode - Camera Position: X: {_camera.Position.X} Y: {_camera.Position.Y}", new Vector2(10, 30), Color.White);
                 spriteBatch.DrawString(_font, $"Debug mode - Mouse Position: X: {_mousePosition.X} Y: {_mousePosition.Y}", new Vector2(10, 50), Color.White);
                 if(_runtimeData.Player != null) { spriteBatch.DrawString(_font, $"Debug mode - Player Position: X: {_runtimeData.Player.positionVirt.X} Y: {_runtimeData.Player.positionVirt.Y}", new Vector2(10, 70), Color.White); }

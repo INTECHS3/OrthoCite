@@ -119,7 +119,7 @@ namespace OrthoCite.Entities.MiniGames
         public override void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
         {
             textMap = content.Load<TiledMap>("minigames/Rearranger/Rearranger1");
-            _i = new TiledTileLayer(textMap, graphicsDevice, "Letter", 17, 17, _r);
+            _i = new TiledTileLayer(textMap, graphicsDevice,"Letter", 17, 17, _r);
             _i.IsVisible = true;
             actualTextMap = textMap;
             _font = content.Load<SpriteFont>("minigames/Rearranger/font");
@@ -248,7 +248,9 @@ namespace OrthoCite.Entities.MiniGames
         {
             spriteBatch.Begin(transformMatrix: cameraMatrix);
 
-            spriteBatch.Draw(actualTextMap, gameTime: _runtimeData.GameTime);
+            //spriteBatch.Draw(actualTextMap, gameTime: _runtimeData.GameTime);
+            actualTextMap.Draw(cameraMatrix);
+
             _player.Draw(spriteBatch);
             
 

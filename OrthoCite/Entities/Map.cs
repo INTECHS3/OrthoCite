@@ -174,7 +174,8 @@ namespace OrthoCite.Entities
             spriteBatch.Begin(transformMatrix: cameraMatrix);
 
             _upLayer.IsVisible = false;
-            spriteBatch.Draw(textMap, gameTime: _runtimeData.GameTime);
+            //spriteBatch.Draw(textMap, gameTime: _runtimeData.GameTime);
+            textMap.Draw(cameraMatrix);
 
             _player.Draw(spriteBatch);
 

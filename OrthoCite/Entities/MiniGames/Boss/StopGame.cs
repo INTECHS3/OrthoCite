@@ -204,7 +204,9 @@ namespace OrthoCite.Entities.MiniGames
         {
             spriteBatch.Begin(transformMatrix: cameraMatrix);
 
-            _textureMap.Draw(spriteBatch);
+            //_textureMap.Draw(spriteBatch);
+            _textureMap.Draw(frozenMatrix);
+            
 
             _player.Draw(spriteBatch);
             if(actualPositionWords != null)
