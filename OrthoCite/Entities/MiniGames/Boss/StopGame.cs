@@ -205,7 +205,7 @@ namespace OrthoCite.Entities.MiniGames
             spriteBatch.Begin(transformMatrix: cameraMatrix);
 
             //_textureMap.Draw(spriteBatch);
-            _textureMap.Draw(frozenMatrix);
+            _textureMap.Draw(cameraMatrix);
             
 
             _player.Draw(spriteBatch);

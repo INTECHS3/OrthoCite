@@ -242,6 +242,16 @@ namespace OrthoCite.Entities.MiniGames
                 _runtimeData.OrthoCite.ChangeGameContext(GameContext.MAP);
             }
             if (keyboardState.IsKeyDown(Keys.F9)) _player.collisionLayer.IsVisible = !_player.collisionLayer.IsVisible;
+
+            if(keyboardState.IsKeyDown(Keys.B))
+            {
+                IReadOnlyList<TiledLayer> m = actualTextMap.Layers;
+                foreach (TiledLayer i in m)
+                {
+                    Console.WriteLine(i.Name);
+                }
+            }
+            
         }
 
         public override void Draw(SpriteBatch spriteBatch, Matrix frozenMatrix, Matrix cameraMatrix)
@@ -493,7 +503,9 @@ namespace OrthoCite.Entities.MiniGames
             _word = _wordCollections[_random.Next(0, _wordCollections.Count)];
             _wordCollections.Remove(_word);
             _wordSplit = _word.ToCharArray();
+#if DEBUG
             Console.WriteLine(_word);
+#endif
             foreach (int e in _r)
             {
                 if (e == 832)
